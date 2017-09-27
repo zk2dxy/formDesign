@@ -21,6 +21,7 @@ Vue.prototype.API = API
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.use(_)
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

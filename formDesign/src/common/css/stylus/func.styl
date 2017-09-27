@@ -1,8 +1,14 @@
 // 背景图片
-bg-image($url, $repeat, $position) {
+bg-image($url, $repeat, $position, $bgSize) {
   background-image: url($url)
   if($repeat) {
     background-repeat $repeat
+  }
+  if($position) {
+    background-position $postion
+  }
+  if($bgSize) {
+    background-size $bgSize
   }
 }
 

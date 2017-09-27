@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <router-view></router-view>
-    <c-input></c-input>
+    <!--<c-input></c-input>-->
   </div>
 </template>
 
