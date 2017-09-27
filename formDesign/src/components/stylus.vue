@@ -9,7 +9,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-  export default{}
+  export default {}
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
@@ -21,9 +21,12 @@
     span
       font-size $font-large
       color $font-danger
+      no-wrap()
+      extend-click()
       &:hover
         color $font-primary
         cursor pointer
+        background $font-info !important
     .bgImg
       display inline-block
       bg-image('../common/image/Laugh.png', '', '', cover)
