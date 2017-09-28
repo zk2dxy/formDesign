@@ -1,15 +1,16 @@
 <template>
-  <div class="HelloWorld">
-    <component v-bind:is="CInput"></component>
+  <div class="CDialog">
+    <el-dialog title="图标选择" :visible.sync="dialogVisible">
+
+    </el-dialog>
   </div>
 </template>
 <script type="text/ecmascript-6">
   export default {
-    components: {},
-    name: `HelloWorld`,
+    name: `CDialog`,
     data () {
       return {
-        CInput: 'CInput'
+        dialogVisible: false
       }
     }
   }

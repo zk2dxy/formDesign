@@ -9,8 +9,8 @@ import API from 'api/formAPI'
 import Utils from 'api/utils'
 import _ from 'lodash'
 import 'element-ui/lib/theme-default/index.css'
-
 import CPackage from '@/components/controls'
+import '@/assets/fonts/icon.styl'
 
 CPackage.install()
 

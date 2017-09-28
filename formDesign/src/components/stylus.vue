@@ -9,11 +9,13 @@
 </template>
 
 <script type="text/ecmascript-6">
-  export default {}
+  export default {
+    name: 'stylus'
+  }
 </script>
 
-<style lang="stylus" rel="stylesheet/stylus">
-  @import "~common/css/stylus/mixin"
+<style lang="stylus" rel="stylesheet/stylus" scoped>
+  @import "~assets/css/stylus/mixin"
   .stylus
     *
       vertical-align top
@@ -29,7 +31,7 @@
         background $font-info !important
     .bgImg
       display inline-block
-      bg-image('../common/image/Laugh.png', '', '', cover)
+      bg-image('../assets/image/Laugh.png', '', '', cover)
       height 300px
       width 300px
 </style>
