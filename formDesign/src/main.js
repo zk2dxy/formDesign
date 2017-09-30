@@ -12,15 +12,16 @@ import 'element-ui/lib/theme-default/index.css'
 import CPackage from '@/components/controls'
 import '@/assets/fonts/icon.styl'
 
-CPackage.install()
+CPackage.install() // 安装所有 工具
 
-Vue.prototype.ApiUtils = ApiUtils
-Vue.prototype.AppUtils = AppUtils
-Vue.prototype.Utils = Utils
-Vue.prototype.API = API
+Vue.prototype.ApiUtils = ApiUtils // 拓展 axios
+Vue.prototype.AppUtils = AppUtils // 拓展 element-ui 提示组件
+Vue.prototype.Utils = Utils // lodash&moment 工具函数
+
+Vue.prototype.API = API // 表单接口
+Vue.prototype.L = _ // 拓展全局lodash 方法
 Vue.config.productionTip = false
 Vue.use(ElementUI)
-Vue.use(_)
 
 /* eslint-disable no-new */
 new Vue({

@@ -1,19 +1,141 @@
 <template>
   <div class="HelloWorld">
-    <component v-bind:is="CInput"></component>
+
+    <div class="leftControlArea" v-if="ControlList!=null" v-for="container in ControlList">
+      <draggable
+        v-model="container.controls"
+        :options="{group:{name:'controls',pull:'clone', put: false},animation: 0,ghostClass: 'ghost-none'}"
+        :clone="formClone"
+      >
+        <div class="item" v-if="container.controls" v-for="controlItem in container.controls">
+          <div class="singleControl" :key="controlItem.CNameCN">
+            <el-button icon="circle-check">
+              {{controlItem.CNameCN}}
+            </el-button>
+            <component
+              class="opacity0 hidden"
+              :is="controlItem.component"
+              :controlItem.sync="controlItem.config"
+            >
+            </component>
+          </div>
+        </div>
+      </draggable>
+      <div>{{JSON.stringify(ControlList)}}</div>
+    </div>
+    <div class="formContainer">
+      <draggable
+        v-model="list"
+        :options="{name:'list',animation: 0,group:{name:'controls'},ghostClass: 'item-block-drag'}"
+        style="min-height: 200px;"
+      >
+        <div v-if="list" v-for="controlItem in list" class="item">
+          <component
+            :is="controlItem.component"
+          >
+          </component>
+        </div>
+        <div>{{JSON.stringify(list)}}</div>
+      </draggable>
+    </div>
+
+    <div class="rightControlArea">
+    </div>
   </div>
 </template>
 <script type="text/ecmascript-6">
+  import draggable from 'vuedraggable'
+  import uuid from 'node-uuid'
+
   export default {
-    components: {},
+    components: {
+      draggable
+    },
     name: `HelloWorld`,
     data () {
       return {
-        CInput: 'CInput'
+        list: [],
+        ControlList: null,
+        CConfig: []
+      }
+    },
+    created () {
+      this.loadAllControls()
+    },
+    mounted () {},
+    watch: {
+      list (newValue, oldValue) {
+        console.error(this.list)
+      }
+    },
+    methods: {
+      formClone (original) {
+        let newObj = this.L.cloneDeep(original)
+        newObj.id = uuid.v4()
+        console.log(newObj)
+        return newObj
+      },
+      loadAllControls () {
+        this.ControlList = {
+          form: {
+            title: '表单容器',
+            name: 'form',
+            containerConfig: {
+              layout: ['flex', 'pixed', 'percent', 'column'], // 布局配置
+              workflow: [], // 工作流配置
+              dataOrigin: [], // 数据来源配置
+              config: [] // 自身配置
+            }, // 容器配置
+            controls: [
+              {
+                CNameCN: '输入框',
+                CNameEN: 'input',
+                parent: 'form', // 父级对象
+                type: 'input', // 类型
+                component: 'CInput',
+                config: '' // 控件配置
+              }
+            ]
+          }
+        }
+      },
+      getConfig (config) {
+        console.warn(config)
+      }
+    },
+    computed: {
+      dragOptions () {
+        return {
+          animation: 0,
+          group: 'description',
+          disabled: !this.editable,
+          ghostClass: 'ghost'
+        }
       }
     }
   }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-
+  @import "~assets/css/stylus/mixin"
+  .HelloWorld
+    > div
+      float left
+      min-height 100px
+    .leftControlArea
+      width 20%
+      margin-right 2.5%
+      > div
+        display flex
+        .singleControl
+          flex 0 46%
+          margin 0 2%
+          *
+            width 100%
+    .formContainer
+      width 55%
+    .rightControlArea
+      width 20%
+      margin-left 2.5%
+    .draggable
+      min-height 100px
 </style>

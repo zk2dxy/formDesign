@@ -16,5 +16,6 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
+  @import "~assets/css/stylus/mixin"
 </style>
 

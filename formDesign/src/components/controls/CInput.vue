@@ -1,7 +1,9 @@
 <template>
   <div class="CInput">
-    <el-input @click="" @focus="" @change="" @blur=""></el-input>
-    <i class="icon icon-home"></i>
+    <div class="title">
+      {{config.CTitle}}
+    </div>
+    <el-input @click="" @focus="" @change="" @blur="" :placeholder="config.CAttribute.placeholder"></el-input>
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -12,7 +14,12 @@
     data () {
       return {
         config: {
-          layout: { // 布局
+          CBelong: 'form',
+          CTitle: '输入框',
+          CNameCN: '输入框',
+          CNameEN: 'input',
+          CName: 'CInput',
+          CLayout: { // 布局
             percentLayout: { // 百分比布局
               type: Number,
               default: 100,
@@ -34,20 +41,20 @@
               status: false
             }
           },
-          attribute: {
-            type: '', // 类型
+          CAttribute: {
+            type: '', // input 类型 text number......and so on
             title: '', // 标题
             description: '', // 描述
-            placeholder: '', // 控件提示值
+            placeholder: '请输入默认值或者为空', // 控件提示值
             height: '', // 高度
             vertical: '' // 对齐方式
           },
-          controlValue: { // 控件值
+          CKey: { // 控件值
             default: '', // 默认值
             type: '', // 控件值类型
             keyMethods: '' // 计算控件值方法
           },
-          validate: {
+          CValidate: {
             maxLength: 255, // 最大长度
             minLength: 1, // 最小长度,
             regexp: '' // 正则表达式
@@ -65,7 +72,9 @@
       }
     },
     created () {},
-    mounted () {},
+    mounted () {
+      this.$emit('update:config', this.config)
+    },
     updated () {},
     /* keep-alive 组件激活时调用。 */
     activated () {},
@@ -92,4 +101,8 @@
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   @import "~assets/css/stylus/mixin"
+  .title
+    padding 8px 0px
+    color $font-primary
+    font-size $font-medium
 </style>
