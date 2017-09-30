@@ -1,6 +1,5 @@
 <template>
   <div class="HelloWorld">
-
     <div class="leftControlArea" v-if="ControlList!=null" v-for="container in ControlList">
       <draggable
         v-model="container.controls"
@@ -14,14 +13,14 @@
             </el-button>
             <component
               class="opacity0 hidden"
+              v-model="controlItem.config"
               :is="controlItem.component"
-              :controlItem.sync="controlItem.config"
             >
             </component>
+            {{controlItem}}
           </div>
         </div>
       </draggable>
-      <div>{{JSON.stringify(ControlList)}}</div>
     </div>
     <div class="formContainer">
       <draggable
@@ -35,7 +34,6 @@
           >
           </component>
         </div>
-        <div>{{JSON.stringify(list)}}</div>
       </draggable>
     </div>
 
@@ -93,14 +91,14 @@
                 parent: 'form', // 父级对象
                 type: 'input', // 类型
                 component: 'CInput',
-                config: '' // 控件配置
+                config: '' // 控件配置,
               }
             ]
           }
         }
       },
       getConfig (config) {
-        console.warn(config)
+        console.log(config)
       }
     },
     computed: {

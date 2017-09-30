@@ -10,7 +10,7 @@
   export default {
     name: `CInput`,
     // 控件配置、表单配置、数据来源配置
-    props: [`ControlConfig`, `FormConfig`, `OriginDataConfig`],
+    props: [`ControlConfig`, `FormConfig`, `OriginDataConfig`, 'value'],
     data () {
       return {
         config: {
@@ -73,7 +73,7 @@
     },
     created () {},
     mounted () {
-      this.$emit('update:config', this.config)
+      this.$emit(`input`, this.config)
     },
     updated () {},
     /* keep-alive 组件激活时调用。 */
