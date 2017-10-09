@@ -43,7 +43,7 @@
     </div>
     <div class="rightControlArea">
       <control-config :config="Config.CConfig" @changeConfig="changeView"></control-config>
-      {{Config.CConfig}}
+      <!--{{Config.CConfig}}-->
     </div>
   </div>
 </template>
@@ -72,10 +72,13 @@
     mounted () {},
     watch: {
       list (newValue, oldValue) {
-        // console.error(this.list)
+        console.error(newValue)
       }
     },
     methods: {
+      destroyDom () {
+        // console.error(`destroyDom`)
+      },
       formClone (originData) {
         let newObj = this.L.cloneDeep(originData)
         newObj.id = uuid.v4()
@@ -105,28 +108,15 @@
           }
         }
       },
-      getConfig (config) {
-        // console.log(config)
-      },
       showAttribute (config) {
-        // console.warn(`$emit showAttribute`)
-        // console.info(config)
         this.Config.CConfig = config
+        // this.destroyDom()
       },
       changeView (config) {
         console.error(config)
       }
     },
-    computed: {
-      dragOptions () {
-        return {
-          animation: 0,
-          group: 'description',
-          disabled: !this.editable,
-          ghostClass: 'ghost'
-        }
-      }
-    }
+    computed: {}
   }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>

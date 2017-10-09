@@ -7,7 +7,7 @@
     <el-input
       @focus="focusAction()"
       @change=""
-      @blur=""
+      @blur="blurAction()"
       :placeholder="config.CAttribute.placeholder"
       v-model="config.CKey.default"
     ></el-input>
@@ -35,7 +35,6 @@
           CTitle: '输入框',
           CNameCN: '输入框',
           CNameEN: 'input',
-          CValue: '',
           CName: 'CInput',
           CLayout: { // 布局
             percentLayout: { // 百分比布局
@@ -60,7 +59,7 @@
             }
           },
           CAttribute: {
-            type: '', // input 类型 text number......and so on
+            type: 'input', // input 类型 text number......and so on
             title: '', // 标题
             description: '', // 描述
             placeholder: '请输入默认值或者为空', // 控件提示值
@@ -79,7 +78,7 @@
           },
           status: { // 状态
             rule: false, // 是否应用状态
-            rules: [] // 控件规则集合
+            rules: ['read'] // 控件规则集合
           },
           icon: {
             status: false,
@@ -94,7 +93,6 @@
       this.$emit(`input`, this.config)
       // console.error('ControlConfig = >')
       // console.log(this.ControlConfig)
-      console.error(12345)
       if (this.ControlID && (!this.config.ControlID)) {
         this.config.ControlID = this.ControlID
       } else {
@@ -107,9 +105,8 @@
     /* keep-alive 组件停用时调用。 */
     deactivated () {},
     watch: {
-      'config.CKey.default' (val) {
-        console.log(val)
-        this.$emit(`getValue`, this.ControlConfig)
+      'config.CKey.default' (val, old) {
+        // console.log(val)
       }
     },
     beforeDestroy () {},
@@ -131,14 +128,13 @@
       },
       // 失去焦点事件
       blurAction () {
+        this.$emit(`getValue`, this.ControlConfig)
         // console.error(`blurAction`)
+        // this.$emit(`destroy`)
       },
       // 值变更事件
       changeAction () {
-        // console.error(`changeAction`)
-        if (this.ControlConfig) {
-          // console.error(this.ControlConfig)
-        }
+        this.$emit(`getValue`, this.ControlConfig)
       }
     }
   }
