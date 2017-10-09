@@ -17,7 +17,7 @@
               :is="controlItem.component"
             >
             </component>
-            {{controlItem}}
+            <!--{{controlItem}}-->
           </div>
         </div>
       </draggable>
@@ -25,7 +25,7 @@
     <div class="formContainer">
       <draggable
         v-model="list"
-        :options="{name:'list',animation: 0,group:{name:'controls'},ghostClass: 'item-block-drag',sort:true}"
+        :options="{name:'list',animation: 0,group:{name:'controls'},ghostClass: 'item-block-drag'}"
         style="min-height: 200px;"
       >
         <div v-if="list" v-for="controlItem in list" class="item">
@@ -37,12 +37,12 @@
             @getValue="showAttribute"
           >
           </component>
-          {{controlItem.config}}
         </div>
       </draggable>
+      {{list}}
     </div>
     <div class="rightControlArea">
-      <control-config :config="Config.CConfig" @changeConfig="changeView">slot</control-config>
+      <control-config :config="Config.CConfig" @changeConfig="changeView"></control-config>
       {{Config.CConfig}}
     </div>
   </div>

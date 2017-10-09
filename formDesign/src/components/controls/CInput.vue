@@ -1,14 +1,15 @@
 <template>
   <div class="CInput" @click="ControlClick()">
     <div class="title">
-      {{config.CTitle}}
+      {{config.CTitle}}{{ControlID}}
+      <span class="CDom">{{config.CKey.default}}</span>
     </div>
     <el-input
       @focus="focusAction()"
       @change=""
       @blur=""
       :placeholder="config.CAttribute.placeholder"
-      v-model="ControlID"
+      v-model="config.CKey.default"
     ></el-input>
   </div>
 </template>
@@ -29,6 +30,7 @@
     data () {
       return {
         config: {
+          ControlID: '',
           CBelong: 'form',
           CTitle: '输入框',
           CNameCN: '输入框',
@@ -92,9 +94,11 @@
       this.$emit(`input`, this.config)
       // console.error('ControlConfig = >')
       // console.log(this.ControlConfig)
-      if (this.ControlID) {
-        console.error(this.ControlID)
+      console.error(12345)
+      if (this.ControlID && (!this.config.ControlID)) {
         this.config.ControlID = this.ControlID
+      } else {
+        console.error(this.config.ControlID)
       }
     },
     updated () {},
@@ -117,7 +121,9 @@
         // console.error(this.ControlConfig)
         // console.error('ControlID=>')
         // console.log(this.ControlID)
+//        if (!this.ControlID) {
         this.$emit(`getValue`, this.ControlConfig)
+//        }
       },
       // 获得焦点事件
       focusAction () {
@@ -143,4 +149,7 @@
     padding 8px 0px
     color $font-primary
     font-size $font-medium
+
+  .CDom
+    position absolute
 </style>
