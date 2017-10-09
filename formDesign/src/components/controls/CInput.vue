@@ -15,10 +15,8 @@
 <script type="text/ecmascript-6">
   // 控件配置、表单配置、数据来源配置
   //    props: ['ControlConfig', 'FormConfig', 'OriginDataConfig', 'value'],
-  import ElInput from '../../../node_modules/element-ui/packages/input/src/input.vue'
 
   export default {
-    components: {ElInput},
     name: `CInput`,
     props: {
       ControlConfig: {
