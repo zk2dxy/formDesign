@@ -1,16 +1,35 @@
 <template>
   <div class="CInput" @click="ControlClick()">
-    <div class="title">
-      {{config.CTitle}}{{ControlID}}
-      <span class="CDom">控件值 - {{config.CKey.default}}</span>
+    <div v-if="config && (!ControlID)">
+      <div class="title">
+        {{config.CTitle}}
+      </div>
+      <el-input
+        @focus="focusAction()"
+        @change=""
+        @blur="blurAction()"
+        :maxlength="config.CValidate.maxLength"
+        :minlength="config.CValidate.minLength"
+        :type="config.CAttribute.typeModel"
+        :placeholder="config.CAttribute.placeholder"
+        v-model="config.CKey.default"
+      ></el-input>
     </div>
-    <el-input
-      @focus="focusAction()"
-      @change=""
-      @blur="blurAction()"
-      :placeholder="config.CAttribute.placeholder"
-      v-model="config.CKey.default"
-    ></el-input>
+    <div v-else>
+      <div class="title">
+        {{ControlConfig.CTitle}}
+      </div>
+      <el-input
+        @focus="focusAction()"
+        @change=""
+        @blur="blurAction()"
+        :maxlength="ControlConfig.CValidate.maxLength"
+        :minlength="ControlConfig.CValidate.minLength"
+        :type="ControlConfig.CAttribute.typeModel"
+        :placeholder="ControlConfig.CAttribute.placeholder"
+        v-model="ControlConfig.CKey.default"
+      ></el-input>
+    </div>
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -27,14 +46,56 @@
         default: null
       }
     },
+    created () {
+      this.config = this.initConfig
+      console.error(this.ControlConfig)
+      if (this.ControlConfig) {
+        this.config = this.ControlConfig
+      }
+    },
+    mounted () {
+      this.$emit(`input`, this.config)
+      if (this.ControlID && (!this.config.ControlID)) {
+        this.config.ControlID = this.ControlID
+      } else {
+        console.error(this.config.ControlID)
+      }
+    },
+    updated () {},
+    /* keep-alive 组件激活时调用。 */
+    activated () {},
+    /* keep-alive 组件停用时调用。 */
+    deactivated () {},
+    watch: {
+      'config.CKey.default' (val, old) {
+        // console.log(val)
+      }
+    },
+    beforeDestroy () {},
+    destroyed () {},
+    methods: {
+      ControlClick () {
+        this.$emit(`getValue`, this.config)
+      },
+      // 获得焦点事件
+      focusAction () {},
+      // 失去焦点事件
+      blurAction () {
+        this.$emit(`getValue`, this.config)
+      },
+      // 值变更事件
+      changeAction () {
+        this.$emit(`getValue`, this.config)
+      }
+    },
     data () {
       return {
-        config: {
+        initConfig: {
           ControlID: '',
           CBelong: 'form',
           CTitle: '输入框',
           CNameCN: '输入框',
-          CNameEN: 'input',
+          CNameEN: 'input Control',
           CName: 'CInput',
           CLayout: { // 布局
             percentLayout: { // 百分比布局
@@ -59,12 +120,19 @@
             }
           },
           CAttribute: {
-            type: 'input', // input 类型 text number......and so on
+            type: [{
+              value: 'input',
+              name: '文本框'
+            }, {
+              value: 'textarea',
+              name: '多行文本'
+            }], // input 类型 text number......and so on
+            typeModel: 'input',
             title: '', // 标题
             description: '', // 描述
             placeholder: '请输入默认值或者为空', // 控件提示值
             height: '', // 高度
-            vertical: '' // 对齐方式
+            vertical: ['top', 'middle', 'bottom'] // 对齐方式,
           },
           CKey: { // 控件值
             default: '', // 默认值
@@ -76,65 +144,34 @@
             minLength: 1, // 最小长度,
             regexp: '' // 正则表达式
           },
-          status: { // 状态
-            rule: false, // 是否应用状态
-            rules: ['read'] // 控件规则集合
+          Status: { // 状态
+            status: false, // 是否应用状态
+            rules: [
+              {
+                value: 'readonly',
+                name: '只读'
+              },
+              {
+                value: '',
+                name: '隐藏'
+              }
+            ], // 控件规则集合
+            ruleList: []
           },
-          icon: {
+          Icon: {
             status: false,
             name: '',
-            position: ''
-          }
-        }
-      }
-    },
-    created () {},
-    mounted () {
-      this.$emit(`input`, this.config)
-      // console.error('ControlConfig = >')
-      // console.log(this.ControlConfig)
-      if (this.ControlID && (!this.config.ControlID)) {
-        this.config.ControlID = this.ControlID
-      } else {
-        console.error(this.config.ControlID)
-      }
-    },
-    updated () {},
-    /* keep-alive 组件激活时调用。 */
-    activated () {},
-    /* keep-alive 组件停用时调用。 */
-    deactivated () {},
-    watch: {
-      'config.CKey.default' (val, old) {
-        // console.log(val)
-      }
-    },
-    beforeDestroy () {},
-    destroyed () {},
-    methods: {
-      ControlClick () {
-        // console.log(`ControlClick`)
-        // console.log('this.ControlConfig=>')
-        // console.error(this.ControlConfig)
-        // console.error('ControlID=>')
-        // console.log(this.ControlID)
-//        if (!this.ControlID) {
-        this.$emit(`getValue`, this.ControlConfig)
-//        }
-      },
-      // 获得焦点事件
-      focusAction () {
-        // console.warn(`focusAction`)
-      },
-      // 失去焦点事件
-      blurAction () {
-        this.$emit(`getValue`, this.ControlConfig)
-        // console.error(`blurAction`)
-        // this.$emit(`destroy`)
-      },
-      // 值变更事件
-      changeAction () {
-        this.$emit(`getValue`, this.ControlConfig)
+            position: ['left', 'right'],
+            value: ''
+          },
+          methodsDB: [{
+            name: 'click',
+            action: '',
+            ohter: ''
+          }]
+        },
+        currentConfig: null,
+        config: null
       }
     }
   }

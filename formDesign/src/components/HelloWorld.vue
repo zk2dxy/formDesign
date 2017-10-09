@@ -25,7 +25,7 @@
     <div class="formContainer">
       <draggable
         v-model="list"
-        :options="{name:'list',animation: 0,group:{name:'controls'},ghostClass: 'item-block-drag'}"
+        :options="{name:'list',animation: 200,group:{name:'controls'},ghostClass: 'item-block-drag'}"
         style="min-height: 200px;"
       >
         <div v-if="list" v-for="controlItem in list" class="item">
@@ -42,8 +42,7 @@
       {{list}}
     </div>
     <div class="rightControlArea">
-      <control-config :config="Config.CConfig" @changeConfig="changeView"></control-config>
-      <!--{{Config.CConfig}}-->
+      <control-config v-if="Config.CConfig" :config="Config.CConfig" @changeConfig="changeView"></control-config>
     </div>
   </div>
 </template>
@@ -110,7 +109,7 @@
       },
       showAttribute (config) {
         this.Config.CConfig = config
-        // this.destroyDom()
+        this.destroyDom()
       },
       changeView (config) {
         console.error(config)
