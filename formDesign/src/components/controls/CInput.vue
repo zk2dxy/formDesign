@@ -1,17 +1,24 @@
 <template>
   <div class="CInput" @click="ControlClick()">
-    <slot></slot>
     <div class="title">
       {{config.CTitle}}
     </div>
-    <el-input @click.native.stop="" @focus="focusAction()" @change="" @blur=""
-              :placeholder="config.CAttribute.placeholder"></el-input>
+    <el-input
+      @focus="focusAction()"
+      @change=""
+      @blur=""
+      :placeholder="config.CAttribute.placeholder"
+      v-model="ControlID"
+    ></el-input>
   </div>
 </template>
 <script type="text/ecmascript-6">
   // 控件配置、表单配置、数据来源配置
   //    props: ['ControlConfig', 'FormConfig', 'OriginDataConfig', 'value'],
+  import ElInput from '../../../node_modules/element-ui/packages/input/src/input.vue'
+
   export default {
+    components: {ElInput},
     name: `CInput`,
     props: {
       ControlConfig: {
@@ -29,6 +36,7 @@
           CTitle: '输入框',
           CNameCN: '输入框',
           CNameEN: 'input',
+          CValue: '',
           CName: 'CInput',
           CLayout: { // 布局
             percentLayout: { // 百分比布局
@@ -87,13 +95,22 @@
       this.$emit(`input`, this.config)
       // console.error('ControlConfig = >')
       // console.log(this.ControlConfig)
+      if (this.ControlID) {
+        console.error(this.ControlID)
+        this.config.ControlID = this.ControlID
+      }
     },
     updated () {},
     /* keep-alive 组件激活时调用。 */
     activated () {},
     /* keep-alive 组件停用时调用。 */
     deactivated () {},
-    watch: {},
+    watch: {
+      'config.CKey.default' (val) {
+        console.log(val)
+        this.$emit(`getValue`, this.ControlConfig)
+      }
+    },
     beforeDestroy () {},
     destroyed () {},
     methods: {
