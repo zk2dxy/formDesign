@@ -30,14 +30,17 @@
       >
         <div v-if="list" v-for="controlItem in list" class="item">
           <component
+            :ControlConfig="controlItem.config"
+            :ControlID='controlItem.id'
             :is="controlItem.component"
+            @getValue="showAttribute"
           >
           </component>
         </div>
       </draggable>
     </div>
-
     <div class="rightControlArea">
+      <control-config :config="Config.CConfig">slot</control-config>
     </div>
   </div>
 </template>
@@ -54,7 +57,10 @@
       return {
         list: [],
         ControlList: null,
-        CConfig: []
+        Config: {
+          FConfig: '',
+          CConfig: ''
+        }
       }
     },
     created () {
@@ -63,14 +69,13 @@
     mounted () {},
     watch: {
       list (newValue, oldValue) {
-        console.error(this.list)
+        // console.error(this.list)
       }
     },
     methods: {
-      formClone (original) {
-        let newObj = this.L.cloneDeep(original)
+      formClone (originData) {
+        let newObj = this.L.cloneDeep(originData)
         newObj.id = uuid.v4()
-        console.log(newObj)
         return newObj
       },
       loadAllControls () {
@@ -98,7 +103,12 @@
         }
       },
       getConfig (config) {
-        console.log(config)
+        // console.log(config)
+      },
+      showAttribute (config) {
+        // console.warn(`$emit showAttribute`)
+        // console.info(config)
+        this.Config.CConfig = config
       }
     },
     computed: {

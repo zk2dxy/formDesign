@@ -1,7 +1,9 @@
 import Vue from 'vue'
+import ControlConfig from '@/components/controls/ControlConfig'
 import CInput from '@/components/controls/CInput'
 
 const components = [
+  ControlConfig,
   CInput
 ]
 
