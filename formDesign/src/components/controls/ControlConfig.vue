@@ -1,8 +1,8 @@
 <template>
   <div class="ControlConfig">
     <div v-if="config">
-      <div v-for="item in config">
-        {{item}}
+      <div v-for="(item , index) in config">
+        {{index}}
       </div>
     </div>
   </div>
