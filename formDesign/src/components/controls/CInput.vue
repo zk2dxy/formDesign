@@ -2,7 +2,7 @@
   <div class="CInput" @click="ControlClick()">
     <div class="title">
       {{config.CTitle}}{{ControlID}}
-      <span class="CDom">{{config.CKey.default}}</span>
+      <span class="CDom">控件值 - {{config.CKey.default}}</span>
     </div>
     <el-input
       @focus="focusAction()"
@@ -151,5 +151,5 @@
     font-size $font-medium
 
   .CDom
-    position absolute
+    color $font-danger
 </style>
