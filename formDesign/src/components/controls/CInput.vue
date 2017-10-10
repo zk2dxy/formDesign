@@ -36,9 +36,9 @@
         :icon="ControlConfig.Icon.className"
         :position="ControlConfig.Icon.positionModel"
       >
-        <template v-if="config.CAttribute.prepend!=''" slot="prepend"><span
+        <template v-if="ControlConfig.CAttribute.prepend!=''" slot="prepend"><span
           v-html="ControlConfig.CAttribute.prepend"></span></template>
-        <template v-if="config.CAttribute.append!=''" slot="append"><span
+        <template v-if="ControlConfig.CAttribute.append!=''" slot="append"><span
           v-html="ControlConfig.CAttribute.append"></span></template>
       </extend-input>
     </div>
