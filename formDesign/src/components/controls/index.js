@@ -1,6 +1,6 @@
 import Vue from 'vue'
-import ControlConfig from '@/components/controls/ControlConfig'
-import CIcon from '@/components/controls/CIcon'
+import ControlConfig from '@/components/base/ControlConfig'
+import CIcon from '@/components/base/CIcon'
 import CInput from '@/components/controls/CInput'
 
 const components = [
