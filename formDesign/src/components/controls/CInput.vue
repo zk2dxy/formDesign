@@ -2,33 +2,45 @@
   <div class="CInput" @click="ControlClick()">
     <div v-if="config && (!ControlID)">
       <div class="title">
-        {{config.CTitle}}
+        {{config.CTitleCN}}
       </div>
-      <el-input
+      <extend-input
         @focus="focusAction()"
-        @change=""
         @blur="blurAction()"
         :maxlength="config.CValidate.maxLength"
         :minlength="config.CValidate.minLength"
         :type="config.CAttribute.typeModel"
         :placeholder="config.CAttribute.placeholder"
         v-model="config.CKey.default"
-      ></el-input>
+        :icon="config.Icon.className"
+        :position="config.Icon.positionModel"
+      >
+        <template v-if="config.CAttribute.prepend!=''" slot="prepend"><span v-html="config.CAttribute.prepend"></span>
+        </template>
+        <template v-if="config.CAttribute.append!=''" slot="append"><span v-html="config.CAttribute.append"></span>
+        </template>
+      </extend-input>
     </div>
     <div v-else>
       <div class="title">
-        {{ControlConfig.CTitle}}
+        {{ControlConfig.CTitleCN}}
       </div>
-      <el-input
+      <extend-input
         @focus="focusAction()"
-        @change=""
         @blur="blurAction()"
         :maxlength="ControlConfig.CValidate.maxLength"
         :minlength="ControlConfig.CValidate.minLength"
         :type="ControlConfig.CAttribute.typeModel"
         :placeholder="ControlConfig.CAttribute.placeholder"
         v-model="ControlConfig.CKey.default"
-      ></el-input>
+        :icon="ControlConfig.Icon.className"
+        :position="ControlConfig.Icon.positionModel"
+      >
+        <template v-if="config.CAttribute.prepend!=''" slot="prepend"><span
+          v-html="ControlConfig.CAttribute.prepend"></span></template>
+        <template v-if="config.CAttribute.append!=''" slot="append"><span
+          v-html="ControlConfig.CAttribute.append"></span></template>
+      </extend-input>
     </div>
   </div>
 </template>
@@ -48,7 +60,6 @@
     },
     created () {
       this.config = this.initConfig
-      console.error(this.ControlConfig)
       if (this.ControlConfig) {
         this.config = this.ControlConfig
       }
@@ -57,8 +68,6 @@
       this.$emit(`input`, this.config)
       if (this.ControlID && (!this.config.ControlID)) {
         this.config.ControlID = this.ControlID
-      } else {
-        console.error(this.config.ControlID)
       }
     },
     updated () {},
@@ -93,9 +102,8 @@
         initConfig: {
           ControlID: '',
           CBelong: 'form',
-          CTitle: '输入框',
-          CNameCN: '输入框',
-          CNameEN: 'input Control',
+          CTitleCN: '输入框', // 标题
+          CTitleEN: 'input Control', // 英文标题
           CName: 'CInput',
           CLayout: { // 布局
             percentLayout: { // 百分比布局
@@ -120,6 +128,8 @@
             }
           },
           CAttribute: {
+            prepend: '',
+            append: '',
             type: [{
               value: 'input',
               name: '文本框'
@@ -128,7 +138,6 @@
               name: '多行文本'
             }], // input 类型 text number......and so on
             typeModel: 'input',
-            title: '', // 标题
             description: '', // 描述
             placeholder: '请输入默认值或者为空', // 控件提示值
             height: '', // 高度
@@ -160,14 +169,24 @@
           },
           Icon: {
             status: false,
-            name: '',
-            position: ['left', 'right'],
-            value: ''
+            chooseStatus: false,
+            position: [{
+              name: '左侧',
+              value: 'left'
+            }, {
+              name: '右侧',
+              value: 'right'
+            }],
+            positionModel: '',
+            className: '',
+            content: '',
+            title: '',
+            library: ''
           },
-          methodsDB: [{
+          methodDB: [{
             name: 'click',
             action: '',
-            ohter: ''
+            other: ''
           }]
         },
         currentConfig: null,

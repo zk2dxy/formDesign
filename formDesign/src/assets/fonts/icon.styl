@@ -1,3 +1,5 @@
+@import "../css/stylus/variable.styl"
+
 @font-face
   font-family: 'icon'
   src: url('icon.eot?geswfp')
@@ -8,7 +10,7 @@
   font-weight: normal
   font-style: normal
 
-.icon
+[class*="el-icon-form-"], [class^=el-icon-form-]
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'icon' !important
   speak: none
@@ -16,1482 +18,1485 @@
   font-weight: normal
   font-variant: normal
   text-transform: none
-  line-height: 1
-
   /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased
   -moz-osx-font-smoothing: grayscale
 
-.icon-home:before
+[class*="el-icon-form-"]:before, [class^=el-icon-form-]:before
+  font-size $font-large
+  line-height 100%
+  vertical-align middle
+
+.el-icon-form-home:before
   content: "\e900"
 
-.icon-home2:before
+.el-icon-form-home2:before
   content: "\e901"
 
-.icon-home3:before
+.el-icon-form-home3:before
   content: "\e902"
 
-.icon-office:before
+.el-icon-form-office:before
   content: "\e903"
 
-.icon-newspaper:before
+.el-icon-form-newspaper:before
   content: "\e904"
 
-.icon-pencil:before
+.el-icon-form-pencil:before
   content: "\e905"
 
-.icon-pencil2:before
+.el-icon-form-pencil2:before
   content: "\e906"
 
-.icon-quill:before
+.el-icon-form-quill:before
   content: "\e907"
 
-.icon-pen:before
+.el-icon-form-pen:before
   content: "\e908"
 
-.icon-blog:before
+.el-icon-form-blog:before
   content: "\e909"
 
-.icon-eyedropper:before
+.el-icon-form-eyedropper:before
   content: "\e90a"
 
-.icon-droplet:before
+.el-icon-form-droplet:before
   content: "\e90b"
 
-.icon-paint-format:before
+.el-icon-form-paint-format:before
   content: "\e90c"
 
-.icon-image:before
+.el-icon-form-image:before
   content: "\e90d"
 
-.icon-images:before
+.el-icon-form-images:before
   content: "\e90e"
 
-.icon-camera:before
+.el-icon-form-camera:before
   content: "\e90f"
 
-.icon-headphones:before
+.el-icon-form-headphones:before
   content: "\e910"
 
-.icon-music:before
+.el-icon-form-music:before
   content: "\e911"
 
-.icon-play:before
+.el-icon-form-play:before
   content: "\e912"
 
-.icon-film:before
+.el-icon-form-film:before
   content: "\e913"
 
-.icon-video-camera:before
+.el-icon-form-video-camera:before
   content: "\e914"
 
-.icon-dice:before
+.el-icon-form-dice:before
   content: "\e915"
 
-.icon-pacman:before
+.el-icon-form-pacman:before
   content: "\e916"
 
-.icon-spades:before
+.el-icon-form-spades:before
   content: "\e917"
 
-.icon-clubs:before
+.el-icon-form-clubs:before
   content: "\e918"
 
-.icon-diamonds:before
+.el-icon-form-diamonds:before
   content: "\e919"
 
-.icon-bullhorn:before
+.el-icon-form-bullhorn:before
   content: "\e91a"
 
-.icon-connection:before
+.el-icon-form-connection:before
   content: "\e91b"
 
-.icon-podcast:before
+.el-icon-form-podcast:before
   content: "\e91c"
 
-.icon-feed:before
+.el-icon-form-feed:before
   content: "\e91d"
 
-.icon-mic:before
+.el-icon-form-mic:before
   content: "\e91e"
 
-.icon-book:before
+.el-icon-form-book:before
   content: "\e91f"
 
-.icon-books:before
+.el-icon-form-books:before
   content: "\e920"
 
-.icon-library:before
+.el-icon-form-library:before
   content: "\e921"
 
-.icon-file-text:before
+.el-icon-form-file-text:before
   content: "\e922"
 
-.icon-profile:before
+.el-icon-form-profile:before
   content: "\e923"
 
-.icon-file-empty:before
+.el-icon-form-file-empty:before
   content: "\e924"
 
-.icon-files-empty:before
+.el-icon-form-files-empty:before
   content: "\e925"
 
-.icon-file-text2:before
+.el-icon-form-file-text2:before
   content: "\e926"
 
-.icon-file-picture:before
+.el-icon-form-file-picture:before
   content: "\e927"
 
-.icon-file-music:before
+.el-icon-form-file-music:before
   content: "\e928"
 
-.icon-file-play:before
+.el-icon-form-file-play:before
   content: "\e929"
 
-.icon-file-video:before
+.el-icon-form-file-video:before
   content: "\e92a"
 
-.icon-file-zip:before
+.el-icon-form-file-zip:before
   content: "\e92b"
 
-.icon-copy:before
+.el-icon-form-copy:before
   content: "\e92c"
 
-.icon-paste:before
+.el-icon-form-paste:before
   content: "\e92d"
 
-.icon-stack:before
+.el-icon-form-stack:before
   content: "\e92e"
 
-.icon-folder:before
+.el-icon-form-folder:before
   content: "\e92f"
 
-.icon-folder-open:before
+.el-icon-form-folder-open:before
   content: "\e930"
 
-.icon-folder-plus:before
+.el-icon-form-folder-plus:before
   content: "\e931"
 
-.icon-folder-minus:before
+.el-icon-form-folder-minus:before
   content: "\e932"
 
-.icon-folder-download:before
+.el-icon-form-folder-download:before
   content: "\e933"
 
-.icon-folder-upload:before
+.el-icon-form-folder-upload:before
   content: "\e934"
 
-.icon-price-tag:before
+.el-icon-form-price-tag:before
   content: "\e935"
 
-.icon-price-tags:before
+.el-icon-form-price-tags:before
   content: "\e936"
 
-.icon-barcode:before
+.el-icon-form-barcode:before
   content: "\e937"
 
-.icon-qrcode:before
+.el-icon-form-qrcode:before
   content: "\e938"
 
-.icon-ticket:before
+.el-icon-form-ticket:before
   content: "\e939"
 
-.icon-cart:before
+.el-icon-form-cart:before
   content: "\e93a"
 
-.icon-coin-dollar:before
+.el-icon-form-coin-dollar:before
   content: "\e93b"
 
-.icon-coin-euro:before
+.el-icon-form-coin-euro:before
   content: "\e93c"
 
-.icon-coin-pound:before
+.el-icon-form-coin-pound:before
   content: "\e93d"
 
-.icon-coin-yen:before
+.el-icon-form-coin-yen:before
   content: "\e93e"
 
-.icon-credit-card:before
+.el-icon-form-credit-card:before
   content: "\e93f"
 
-.icon-calculator:before
+.el-icon-form-calculator:before
   content: "\e940"
 
-.icon-lifebuoy:before
+.el-icon-form-lifebuoy:before
   content: "\e941"
 
-.icon-phone:before
+.el-icon-form-phone:before
   content: "\e942"
 
-.icon-phone-hang-up:before
+.el-icon-form-phone-hang-up:before
   content: "\e943"
 
-.icon-address-book:before
+.el-icon-form-address-book:before
   content: "\e944"
 
-.icon-envelop:before
+.el-icon-form-envelop:before
   content: "\e945"
 
-.icon-pushpin:before
+.el-icon-form-pushpin:before
   content: "\e946"
 
-.icon-location:before
+.el-icon-form-location:before
   content: "\e947"
 
-.icon-location2:before
+.el-icon-form-location2:before
   content: "\e948"
 
-.icon-compass:before
+.el-icon-form-compass:before
   content: "\e949"
 
-.icon-compass2:before
+.el-icon-form-compass2:before
   content: "\e94a"
 
-.icon-map:before
+.el-icon-form-map:before
   content: "\e94b"
 
-.icon-map2:before
+.el-icon-form-map2:before
   content: "\e94c"
 
-.icon-history:before
+.el-icon-form-history:before
   content: "\e94d"
 
-.icon-clock:before
+.el-icon-form-clock:before
   content: "\e94e"
 
-.icon-clock2:before
+.el-icon-form-clock2:before
   content: "\e94f"
 
-.icon-alarm:before
+.el-icon-form-alarm:before
   content: "\e950"
 
-.icon-bell:before
+.el-icon-form-bell:before
   content: "\e951"
 
-.icon-stopwatch:before
+.el-icon-form-stopwatch:before
   content: "\e952"
 
-.icon-calendar:before
+.el-icon-form-calendar:before
   content: "\e953"
 
-.icon-printer:before
+.el-icon-form-printer:before
   content: "\e954"
 
-.icon-keyboard:before
+.el-icon-form-keyboard:before
   content: "\e955"
 
-.icon-display:before
+.el-icon-form-display:before
   content: "\e956"
 
-.icon-laptop:before
+.el-icon-form-laptop:before
   content: "\e957"
 
-.icon-mobile:before
+.el-icon-form-mobile:before
   content: "\e958"
 
-.icon-mobile2:before
+.el-icon-form-mobile2:before
   content: "\e959"
 
-.icon-tablet:before
+.el-icon-form-tablet:before
   content: "\e95a"
 
-.icon-tv:before
+.el-icon-form-tv:before
   content: "\e95b"
 
-.icon-drawer:before
+.el-icon-form-drawer:before
   content: "\e95c"
 
-.icon-drawer2:before
+.el-icon-form-drawer2:before
   content: "\e95d"
 
-.icon-box-add:before
+.el-icon-form-box-add:before
   content: "\e95e"
 
-.icon-box-remove:before
+.el-icon-form-box-remove:before
   content: "\e95f"
 
-.icon-download:before
+.el-icon-form-download:before
   content: "\e960"
 
-.icon-upload:before
+.el-icon-form-upload:before
   content: "\e961"
 
-.icon-floppy-disk:before
+.el-icon-form-floppy-disk:before
   content: "\e962"
 
-.icon-drive:before
+.el-icon-form-drive:before
   content: "\e963"
 
-.icon-database:before
+.el-icon-form-database:before
   content: "\e964"
 
-.icon-undo:before
+.el-icon-form-undo:before
   content: "\e965"
 
-.icon-redo:before
+.el-icon-form-redo:before
   content: "\e966"
 
-.icon-undo2:before
+.el-icon-form-undo2:before
   content: "\e967"
 
-.icon-redo2:before
+.el-icon-form-redo2:before
   content: "\e968"
 
-.icon-forward:before
+.el-icon-form-forward:before
   content: "\e969"
 
-.icon-reply:before
+.el-icon-form-reply:before
   content: "\e96a"
 
-.icon-bubble:before
+.el-icon-form-bubble:before
   content: "\e96b"
 
-.icon-bubbles:before
+.el-icon-form-bubbles:before
   content: "\e96c"
 
-.icon-bubbles2:before
+.el-icon-form-bubbles2:before
   content: "\e96d"
 
-.icon-bubble2:before
+.el-icon-form-bubble2:before
   content: "\e96e"
 
-.icon-bubbles3:before
+.el-icon-form-bubbles3:before
   content: "\e96f"
 
-.icon-bubbles4:before
+.el-icon-form-bubbles4:before
   content: "\e970"
 
-.icon-user:before
+.el-icon-form-user:before
   content: "\e971"
 
-.icon-users:before
+.el-icon-form-users:before
   content: "\e972"
 
-.icon-user-plus:before
+.el-icon-form-user-plus:before
   content: "\e973"
 
-.icon-user-minus:before
+.el-icon-form-user-minus:before
   content: "\e974"
 
-.icon-user-check:before
+.el-icon-form-user-check:before
   content: "\e975"
 
-.icon-user-tie:before
+.el-icon-form-user-tie:before
   content: "\e976"
 
-.icon-quotes-left:before
+.el-icon-form-quotes-left:before
   content: "\e977"
 
-.icon-quotes-right:before
+.el-icon-form-quotes-right:before
   content: "\e978"
 
-.icon-hour-glass:before
+.el-icon-form-hour-glass:before
   content: "\e979"
 
-.icon-spinner:before
+.el-icon-form-spinner:before
   content: "\e97a"
 
-.icon-spinner2:before
+.el-icon-form-spinner2:before
   content: "\e97b"
 
-.icon-spinner3:before
+.el-icon-form-spinner3:before
   content: "\e97c"
 
-.icon-spinner4:before
+.el-icon-form-spinner4:before
   content: "\e97d"
 
-.icon-spinner5:before
+.el-icon-form-spinner5:before
   content: "\e97e"
 
-.icon-spinner6:before
+.el-icon-form-spinner6:before
   content: "\e97f"
 
-.icon-spinner7:before
+.el-icon-form-spinner7:before
   content: "\e980"
 
-.icon-spinner8:before
+.el-icon-form-spinner8:before
   content: "\e981"
 
-.icon-spinner9:before
+.el-icon-form-spinner9:before
   content: "\e982"
 
-.icon-spinner10:before
+.el-icon-form-spinner10:before
   content: "\e983"
 
-.icon-spinner11:before
+.el-icon-form-spinner11:before
   content: "\e984"
 
-.icon-binoculars:before
+.el-icon-form-binoculars:before
   content: "\e985"
 
-.icon-search:before
+.el-icon-form-search:before
   content: "\e986"
 
-.icon-zoom-in:before
+.el-icon-form-zoom-in:before
   content: "\e987"
 
-.icon-zoom-out:before
+.el-icon-form-zoom-out:before
   content: "\e988"
 
-.icon-enlarge:before
+.el-icon-form-enlarge:before
   content: "\e989"
 
-.icon-shrink:before
+.el-icon-form-shrink:before
   content: "\e98a"
 
-.icon-enlarge2:before
+.el-icon-form-enlarge2:before
   content: "\e98b"
 
-.icon-shrink2:before
+.el-icon-form-shrink2:before
   content: "\e98c"
 
-.icon-key:before
+.el-icon-form-key:before
   content: "\e98d"
 
-.icon-key2:before
+.el-icon-form-key2:before
   content: "\e98e"
 
-.icon-lock:before
+.el-icon-form-lock:before
   content: "\e98f"
 
-.icon-unlocked:before
+.el-icon-form-unlocked:before
   content: "\e990"
 
-.icon-wrench:before
+.el-icon-form-wrench:before
   content: "\e991"
 
-.icon-equalizer:before
+.el-icon-form-equalizer:before
   content: "\e992"
 
-.icon-equalizer2:before
+.el-icon-form-equalizer2:before
   content: "\e993"
 
-.icon-cog:before
+.el-icon-form-cog:before
   content: "\e994"
 
-.icon-cogs:before
+.el-icon-form-cogs:before
   content: "\e995"
 
-.icon-hammer:before
+.el-icon-form-hammer:before
   content: "\e996"
 
-.icon-magic-wand:before
+.el-icon-form-magic-wand:before
   content: "\e997"
 
-.icon-aid-kit:before
+.el-icon-form-aid-kit:before
   content: "\e998"
 
-.icon-bug:before
+.el-icon-form-bug:before
   content: "\e999"
 
-.icon-pie-chart:before
+.el-icon-form-pie-chart:before
   content: "\e99a"
 
-.icon-stats-dots:before
+.el-icon-form-stats-dots:before
   content: "\e99b"
 
-.icon-stats-bars:before
+.el-icon-form-stats-bars:before
   content: "\e99c"
 
-.icon-stats-bars2:before
+.el-icon-form-stats-bars2:before
   content: "\e99d"
 
-.icon-trophy:before
+.el-icon-form-trophy:before
   content: "\e99e"
 
-.icon-gift:before
+.el-icon-form-gift:before
   content: "\e99f"
 
-.icon-glass:before
+.el-icon-form-glass:before
   content: "\e9a0"
 
-.icon-glass2:before
+.el-icon-form-glass2:before
   content: "\e9a1"
 
-.icon-mug:before
+.el-icon-form-mug:before
   content: "\e9a2"
 
-.icon-spoon-knife:before
+.el-icon-form-spoon-knife:before
   content: "\e9a3"
 
-.icon-leaf:before
+.el-icon-form-leaf:before
   content: "\e9a4"
 
-.icon-rocket:before
+.el-icon-form-rocket:before
   content: "\e9a5"
 
-.icon-meter:before
+.el-icon-form-meter:before
   content: "\e9a6"
 
-.icon-meter2:before
+.el-icon-form-meter2:before
   content: "\e9a7"
 
-.icon-hammer2:before
+.el-icon-form-hammer2:before
   content: "\e9a8"
 
-.icon-fire:before
+.el-icon-form-fire:before
   content: "\e9a9"
 
-.icon-lab:before
+.el-icon-form-lab:before
   content: "\e9aa"
 
-.icon-magnet:before
+.el-icon-form-magnet:before
   content: "\e9ab"
 
-.icon-bin:before
+.el-icon-form-bin:before
   content: "\e9ac"
 
-.icon-bin2:before
+.el-icon-form-bin2:before
   content: "\e9ad"
 
-.icon-briefcase:before
+.el-icon-form-briefcase:before
   content: "\e9ae"
 
-.icon-airplane:before
+.el-icon-form-airplane:before
   content: "\e9af"
 
-.icon-truck:before
+.el-icon-form-truck:before
   content: "\e9b0"
 
-.icon-road:before
+.el-icon-form-road:before
   content: "\e9b1"
 
-.icon-accessibility:before
+.el-icon-form-accessibility:before
   content: "\e9b2"
 
-.icon-target:before
+.el-icon-form-target:before
   content: "\e9b3"
 
-.icon-shield:before
+.el-icon-form-shield:before
   content: "\e9b4"
 
-.icon-power:before
+.el-icon-form-power:before
   content: "\e9b5"
 
-.icon-switch:before
+.el-icon-form-switch:before
   content: "\e9b6"
 
-.icon-power-cord:before
+.el-icon-form-power-cord:before
   content: "\e9b7"
 
-.icon-clipboard:before
+.el-icon-form-clipboard:before
   content: "\e9b8"
 
-.icon-list-numbered:before
+.el-icon-form-list-numbered:before
   content: "\e9b9"
 
-.icon-list:before
+.el-icon-form-list:before
   content: "\e9ba"
 
-.icon-list2:before
+.el-icon-form-list2:before
   content: "\e9bb"
 
-.icon-tree:before
+.el-icon-form-tree:before
   content: "\e9bc"
 
-.icon-menu:before
+.el-icon-form-menu:before
   content: "\e9bd"
 
-.icon-menu2:before
+.el-icon-form-menu2:before
   content: "\e9be"
 
-.icon-menu3:before
+.el-icon-form-menu3:before
   content: "\e9bf"
 
-.icon-menu4:before
+.el-icon-form-menu4:before
   content: "\e9c0"
 
-.icon-cloud:before
+.el-icon-form-cloud:before
   content: "\e9c1"
 
-.icon-cloud-download:before
+.el-icon-form-cloud-download:before
   content: "\e9c2"
 
-.icon-cloud-upload:before
+.el-icon-form-cloud-upload:before
   content: "\e9c3"
 
-.icon-cloud-check:before
+.el-icon-form-cloud-check:before
   content: "\e9c4"
 
-.icon-download2:before
+.el-icon-form-download2:before
   content: "\e9c5"
 
-.icon-upload2:before
+.el-icon-form-upload2:before
   content: "\e9c6"
 
-.icon-download3:before
+.el-icon-form-download3:before
   content: "\e9c7"
 
-.icon-upload3:before
+.el-icon-form-upload3:before
   content: "\e9c8"
 
-.icon-sphere:before
+.el-icon-form-sphere:before
   content: "\e9c9"
 
-.icon-earth:before
+.el-icon-form-earth:before
   content: "\e9ca"
 
-.icon-link:before
+.el-icon-form-link:before
   content: "\e9cb"
 
-.icon-flag:before
+.el-icon-form-flag:before
   content: "\e9cc"
 
-.icon-attachment:before
+.el-icon-form-attachment:before
   content: "\e9cd"
 
-.icon-eye:before
+.el-icon-form-eye:before
   content: "\e9ce"
 
-.icon-eye-plus:before
+.el-icon-form-eye-plus:before
   content: "\e9cf"
 
-.icon-eye-minus:before
+.el-icon-form-eye-minus:before
   content: "\e9d0"
 
-.icon-eye-blocked:before
+.el-icon-form-eye-blocked:before
   content: "\e9d1"
 
-.icon-bookmark:before
+.el-icon-form-bookmark:before
   content: "\e9d2"
 
-.icon-bookmarks:before
+.el-icon-form-bookmarks:before
   content: "\e9d3"
 
-.icon-sun:before
+.el-icon-form-sun:before
   content: "\e9d4"
 
-.icon-contrast:before
+.el-icon-form-contrast:before
   content: "\e9d5"
 
-.icon-brightness-contrast:before
+.el-icon-form-brightness-contrast:before
   content: "\e9d6"
 
-.icon-star-empty:before
+.el-icon-form-star-empty:before
   content: "\e9d7"
 
-.icon-star-half:before
+.el-icon-form-star-half:before
   content: "\e9d8"
 
-.icon-star-full:before
+.el-icon-form-star-full:before
   content: "\e9d9"
 
-.icon-heart:before
+.el-icon-form-heart:before
   content: "\e9da"
 
-.icon-heart-broken:before
+.el-icon-form-heart-broken:before
   content: "\e9db"
 
-.icon-man:before
+.el-icon-form-man:before
   content: "\e9dc"
 
-.icon-woman:before
+.el-icon-form-woman:before
   content: "\e9dd"
 
-.icon-man-woman:before
+.el-icon-form-man-woman:before
   content: "\e9de"
 
-.icon-happy:before
+.el-icon-form-happy:before
   content: "\e9df"
 
-.icon-happy2:before
+.el-icon-form-happy2:before
   content: "\e9e0"
 
-.icon-smile:before
+.el-icon-form-smile:before
   content: "\e9e1"
 
-.icon-smile2:before
+.el-icon-form-smile2:before
   content: "\e9e2"
 
-.icon-tongue:before
+.el-icon-form-tongue:before
   content: "\e9e3"
 
-.icon-tongue2:before
+.el-icon-form-tongue2:before
   content: "\e9e4"
 
-.icon-sad:before
+.el-icon-form-sad:before
   content: "\e9e5"
 
-.icon-sad2:before
+.el-icon-form-sad2:before
   content: "\e9e6"
 
-.icon-wink:before
+.el-icon-form-wink:before
   content: "\e9e7"
 
-.icon-wink2:before
+.el-icon-form-wink2:before
   content: "\e9e8"
 
-.icon-grin:before
+.el-icon-form-grin:before
   content: "\e9e9"
 
-.icon-grin2:before
+.el-icon-form-grin2:before
   content: "\e9ea"
 
-.icon-cool:before
+.el-icon-form-cool:before
   content: "\e9eb"
 
-.icon-cool2:before
+.el-icon-form-cool2:before
   content: "\e9ec"
 
-.icon-angry:before
+.el-icon-form-angry:before
   content: "\e9ed"
 
-.icon-angry2:before
+.el-icon-form-angry2:before
   content: "\e9ee"
 
-.icon-evil:before
+.el-icon-form-evil:before
   content: "\e9ef"
 
-.icon-evil2:before
+.el-icon-form-evil2:before
   content: "\e9f0"
 
-.icon-shocked:before
+.el-icon-form-shocked:before
   content: "\e9f1"
 
-.icon-shocked2:before
+.el-icon-form-shocked2:before
   content: "\e9f2"
 
-.icon-baffled:before
+.el-icon-form-baffled:before
   content: "\e9f3"
 
-.icon-baffled2:before
+.el-icon-form-baffled2:before
   content: "\e9f4"
 
-.icon-confused:before
+.el-icon-form-confused:before
   content: "\e9f5"
 
-.icon-confused2:before
+.el-icon-form-confused2:before
   content: "\e9f6"
 
-.icon-neutral:before
+.el-icon-form-neutral:before
   content: "\e9f7"
 
-.icon-neutral2:before
+.el-icon-form-neutral2:before
   content: "\e9f8"
 
-.icon-hipster:before
+.el-icon-form-hipster:before
   content: "\e9f9"
 
-.icon-hipster2:before
+.el-icon-form-hipster2:before
   content: "\e9fa"
 
-.icon-wondering:before
+.el-icon-form-wondering:before
   content: "\e9fb"
 
-.icon-wondering2:before
+.el-icon-form-wondering2:before
   content: "\e9fc"
 
-.icon-sleepy:before
+.el-icon-form-sleepy:before
   content: "\e9fd"
 
-.icon-sleepy2:before
+.el-icon-form-sleepy2:before
   content: "\e9fe"
 
-.icon-frustrated:before
+.el-icon-form-frustrated:before
   content: "\e9ff"
 
-.icon-frustrated2:before
+.el-icon-form-frustrated2:before
   content: "\ea00"
 
-.icon-crying:before
+.el-icon-form-crying:before
   content: "\ea01"
 
-.icon-crying2:before
+.el-icon-form-crying2:before
   content: "\ea02"
 
-.icon-point-up:before
+.el-icon-form-point-up:before
   content: "\ea03"
 
-.icon-point-right:before
+.el-icon-form-point-right:before
   content: "\ea04"
 
-.icon-point-down:before
+.el-icon-form-point-down:before
   content: "\ea05"
 
-.icon-point-left:before
+.el-icon-form-point-left:before
   content: "\ea06"
 
-.icon-warning:before
+.el-icon-form-warning:before
   content: "\ea07"
 
-.icon-notification:before
+.el-icon-form-notification:before
   content: "\ea08"
 
-.icon-question:before
+.el-icon-form-question:before
   content: "\ea09"
 
-.icon-plus:before
+.el-icon-form-plus:before
   content: "\ea0a"
 
-.icon-minus:before
+.el-icon-form-minus:before
   content: "\ea0b"
 
-.icon-info:before
+.el-icon-form-info:before
   content: "\ea0c"
 
-.icon-cancel-circle:before
+.el-icon-form-cancel-circle:before
   content: "\ea0d"
 
-.icon-blocked:before
+.el-icon-form-blocked:before
   content: "\ea0e"
 
-.icon-cross:before
+.el-icon-form-cross:before
   content: "\ea0f"
 
-.icon-checkmark:before
+.el-icon-form-checkmark:before
   content: "\ea10"
 
-.icon-checkmark2:before
+.el-icon-form-checkmark2:before
   content: "\ea11"
 
-.icon-spell-check:before
+.el-icon-form-spell-check:before
   content: "\ea12"
 
-.icon-enter:before
+.el-icon-form-enter:before
   content: "\ea13"
 
-.icon-exit:before
+.el-icon-form-exit:before
   content: "\ea14"
 
-.icon-play2:before
+.el-icon-form-play2:before
   content: "\ea15"
 
-.icon-pause:before
+.el-icon-form-pause:before
   content: "\ea16"
 
-.icon-stop:before
+.el-icon-form-stop:before
   content: "\ea17"
 
-.icon-previous:before
+.el-icon-form-previous:before
   content: "\ea18"
 
-.icon-next:before
+.el-icon-form-next:before
   content: "\ea19"
 
-.icon-backward:before
+.el-icon-form-backward:before
   content: "\ea1a"
 
-.icon-forward2:before
+.el-icon-form-forward2:before
   content: "\ea1b"
 
-.icon-play3:before
+.el-icon-form-play3:before
   content: "\ea1c"
 
-.icon-pause2:before
+.el-icon-form-pause2:before
   content: "\ea1d"
 
-.icon-stop2:before
+.el-icon-form-stop2:before
   content: "\ea1e"
 
-.icon-backward2:before
+.el-icon-form-backward2:before
   content: "\ea1f"
 
-.icon-forward3:before
+.el-icon-form-forward3:before
   content: "\ea20"
 
-.icon-first:before
+.el-icon-form-first:before
   content: "\ea21"
 
-.icon-last:before
+.el-icon-form-last:before
   content: "\ea22"
 
-.icon-previous2:before
+.el-icon-form-previous2:before
   content: "\ea23"
 
-.icon-next2:before
+.el-icon-form-next2:before
   content: "\ea24"
 
-.icon-eject:before
+.el-icon-form-eject:before
   content: "\ea25"
 
-.icon-volume-high:before
+.el-icon-form-volume-high:before
   content: "\ea26"
 
-.icon-volume-medium:before
+.el-icon-form-volume-medium:before
   content: "\ea27"
 
-.icon-volume-low:before
+.el-icon-form-volume-low:before
   content: "\ea28"
 
-.icon-volume-mute:before
+.el-icon-form-volume-mute:before
   content: "\ea29"
 
-.icon-volume-mute2:before
+.el-icon-form-volume-mute2:before
   content: "\ea2a"
 
-.icon-volume-increase:before
+.el-icon-form-volume-increase:before
   content: "\ea2b"
 
-.icon-volume-decrease:before
+.el-icon-form-volume-decrease:before
   content: "\ea2c"
 
-.icon-loop:before
+.el-icon-form-loop:before
   content: "\ea2d"
 
-.icon-loop2:before
+.el-icon-form-loop2:before
   content: "\ea2e"
 
-.icon-infinite:before
+.el-icon-form-infinite:before
   content: "\ea2f"
 
-.icon-shuffle:before
+.el-icon-form-shuffle:before
   content: "\ea30"
 
-.icon-arrow-up-left:before
+.el-icon-form-arrow-up-left:before
   content: "\ea31"
 
-.icon-arrow-up:before
+.el-icon-form-arrow-up:before
   content: "\ea32"
 
-.icon-arrow-up-right:before
+.el-icon-form-arrow-up-right:before
   content: "\ea33"
 
-.icon-arrow-right:before
+.el-icon-form-arrow-right:before
   content: "\ea34"
 
-.icon-arrow-down-right:before
+.el-icon-form-arrow-down-right:before
   content: "\ea35"
 
-.icon-arrow-down:before
+.el-icon-form-arrow-down:before
   content: "\ea36"
 
-.icon-arrow-down-left:before
+.el-icon-form-arrow-down-left:before
   content: "\ea37"
 
-.icon-arrow-left:before
+.el-icon-form-arrow-left:before
   content: "\ea38"
 
-.icon-arrow-up-left2:before
+.el-icon-form-arrow-up-left2:before
   content: "\ea39"
 
-.icon-arrow-up2:before
+.el-icon-form-arrow-up2:before
   content: "\ea3a"
 
-.icon-arrow-up-right2:before
+.el-icon-form-arrow-up-right2:before
   content: "\ea3b"
 
-.icon-arrow-right2:before
+.el-icon-form-arrow-right2:before
   content: "\ea3c"
 
-.icon-arrow-down-right2:before
+.el-icon-form-arrow-down-right2:before
   content: "\ea3d"
 
-.icon-arrow-down2:before
+.el-icon-form-arrow-down2:before
   content: "\ea3e"
 
-.icon-arrow-down-left2:before
+.el-icon-form-arrow-down-left2:before
   content: "\ea3f"
 
-.icon-arrow-left2:before
+.el-icon-form-arrow-left2:before
   content: "\ea40"
 
-.icon-circle-up:before
+.el-icon-form-circle-up:before
   content: "\ea41"
 
-.icon-circle-right:before
+.el-icon-form-circle-right:before
   content: "\ea42"
 
-.icon-circle-down:before
+.el-icon-form-circle-down:before
   content: "\ea43"
 
-.icon-circle-left:before
+.el-icon-form-circle-left:before
   content: "\ea44"
 
-.icon-tab:before
+.el-icon-form-tab:before
   content: "\ea45"
 
-.icon-move-up:before
+.el-icon-form-move-up:before
   content: "\ea46"
 
-.icon-move-down:before
+.el-icon-form-move-down:before
   content: "\ea47"
 
-.icon-sort-alpha-asc:before
+.el-icon-form-sort-alpha-asc:before
   content: "\ea48"
 
-.icon-sort-alpha-desc:before
+.el-icon-form-sort-alpha-desc:before
   content: "\ea49"
 
-.icon-sort-numeric-asc:before
+.el-icon-form-sort-numeric-asc:before
   content: "\ea4a"
 
-.icon-sort-numberic-desc:before
+.el-icon-form-sort-numberic-desc:before
   content: "\ea4b"
 
-.icon-sort-amount-asc:before
+.el-icon-form-sort-amount-asc:before
   content: "\ea4c"
 
-.icon-sort-amount-desc:before
+.el-icon-form-sort-amount-desc:before
   content: "\ea4d"
 
-.icon-command:before
+.el-icon-form-command:before
   content: "\ea4e"
 
-.icon-shift:before
+.el-icon-form-shift:before
   content: "\ea4f"
 
-.icon-ctrl:before
+.el-icon-form-ctrl:before
   content: "\ea50"
 
-.icon-opt:before
+.el-icon-form-opt:before
   content: "\ea51"
 
-.icon-checkbox-checked:before
+.el-icon-form-checkbox-checked:before
   content: "\ea52"
 
-.icon-checkbox-unchecked:before
+.el-icon-form-checkbox-unchecked:before
   content: "\ea53"
 
-.icon-radio-checked:before
+.el-icon-form-radio-checked:before
   content: "\ea54"
 
-.icon-radio-checked2:before
+.el-icon-form-radio-checked2:before
   content: "\ea55"
 
-.icon-radio-unchecked:before
+.el-icon-form-radio-unchecked:before
   content: "\ea56"
 
-.icon-crop:before
+.el-icon-form-crop:before
   content: "\ea57"
 
-.icon-make-group:before
+.el-icon-form-make-group:before
   content: "\ea58"
 
-.icon-ungroup:before
+.el-icon-form-ungroup:before
   content: "\ea59"
 
-.icon-scissors:before
+.el-icon-form-scissors:before
   content: "\ea5a"
 
-.icon-filter:before
+.el-icon-form-filter:before
   content: "\ea5b"
 
-.icon-font:before
+.el-icon-form-font:before
   content: "\ea5c"
 
-.icon-ligature:before
+.el-icon-form-ligature:before
   content: "\ea5d"
 
-.icon-ligature2:before
+.el-icon-form-ligature2:before
   content: "\ea5e"
 
-.icon-text-height:before
+.el-icon-form-text-height:before
   content: "\ea5f"
 
-.icon-text-width:before
+.el-icon-form-text-width:before
   content: "\ea60"
 
-.icon-font-size:before
+.el-icon-form-font-size:before
   content: "\ea61"
 
-.icon-bold:before
+.el-icon-form-bold:before
   content: "\ea62"
 
-.icon-underline:before
+.el-icon-form-underline:before
   content: "\ea63"
 
-.icon-italic:before
+.el-icon-form-italic:before
   content: "\ea64"
 
-.icon-strikethrough:before
+.el-icon-form-strikethrough:before
   content: "\ea65"
 
-.icon-omega:before
+.el-icon-form-omega:before
   content: "\ea66"
 
-.icon-sigma:before
+.el-icon-form-sigma:before
   content: "\ea67"
 
-.icon-page-break:before
+.el-icon-form-page-break:before
   content: "\ea68"
 
-.icon-superscript:before
+.el-icon-form-superscript:before
   content: "\ea69"
 
-.icon-subscript:before
+.el-icon-form-subscript:before
   content: "\ea6a"
 
-.icon-superscript2:before
+.el-icon-form-superscript2:before
   content: "\ea6b"
 
-.icon-subscript2:before
+.el-icon-form-subscript2:before
   content: "\ea6c"
 
-.icon-text-color:before
+.el-icon-form-text-color:before
   content: "\ea6d"
 
-.icon-pagebreak:before
+.el-icon-form-pagebreak:before
   content: "\ea6e"
 
-.icon-clear-formatting:before
+.el-icon-form-clear-formatting:before
   content: "\ea6f"
 
-.icon-table:before
+.el-icon-form-table:before
   content: "\ea70"
 
-.icon-table2:before
+.el-icon-form-table2:before
   content: "\ea71"
 
-.icon-insert-template:before
+.el-icon-form-insert-template:before
   content: "\ea72"
 
-.icon-pilcrow:before
+.el-icon-form-pilcrow:before
   content: "\ea73"
 
-.icon-ltr:before
+.el-icon-form-ltr:before
   content: "\ea74"
 
-.icon-rtl:before
+.el-icon-form-rtl:before
   content: "\ea75"
 
-.icon-section:before
+.el-icon-form-section:before
   content: "\ea76"
 
-.icon-paragraph-left:before
+.el-icon-form-paragraph-left:before
   content: "\ea77"
 
-.icon-paragraph-center:before
+.el-icon-form-paragraph-center:before
   content: "\ea78"
 
-.icon-paragraph-right:before
+.el-icon-form-paragraph-right:before
   content: "\ea79"
 
-.icon-paragraph-justify:before
+.el-icon-form-paragraph-justify:before
   content: "\ea7a"
 
-.icon-indent-increase:before
+.el-icon-form-indent-increase:before
   content: "\ea7b"
 
-.icon-indent-decrease:before
+.el-icon-form-indent-decrease:before
   content: "\ea7c"
 
-.icon-share:before
+.el-icon-form-share:before
   content: "\ea7d"
 
-.icon-new-tab:before
+.el-icon-form-new-tab:before
   content: "\ea7e"
 
-.icon-embed:before
+.el-icon-form-embed:before
   content: "\ea7f"
 
-.icon-embed2:before
+.el-icon-form-embed2:before
   content: "\ea80"
 
-.icon-terminal:before
+.el-icon-form-terminal:before
   content: "\ea81"
 
-.icon-share2:before
+.el-icon-form-share2:before
   content: "\ea82"
 
-.icon-mail:before
+.el-icon-form-mail:before
   content: "\ea83"
 
-.icon-mail2:before
+.el-icon-form-mail2:before
   content: "\ea84"
 
-.icon-mail3:before
+.el-icon-form-mail3:before
   content: "\ea85"
 
-.icon-mail4:before
+.el-icon-form-mail4:before
   content: "\ea86"
 
-.icon-amazon:before
+.el-icon-form-amazon:before
   content: "\ea87"
 
-.icon-google:before
+.el-icon-form-google:before
   content: "\ea88"
 
-.icon-google2:before
+.el-icon-form-google2:before
   content: "\ea89"
 
-.icon-google3:before
+.el-icon-form-google3:before
   content: "\ea8a"
 
-.icon-google-plus:before
+.el-icon-form-google-plus:before
   content: "\ea8b"
 
-.icon-google-plus2:before
+.el-icon-form-google-plus2:before
   content: "\ea8c"
 
-.icon-google-plus3:before
+.el-icon-form-google-plus3:before
   content: "\ea8d"
 
-.icon-hangouts:before
+.el-icon-form-hangouts:before
   content: "\ea8e"
 
-.icon-google-drive:before
+.el-icon-form-google-drive:before
   content: "\ea8f"
 
-.icon-facebook:before
+.el-icon-form-facebook:before
   content: "\ea90"
 
-.icon-facebook2:before
+.el-icon-form-facebook2:before
   content: "\ea91"
 
-.icon-instagram:before
+.el-icon-form-instagram:before
   content: "\ea92"
 
-.icon-whatsapp:before
+.el-icon-form-whatsapp:before
   content: "\ea93"
 
-.icon-spotify:before
+.el-icon-form-spotify:before
   content: "\ea94"
 
-.icon-telegram:before
+.el-icon-form-telegram:before
   content: "\ea95"
 
-.icon-twitter:before
+.el-icon-form-twitter:before
   content: "\ea96"
 
-.icon-vine:before
+.el-icon-form-vine:before
   content: "\ea97"
 
-.icon-vk:before
+.el-icon-form-vk:before
   content: "\ea98"
 
-.icon-renren:before
+.el-icon-form-renren:before
   content: "\ea99"
 
-.icon-sina-weibo:before
+.el-icon-form-sina-weibo:before
   content: "\ea9a"
 
-.icon-rss:before
+.el-icon-form-rss:before
   content: "\ea9b"
 
-.icon-rss2:before
+.el-icon-form-rss2:before
   content: "\ea9c"
 
-.icon-youtube:before
+.el-icon-form-youtube:before
   content: "\ea9d"
 
-.icon-youtube2:before
+.el-icon-form-youtube2:before
   content: "\ea9e"
 
-.icon-twitch:before
+.el-icon-form-twitch:before
   content: "\ea9f"
 
-.icon-vimeo:before
+.el-icon-form-vimeo:before
   content: "\eaa0"
 
-.icon-vimeo2:before
+.el-icon-form-vimeo2:before
   content: "\eaa1"
 
-.icon-lanyrd:before
+.el-icon-form-lanyrd:before
   content: "\eaa2"
 
-.icon-flickr:before
+.el-icon-form-flickr:before
   content: "\eaa3"
 
-.icon-flickr2:before
+.el-icon-form-flickr2:before
   content: "\eaa4"
 
-.icon-flickr3:before
+.el-icon-form-flickr3:before
   content: "\eaa5"
 
-.icon-flickr4:before
+.el-icon-form-flickr4:before
   content: "\eaa6"
 
-.icon-dribbble:before
+.el-icon-form-dribbble:before
   content: "\eaa7"
 
-.icon-behance:before
+.el-icon-form-behance:before
   content: "\eaa8"
 
-.icon-behance2:before
+.el-icon-form-behance2:before
   content: "\eaa9"
 
-.icon-deviantart:before
+.el-icon-form-deviantart:before
   content: "\eaaa"
 
-.icon-500px:before
+.el-icon-form-500px:before
   content: "\eaab"
 
-.icon-steam:before
+.el-icon-form-steam:before
   content: "\eaac"
 
-.icon-steam2:before
+.el-icon-form-steam2:before
   content: "\eaad"
 
-.icon-dropbox:before
+.el-icon-form-dropbox:before
   content: "\eaae"
 
-.icon-onedrive:before
+.el-icon-form-onedrive:before
   content: "\eaaf"
 
-.icon-github:before
+.el-icon-form-github:before
   content: "\eab0"
 
-.icon-npm:before
+.el-icon-form-npm:before
   content: "\eab1"
 
-.icon-basecamp:before
+.el-icon-form-basecamp:before
   content: "\eab2"
 
-.icon-trello:before
+.el-icon-form-trello:before
   content: "\eab3"
 
-.icon-wordpress:before
+.el-icon-form-wordpress:before
   content: "\eab4"
 
-.icon-joomla:before
+.el-icon-form-joomla:before
   content: "\eab5"
 
-.icon-ello:before
+.el-icon-form-ello:before
   content: "\eab6"
 
-.icon-blogger:before
+.el-icon-form-blogger:before
   content: "\eab7"
 
-.icon-blogger2:before
+.el-icon-form-blogger2:before
   content: "\eab8"
 
-.icon-tumblr:before
+.el-icon-form-tumblr:before
   content: "\eab9"
 
-.icon-tumblr2:before
+.el-icon-form-tumblr2:before
   content: "\eaba"
 
-.icon-yahoo:before
+.el-icon-form-yahoo:before
   content: "\eabb"
 
-.icon-yahoo2:before
+.el-icon-form-yahoo2:before
   content: "\eabc"
 
-.icon-tux:before
+.el-icon-form-tux:before
   content: "\eabd"
 
-.icon-appleinc:before
+.el-icon-form-appleinc:before
   content: "\eabe"
 
-.icon-finder:before
+.el-icon-form-finder:before
   content: "\eabf"
 
-.icon-android:before
+.el-icon-form-android:before
   content: "\eac0"
 
-.icon-windows:before
+.el-icon-form-windows:before
   content: "\eac1"
 
-.icon-windows8:before
+.el-icon-form-windows8:before
   content: "\eac2"
 
-.icon-soundcloud:before
+.el-icon-form-soundcloud:before
   content: "\eac3"
 
-.icon-soundcloud2:before
+.el-icon-form-soundcloud2:before
   content: "\eac4"
 
-.icon-skype:before
+.el-icon-form-skype:before
   content: "\eac5"
 
-.icon-reddit:before
+.el-icon-form-reddit:before
   content: "\eac6"
 
-.icon-hackernews:before
+.el-icon-form-hackernews:before
   content: "\eac7"
 
-.icon-wikipedia:before
+.el-icon-form-wikipedia:before
   content: "\eac8"
 
-.icon-linkedin:before
+.el-icon-form-linkedin:before
   content: "\eac9"
 
-.icon-linkedin2:before
+.el-icon-form-linkedin2:before
   content: "\eaca"
 
-.icon-lastfm:before
+.el-icon-form-lastfm:before
   content: "\eacb"
 
-.icon-lastfm2:before
+.el-icon-form-lastfm2:before
   content: "\eacc"
 
-.icon-delicious:before
+.el-icon-form-delicious:before
   content: "\eacd"
 
-.icon-stumbleupon:before
+.el-icon-form-stumbleupon:before
   content: "\eace"
 
-.icon-stumbleupon2:before
+.el-icon-form-stumbleupon2:before
   content: "\eacf"
 
-.icon-stackoverflow:before
+.el-icon-form-stackoverflow:before
   content: "\ead0"
 
-.icon-pinterest:before
+.el-icon-form-pinterest:before
   content: "\ead1"
 
-.icon-pinterest2:before
+.el-icon-form-pinterest2:before
   content: "\ead2"
 
-.icon-xing:before
+.el-icon-form-xing:before
   content: "\ead3"
 
-.icon-xing2:before
+.el-icon-form-xing2:before
   content: "\ead4"
 
-.icon-flattr:before
+.el-icon-form-flattr:before
   content: "\ead5"
 
-.icon-foursquare:before
+.el-icon-form-foursquare:before
   content: "\ead6"
 
-.icon-yelp:before
+.el-icon-form-yelp:before
   content: "\ead7"
 
-.icon-paypal:before
+.el-icon-form-paypal:before
   content: "\ead8"
 
-.icon-chrome:before
+.el-icon-form-chrome:before
   content: "\ead9"
 
-.icon-firefox:before
+.el-icon-form-firefox:before
   content: "\eada"
 
-.icon-IE:before
+.el-icon-form-IE:before
   content: "\eadb"
 
-.icon-edge:before
+.el-icon-form-edge:before
   content: "\eadc"
 
-.icon-safari:before
+.el-icon-form-safari:before
   content: "\eadd"
 
-.icon-opera:before
+.el-icon-form-opera:before
   content: "\eade"
 
-.icon-file-pdf:before
+.el-icon-form-file-pdf:before
   content: "\eadf"
 
-.icon-file-openoffice:before
+.el-icon-form-file-openoffice:before
   content: "\eae0"
 
-.icon-file-word:before
+.el-icon-form-file-word:before
   content: "\eae1"
 
-.icon-file-excel:before
+.el-icon-form-file-excel:before
   content: "\eae2"
 
-.icon-libreoffice:before
+.el-icon-form-libreoffice:before
   content: "\eae3"
 
-.icon-html-five:before
+.el-icon-form-html-five:before
   content: "\eae4"
 
-.icon-html-five2:before
+.el-icon-form-html-five2:before
   content: "\eae5"
 
-.icon-css3:before
+.el-icon-form-css3:before
   content: "\eae6"
 
-.icon-git:before
+.el-icon-form-git:before
   content: "\eae7"
 
-.icon-codepen:before
+.el-icon-form-codepen:before
   content: "\eae8"
 
-.icon-svg:before
+.el-icon-form-svg:before
   content: "\eae9"
 
-.icon-IcoMoon:before
+.el-icon-form-IcoMoon:before
   content: "\eaea"
 

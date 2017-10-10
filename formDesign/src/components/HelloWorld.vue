@@ -67,12 +67,11 @@
     },
     created () {
       this.loadAllControls()
+      // console.error(this.I)
     },
     mounted () {},
     watch: {
-      list (newValue, oldValue) {
-        console.error(newValue)
-      }
+      list (val, oldVal) {}
     },
     methods: {
       destroyDom () {
