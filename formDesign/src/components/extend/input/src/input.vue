@@ -65,9 +65,9 @@
   </div>
 </template>
 <script>
-  import emitter from 'element-ui/src/mixins/emitter'
+  import emitter from '@/components/extend/emitter'
   import calcTextareaHeight from './calcTextareaHeight'
-  import merge from 'element-ui/src/utils/merge'
+  import merge from '@/components/extend/merge'
 
   export default {
     name: 'ExtendInput',

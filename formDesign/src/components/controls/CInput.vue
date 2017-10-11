@@ -138,7 +138,7 @@
             description: '', // 描述
             placeholder: '请输入默认值或者为空', // 控件提示值
             height: '', // 高度
-            vertical: ['top', 'middle', 'bottom'] // 对齐方式,
+            vertical: ['top', 'middle', 'bottom'] // 对齐方式
           },
           CKey: { // 控件值
             default: '', // 默认值

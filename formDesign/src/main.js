@@ -11,9 +11,9 @@ import _ from 'lodash'
 import 'element-ui/lib/theme-default/index.css'
 import CPackage from '@/components/controls'
 import ExPackage from '@/components/extend'
-import '@/assets/fonts/icon.styl'
-import FontLibrary from '@/assets/js/FontLibrary'
-import Validate from '@/assets/js/validateReg'
+import 'assets/fonts/icon.styl'
+import FontLibrary from 'assets/js/FontLibrary'
+import Validate from 'assets/js/validateReg'
 
 CPackage.install() // 安装所有 工具
 ExPackage.install() // 扩展组件 安装
