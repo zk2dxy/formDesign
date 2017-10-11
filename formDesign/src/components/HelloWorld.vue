@@ -111,7 +111,7 @@
         this.destroyDom()
       },
       changeView (config) {
-        console.error(config)
+        // console.error(config)
       }
     },
     computed: {}

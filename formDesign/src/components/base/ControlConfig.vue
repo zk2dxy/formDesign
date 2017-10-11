@@ -13,7 +13,6 @@
         </div>
         <div v-else-if="index === 'CAttribute'">
           <!--{{item}}-->
-          {{config.CAttribute.typeModel}}
           <div v-for="(itemIn,indexIn) in item">
             <div v-if="indexIn === 'type'">
               <p>控件类型</p>
@@ -97,19 +96,12 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import ElRadioGroup from '../../../node_modules/element-ui/packages/radio/src/radio-group.vue'
-  import ElRadio from '../../../node_modules/element-ui/packages/radio/src/radio.vue'
-
   export default {
-    components: {
-      ElRadio,
-      ElRadioGroup
-    },
     name: 'ControlConfig',
     props: ['config'],
     methods: {
       changeConfig () {
-        console.info(this.config)
+        // console.info(this.config)
         this.$emit('changeConfig', this.config)
       },
       chooseIcon (item) {
