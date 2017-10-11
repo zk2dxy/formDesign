@@ -13,6 +13,7 @@ import CPackage from '@/components/controls'
 import ExPackage from '@/components/extend'
 import '@/assets/fonts/icon.styl'
 import FontLibrary from '@/assets/js/FontLibrary'
+import Validate from '@/assets/js/validateReg'
 
 CPackage.install() // 安装所有 工具
 ExPackage.install() // 扩展组件 安装
@@ -21,6 +22,7 @@ Vue.prototype.ApiUtils = ApiUtils // 拓展 axios
 Vue.prototype.AppUtils = AppUtils // 拓展 element-ui 提示组件
 Vue.prototype.Utils = Utils // lodash&moment 工具函数
 Vue.prototype.I = FontLibrary // 图标库
+Vue.prototype.VALIDATE = Validate // 验证库
 
 Vue.prototype.API = API // 表单接口
 Vue.prototype.L = _ // 拓展全局lodash 方法

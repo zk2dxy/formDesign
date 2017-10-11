@@ -43,7 +43,7 @@
     },
     methods: {
       handleClose () {
-        // this.$emit('postIcon', this.chooseRes)
+        this.$emit('postIcon', this.chooseRes)
       },
       choose (item) {
         this.chooseRes = ''
@@ -63,7 +63,7 @@
         if (status) {
           if (this.chooseRes === '') {
             this.$message({
-              message: '请选择一个图标，再点击确定。',
+              message: '请选择一个图标。',
               type: 'warning'
             })
             return false

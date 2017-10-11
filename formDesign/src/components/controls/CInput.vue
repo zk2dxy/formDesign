@@ -7,8 +7,6 @@
       <extend-input
         @focus="focusAction()"
         @blur="blurAction()"
-        :maxlength="config.CValidate.maxLength"
-        :minlength="config.CValidate.minLength"
         :type="config.CAttribute.typeModel"
         :placeholder="config.CAttribute.placeholder"
         v-model="config.CKey.default"
@@ -28,8 +26,6 @@
       <extend-input
         @focus="focusAction()"
         @blur="blurAction()"
-        :maxlength="ControlConfig.CValidate.maxLength"
-        :minlength="ControlConfig.CValidate.minLength"
         :type="ControlConfig.CAttribute.typeModel"
         :placeholder="ControlConfig.CAttribute.placeholder"
         v-model="ControlConfig.CKey.default"
@@ -46,7 +42,7 @@
 </template>
 <script type="text/ecmascript-6">
   // 控件配置、表单配置、数据来源配置
-  //    props: ['ControlConfig', 'FormConfig', 'OriginDataConfig', 'value'],
+  // props: ['ControlConfig', 'FormConfig', 'OriginDataConfig', 'value'],
   export default {
     name: `CInput`,
     props: {
@@ -65,7 +61,8 @@
       }
     },
     mounted () {
-      this.$emit(`input`, this.config)
+      // this.config.CValidate = this.VALIDATE
+      this.$emit('input', this.config)
       if (this.ControlID && (!this.config.ControlID)) {
         this.config.ControlID = this.ControlID
       }
@@ -100,11 +97,11 @@
     data () {
       return {
         initConfig: {
-          ControlID: '',
+          ControlID: '', // 表单生成后的控件id
           CBelong: 'form',
           CTitleCN: '输入框', // 标题
           CTitleEN: 'input Control', // 英文标题
-          CName: 'CInput',
+          CName: 'CInput', // 控件名称
           CLayout: { // 布局
             percentLayout: { // 百分比布局
               type: Number,
@@ -128,8 +125,8 @@
             }
           },
           CAttribute: {
-            prepend: '',
-            append: '',
+            prepend: '', // input 前置头
+            append: '', // input 追尾说明
             type: [{
               value: 'input',
               name: '文本框'
@@ -148,11 +145,6 @@
             type: '', // 控件值类型
             keyMethods: '' // 计算控件值方法
           },
-          CValidate: {
-            maxLength: 255, // 最大长度
-            minLength: 1, // 最小长度,
-            regexp: '' // 正则表达式
-          },
           Status: { // 状态
             status: false, // 是否应用状态
             rules: [
@@ -165,32 +157,38 @@
                 name: '隐藏'
               }
             ], // 控件规则集合
-            ruleList: []
+            ruleList: [] // 选择集合
           },
           Icon: {
-            status: false,
-            chooseStatus: false,
-            position: [{
+            status: false, // 是否启用icon
+            chooseStatus: false, // 是否启用CIcon控件去选择图标
+            position: [{ // 控件位置 (中文显示名称/英文属性名称)
               name: '左侧',
               value: 'left'
             }, {
               name: '右侧',
               value: 'right'
             }],
-            positionModel: '',
-            className: '',
-            content: '',
-            title: '',
-            library: ''
+            positionModel: '', // 绑定的图标位置
+            className: '', // 类名
+            content: '', // 图标content
+            title: '', // 图标标题
+            library: '' // 图标库
+          },
+          CValidate: {
+            status: false,
+            chooseStatus: false,
+            validateModel: ''
           },
           methodDB: [{
-            name: 'click',
-            action: '',
-            other: ''
+            name: '提交', // 中文名称（Example）
+            methodName: 'save', // 英文名称 (Example)
+            action: '/form/saveAction' // postAction(接口名称)
           }]
         },
         currentConfig: null,
-        config: null
+        config: null,
+        validate: ''
       }
     }
   }

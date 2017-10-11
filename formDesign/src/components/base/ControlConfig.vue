@@ -72,7 +72,7 @@
         <div v-else-if="index === 'Icon'">
           <!--{{item}}-->
           <div>
-            <el-checkbox @change="statusChange(item)" v-model="item.status" label="状态"></el-checkbox>
+            <el-checkbox @change="iconStatusChange(item)" v-model="item.status" label="状态"></el-checkbox>
           </div>
           <div v-if="item.status">
             <div>
@@ -87,6 +87,18 @@
                   {{radio.name}}
                 </el-radio>
               </el-radio-group>
+            </div>
+          </div>
+        </div>
+        <div v-else-if="index === 'CValidate'">
+          <!--{{item}}-->
+          <div>
+            <el-checkbox @change="validateStatusChange(item)" v-model="item.status" label="状态"></el-checkbox>
+          </div>
+          <div v-if="item.status">
+            <div>
+              <el-button @click="chooseValidate(item)" type="primary" size="small" icon="edit">选择验证规则</el-button>
+              <c-validate @postValidate="setValidate" v-if="item.chooseStatus"></c-validate>
             </div>
           </div>
         </div>
@@ -118,13 +130,29 @@
         }
         window.iconOBJ.chooseStatus = false
       },
-      statusChange (item) {
+      iconStatusChange (item) {
         if (!item.status) {
           item.className = ''
           item.content = ''
           item.title = ''
           item.library = ''
           this.config.CAttribute.positionModel = ''
+        }
+      },
+      chooseValidate (item) {
+        item.chooseStatus = !item.chooseStatus
+        window.validateOBJ = item
+      },
+      setValidate (chooseRes) {
+        console.error(chooseRes)
+        if (chooseRes !== '') {
+          window.validateOBJ.validateModel = chooseRes
+        }
+        window.validateOBJ.chooseStatus = false
+      },
+      validateStatusChange (item) {
+        if (!item.status) {
+          this.config.CValidate.validateModel = ''
         }
       }
     }
