@@ -59,9 +59,11 @@
       if (this.ControlConfig) {
         this.config = this.ControlConfig
       }
+      if (this.ControlID && (!this.config.ControlID)) {
+        this.config.ControlID = this.ControlID
+      }
     },
     mounted () {
-      // this.config.CValidate = this.VALIDATE
       this.config = this.initConfig
       if (this.ControlConfig) {
         this.config = this.ControlConfig

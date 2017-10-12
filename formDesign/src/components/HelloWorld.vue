@@ -13,6 +13,7 @@
             </el-button>
             <component
               class="opacity0 hidden"
+              :ControlID='controlItem.id'
               v-model="controlItem.config"
               :is="controlItem.component"
             >
@@ -34,7 +35,7 @@
             :ControlID='controlItem.id'
             :is="controlItem.component"
             v-model="controlItem.config"
-            @getValue="showAttribute"
+            @getValue="showAttribute($event,controlItem)"
             :children="controlItem.children"
           >
           </component>
@@ -43,8 +44,11 @@
       {{list}}
     </div>
     <div class="rightControlArea">
-      <control-config-pyy v-if="Config.CConfig" :config="Config.CConfig"
-                          @changeConfig="changeView"></control-config-pyy>
+      <control-config
+        v-if="Config.CConfig"
+        :config="Config.CConfig"
+        @changeConfig="changeView"
+      ></control-config>
     </div>
   </div>
 </template>
@@ -81,7 +85,8 @@
       },
       formClone (originData) {
         let newObj = this.L.cloneDeep(originData)
-        newObj.id = uuid.v4()
+        let _uuid = uuid.v4()
+        newObj.id = _uuid
         return newObj
       },
       loadAllControls () {
@@ -117,10 +122,9 @@
           }
         }
       },
-      showAttribute (config) {
-        this.Config.CConfig = config
-        console.error(config)
-        this.destroyDom()
+      showAttribute (data, item) {
+        item.config = data
+        this.Config.CConfig = data
       },
       changeView (config) {
         // console.error(config)

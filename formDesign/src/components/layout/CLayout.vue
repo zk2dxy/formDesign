@@ -1,6 +1,6 @@
 <template>
-  <div class="CLayout" @click.stop="commitLayoutConfig()">
-    <div class="layout" v-if="children.length > 0" v-for="(item,key) in children">
+  <div class="CLayout" @click="commitLayoutConfig()">
+    <div @click.stop class="layout" v-if="children.length > 0" v-for="(item,key) in children">
       <draggable
         class="dragBLOCK"
         v-model="children[key]"
@@ -13,11 +13,12 @@
             :is="controlItem.component"
             v-model="controlItem.config"
             @getValue="showAttribute($event,controlItem)"
+            :children="controlItem.children"
           >
           </component>
         </div>
       </draggable>
-      {{children}}
+      <!--{{children}}-->
     </div>
   </div>
 </template>
@@ -30,29 +31,58 @@
       draggable
     },
     props: {
-      children: Array
+      children: Array,
+      ControlConfig: {
+        type: Object
+      },
+      ControlID: {
+        type: String,
+        default: null
+      }
     },
     created () {
-      // console.error('CLayout Created')
+      this.config = this.initConfig
+      if (this.ControlConfig) {
+        this.config = this.ControlConfig
+      }
+      if (this.ControlID && (!this.config.ControlID)) {
+        this.config.ControlID = this.ControlID
+      }
+    },
+    mounted () {
+      this.config = this.initConfig
+      if (this.ControlConfig) {
+        this.config = this.ControlConfig
+      }
+      if (this.ControlID && (!this.config.ControlID)) {
+        this.config.ControlID = this.ControlID
+      }
+      this.$emit('input', this.config)
     },
     watch: {
       'children' (val) {
-        console.error(val)
+        // console.error(val)
       }
     },
     methods: {
       commitLayoutConfig () {
-        console.info(`commitLayoutConfig`)
+        this.$emit(`getValue`, this.config)
       },
       destroyDom () {},
       showAttribute (data, item) {
-        console.error('item.config=>')
-        console.error(item.config)
-        console.error('Layout config=>')
         console.error(data)
         item.config = data
-        this.destroyDom()
         this.$emit(`getValue`, data)
+      },
+      emitConfig () {
+        this.config = this.initConfig
+        if (this.ControlConfig) {
+          this.config = this.ControlConfig
+        }
+        if (this.ControlID && (!this.config.ControlID)) {
+          this.config.ControlID = this.ControlID
+        }
+        this.$emit(`getValue`, this.config)
       }
     },
     data () {
@@ -101,11 +131,9 @@
             validateModel: ''
           }
         },
-        Config: {
-          FConfig: '',
-          CConfig: ''
-        },
-        config: null
+        currentConfig: null,
+        config: null,
+        validate: ''
       }
     }
   }
@@ -113,11 +141,11 @@
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   @import "~assets/css/stylus/mixin"
   .dragBLOCK
-    background red
     > div
       margin-bottom 10px
 
   .CLayout
+    extend-click()
     display flex
     padding 11px 15px
     min-height 200px
@@ -125,9 +153,9 @@
 
   .layout
     flex 1
-    min-height 200px
+    min-height 100px
 
   .dragBLOCK
-    min-height 200px
+    min-height 100px
 
 </style>
