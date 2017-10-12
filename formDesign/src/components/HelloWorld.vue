@@ -3,7 +3,7 @@
     <div class="leftControlArea" v-if="ControlList!=null" v-for="container in ControlList">
       <draggable
         v-model="container.controls"
-        :options="{group:{name:'controls',pull:'clone', put: false},animation: 0,ghostClass: 'ghost-none'}"
+        :options="{group:{name:'controls',pull:'clone', put: false}, animation: 0, ghostClass: 'ghost-none', sort:false}"
         :clone="formClone"
       >
         <div class="item" v-if="container.controls" v-for="controlItem in container.controls">
@@ -35,6 +35,7 @@
             :is="controlItem.component"
             v-model="controlItem.config"
             @getValue="showAttribute"
+            :children="controlItem.children"
           >
           </component>
         </div>
@@ -42,7 +43,8 @@
       {{list}}
     </div>
     <div class="rightControlArea">
-      <control-config-pyy v-if="Config.CConfig" :config="Config.CConfig" @changeConfig="changeView"></control-config-pyy>
+      <control-config-pyy v-if="Config.CConfig" :config="Config.CConfig"
+                          @changeConfig="changeView"></control-config-pyy>
     </div>
   </div>
 </template>
@@ -101,6 +103,15 @@
                 type: 'input', // 类型
                 component: 'CInput',
                 config: '' // 控件配置,
+              },
+              {
+                CNameCN: '布局控件',
+                CNameEN: 'layout',
+                parent: 'form', // 父级对象
+                type: 'layout', // 类型
+                component: 'CLayout',
+                config: '', // 控件配置
+                children: [[]]
               }
             ]
           }
@@ -108,6 +119,7 @@
       },
       showAttribute (config) {
         this.Config.CConfig = config
+        console.error(config)
         this.destroyDom()
       },
       changeView (config) {
@@ -119,6 +131,10 @@
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   @import "~assets/css/stylus/mixin"
+  .dragBLOCK
+    > div
+      margin-bottom 10px
+
   .HelloWorld
     > div
       float left
@@ -140,4 +156,7 @@
       margin-left 2.5%
     .draggable
       min-height 100px
+
+  .item
+    margin 20px 0
 </style>
