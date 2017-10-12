@@ -1,10 +1,10 @@
 <template>
   <div class="CLayout" @click="commitLayoutConfig()">
-    <div @click.stop class="layout" v-if="children.length > 0" v-for="(item,key) in children">
+    <div @click="clickStop($event)" class="layout" v-if="children.length > 0" v-for="(item,key) in children">
       <draggable
         class="dragBLOCK"
         v-model="children[key]"
-        :options="{name:'list',animation: 200,group:{name:'controls'},ghostClass: 'item-block-drag'}"
+        :options="{name:'list',animation: 100,group:{name:'controls'},ghostClass: 'item-block-drag'}"
       >
         <div v-if="children[key].length > 0" v-for="controlItem in children[key]">
           <component
@@ -14,6 +14,7 @@
             v-model="controlItem.config"
             @getValue="showAttribute($event,controlItem)"
             :children="controlItem.children"
+            :childrenDefault="controlItem.childrenDefault"
           >
           </component>
         </div>
@@ -31,6 +32,7 @@
       draggable
     },
     props: {
+      childrenDefault: Array,
       children: Array,
       ControlConfig: {
         type: Object
@@ -61,17 +63,31 @@
     },
     watch: {
       'children' (val) {
-        // console.error(val)
+        // this.$emit('input', this.config)
       }
     },
     methods: {
+      clickStop (evt) {
+        if (this.children.toString() !== this.childrenDefault.toString()) {
+          evt.stopPropagation()
+          evt.preventDefault()
+        }
+      },
       commitLayoutConfig () {
+        this.config = this.initConfig
+        if (this.ControlConfig) {
+          this.config = this.ControlConfig
+        }
+        if (this.ControlID && (!this.config.ControlID)) {
+          this.config.ControlID = this.ControlID
+        }
         this.$emit(`getValue`, this.config)
       },
-      destroyDom () {},
+      destroyDom () {
+      },
       showAttribute (data, item) {
         console.error(data)
-        item.config = data
+        // item.config = data
         this.$emit(`getValue`, data)
       },
       emitConfig () {

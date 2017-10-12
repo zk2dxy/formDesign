@@ -1,6 +1,6 @@
 <template>
   <div class="CInput" @click="ControlClick()">
-    <div v-if="config && (!ControlID)">
+    <div v-if="config && (!ControlID)" @click.stop>
       <div class="title">
         {{config.CTitleCN}}
       </div>

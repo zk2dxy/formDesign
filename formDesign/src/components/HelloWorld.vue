@@ -26,7 +26,7 @@
     <div class="formContainer">
       <draggable
         v-model="list"
-        :options="{name:'list',animation: 200,group:{name:'controls'},ghostClass: 'item-block-drag'}"
+        :options="{name:'list',animation: 100,group:{name:'controls'},ghostClass: 'item-block-drag'}"
         style="min-height: 200px;"
       >
         <div v-if="list" v-for="controlItem in list" class="item">
@@ -37,6 +37,7 @@
             v-model="controlItem.config"
             @getValue="showAttribute($event,controlItem)"
             :children="controlItem.children"
+            :childrenDefault="controlItem.childrenDefault"
           >
           </component>
         </div>
@@ -75,9 +76,11 @@
       this.loadAllControls()
       // console.error(this.I)
     },
-    mounted () {},
+    mounted () {
+    },
     watch: {
-      list (val, oldVal) {}
+      list (val, oldVal) {
+      }
     },
     methods: {
       destroyDom () {
@@ -116,14 +119,14 @@
                 type: 'layout', // 类型
                 component: 'CLayout',
                 config: '', // 控件配置
-                children: [[]]
+                children: [[]], // 绑定值props
+                childrenDefault: [[]]
               }
             ]
           }
         }
       },
       showAttribute (data, item) {
-        item.config = data
         this.Config.CConfig = data
       },
       changeView (config) {
