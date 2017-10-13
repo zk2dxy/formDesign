@@ -17,7 +17,7 @@
               :is="controlItem.component"
             >
             </component>
-            <!--{{controlItem}}-->
+            aa:{{controlItem.config}}
           </div>
         </div>
       </draggable>
@@ -100,6 +100,13 @@
                 parent: 'form', // 父级对象
                 type: 'input', // 类型
                 component: 'CInput',
+                config: '' // 控件配置,
+              }, {
+                CNameCN: '单选框',
+                CNameEN: 'radio',
+                parent: 'form', // 父级对象
+                type: 'radio', // 类型
+                component: 'CRadio',
                 config: '' // 控件配置,
               }
             ]

@@ -11,6 +11,19 @@
           <p>英文名</p>
           <el-input @change="changeConfig()" v-model="config[index]"></el-input>
         </div>
+        <!--by pyy-->
+        <div v-else-if="index === 'CName' && item === 'CRadio'">
+          <p>增加单选框选项</p>
+          <el-button type="primary" @click="AddRadio()"><i class="el-icon-plus"></i></el-button>
+          <el-dialog :visible.sync="config.CAttribute.addItemStatus" :show-close="false">
+            <el-input v-model="config.CAttribute.radioAttr[config.CAttribute.radioAttr.length-1].label" placeholder="选项值"></el-input>
+            <el-input v-model="config.CAttribute.radioAttr[config.CAttribute.radioAttr.length-1].showContent" placeholder="选项显示内容"></el-input>
+            <span slot="footer" class="dialog-footer">
+              <el-button @click="HandleRadioClose('')">取 消</el-button>
+              <el-button type="primary" @click="HandleRadioClose('true')">确 定</el-button>
+            </span>
+          </el-dialog>
+        </div>
         <div v-else-if="index === 'CAttribute'">
           <!--{{item}}-->
           <div v-for="(itemIn,indexIn) in item">
@@ -42,6 +55,31 @@
               <p>输入框尾部增加</p>
               <el-input @change="changeConfig()" placeholder="输入框尾部增加(非必填)"
                         v-model="config[index][indexIn]"></el-input>
+            </div>
+            <!--by pyy-->
+            <div v-else-if="indexIn === 'size' && config.CAttribute.typeModel==='button'">
+              <p>控件尺寸</p>
+              <el-radio-group v-model="config[index].sizeModel">
+                <el-radio :key="radio.value" v-for="radio in config[index][indexIn]" :label="radio.value">
+                  {{radio.name}}
+                </el-radio>
+              </el-radio-group>
+            </div>
+            <div v-else-if="indexIn === 'textColor' && config.CAttribute.typeModel==='button'">
+              <p>按钮激活时文本颜色</p>
+              <el-color-picker v-model="config[index].textColor"></el-color-picker>
+            </div>
+            <div v-else-if="indexIn === 'fillColor' && config.CAttribute.typeModel==='button'">
+              <p>按钮激活时填充和边框颜色</p>
+              <el-color-picker v-model="config[index].fillColor"></el-color-picker>
+            </div>
+            <div v-else-if="indexIn === 'currentSelected'">
+              <p>控件选项值</p>
+                <el-input v-model="config[index].radioAttr[itemIn].label"></el-input>
+              <p>控件选项显示内容</p>
+                <el-input v-model="config[index].radioAttr[itemIn].showContent"></el-input>
+              <p>删除该选项</p>
+              <el-button type="primary" @click="DeleteRadio(itemIn)"><i class="el-icon-delete"></i></el-button>
             </div>
           </div>
         </div>
@@ -113,8 +151,7 @@
     props: ['config'],
     created () {},
     methods: {
-      changeConfig () {
-        // console.info(this.config)
+      changeConfig () { // 变更config 向上传值
         this.$emit('changeConfig', this.config)
       },
       chooseIcon (item) {
@@ -155,8 +192,42 @@
         if (!item.status) {
           this.config.CValidate.validateModel = ''
         }
+      },
+      // by pyy
+      AddRadio () {
+        this.config.CAttribute.addItemStatus = !this.config.CAttribute.addItemStatus
+        this.config.CAttribute.radioAttr.push({label: '', showContent: ''})
+      },
+      HandleRadioClose (value) {
+        if (value === '') {
+          this.config.CAttribute.radioAttr.pop()
+        }
+        this.config.CAttribute.addItemStatus = false
+      },
+      DeleteRadio (index) {
+        this.config.CAttribute.radioAttr.splice(index, 1)
+        this.config.CAttribute.currentSelected = 0
       }
     }
+//    data () {
+//      return {
+//        rules: {
+//          label: [
+//            { required: true, message: '请输入选项值' },
+//            {
+//              validator: (rules, value, callback) => {
+//                this.config.CAttribute.radioAttr.forEach((item, index) => {
+//                  if (item.label === value) {
+//                    callback(new Error('选项值不可以重复'))
+//                  }
+//                })
+//                callback()
+//              }
+//            }
+//          ]
+//        }
+//      }
+//    }
   }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
