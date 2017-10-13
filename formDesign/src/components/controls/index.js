@@ -5,13 +5,14 @@ import CIcon from '@/components/base/CIcon'
 import CValidate from '@/components/base/CValidate'
 import CInput from '@/components/controls/CInput'
 import CLayout from '@/components/layout/CLayout' // 布局控件
+import CRadio from '@/components/controls/CRadio'
 const components = [
   ControlConfig,
   ControlConfigPyy,
-  CLayout,
   CIcon,
   CValidate,
-  CInput
+  CInput,
+  CRadio
 ]
 
 export default {
