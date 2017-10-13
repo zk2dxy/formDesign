@@ -109,7 +109,7 @@
 </template>
 <script type="text/ecmascript-6">
   export default {
-    name: 'ControlConfig',
+    name: 'ControlConfigXyl',
     props: ['config'],
     destroy () {
       console.info(`destroy`)
