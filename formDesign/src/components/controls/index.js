@@ -5,7 +5,7 @@ import ControlConfigXyl from '@/components/base/ControlConfigXyl'
 import CIcon from '@/components/base/CIcon'
 import CValidate from '@/components/base/CValidate'
 import CInput from '@/components/controls/CInput'
-import CLayout from '@/components/layout/CLayout' // 布局控件
+import CLayout from '@/components/layout/CLayout'
 import CRadio from '@/components/controls/CRadio'
 
 const components = [
