@@ -10,6 +10,7 @@ const components = [
   ControlConfig,
   ControlConfigPyy,
   CIcon,
+  CLayout,
   CValidate,
   CInput,
   CRadio
