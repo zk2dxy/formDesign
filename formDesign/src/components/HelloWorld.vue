@@ -3,7 +3,7 @@
     <div class="leftControlArea" v-if="ControlList!=null" v-for="container in ControlList">
       <draggable
         v-model="container.controls"
-        :options="{group:{name:'controls',pull:'clone', put: false},animation: 0,ghostClass: 'ghost-none'}"
+        :options="{group:{name:'controls',pull:'clone', put: false}, animation: 0, ghostClass: 'ghost-none', sort:false}"
         :clone="formClone"
       >
         <div class="item" v-if="container.controls" v-for="controlItem in container.controls">
@@ -13,6 +13,7 @@
             </el-button>
             <component
               class="opacity0 hidden"
+              :ControlID='controlItem.id'
               v-model="controlItem.config"
               :is="controlItem.component"
             >
@@ -25,7 +26,7 @@
     <div class="formContainer">
       <draggable
         v-model="list"
-        :options="{name:'list',animation: 200,group:{name:'controls'},ghostClass: 'item-block-drag'}"
+        :options="{name:'list',animation: 100,group:{name:'controls'},ghostClass: 'item-block-drag'}"
         style="min-height: 200px;"
       >
         <div v-if="list" v-for="controlItem in list" class="item">
@@ -34,7 +35,9 @@
             :ControlID='controlItem.id'
             :is="controlItem.component"
             v-model="controlItem.config"
-            @getValue="showAttribute"
+            @getValue="showAttribute($event,controlItem)"
+            :children="controlItem.children"
+            :childrenDefault="controlItem.childrenDefault"
           >
           </component>
         </div>
@@ -42,7 +45,11 @@
       {{list}}
     </div>
     <div class="rightControlArea">
-      <control-config-pyy v-if="Config.CConfig" :config="Config.CConfig" @changeConfig="changeView"></control-config-pyy>
+      <control-config
+        v-if="Config.CConfig"
+        :config="Config.CConfig"
+        @changeConfig="changeView"
+      ></control-config>
     </div>
   </div>
 </template>
@@ -69,9 +76,11 @@
       this.loadAllControls()
       // console.error(this.I)
     },
-    mounted () {},
+    mounted () {
+    },
     watch: {
-      list (val, oldVal) {}
+      list (val, oldVal) {
+      }
     },
     methods: {
       destroyDom () {
@@ -79,7 +88,8 @@
       },
       formClone (originData) {
         let newObj = this.L.cloneDeep(originData)
-        newObj.id = uuid.v4()
+        let _uuid = uuid.v4()
+        newObj.id = _uuid
         return newObj
       },
       loadAllControls () {
@@ -101,14 +111,23 @@
                 type: 'input', // 类型
                 component: 'CInput',
                 config: '' // 控件配置,
+              },
+              {
+                CNameCN: '布局控件',
+                CNameEN: 'layout',
+                parent: 'form', // 父级对象
+                type: 'layout', // 类型
+                component: 'CLayout',
+                config: '', // 控件配置
+                children: [[]], // 绑定值props
+                childrenDefault: [[]]
               }
             ]
           }
         }
       },
-      showAttribute (config) {
-        this.Config.CConfig = config
-        this.destroyDom()
+      showAttribute (data, item) {
+        this.Config.CConfig = data
       },
       changeView (config) {
         // console.error(config)
@@ -119,6 +138,10 @@
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   @import "~assets/css/stylus/mixin"
+  .dragBLOCK
+    > div
+      margin-bottom 10px
+
   .HelloWorld
     > div
       float left
@@ -140,4 +163,7 @@
       margin-left 2.5%
     .draggable
       min-height 100px
+
+  .item
+    margin 20px 0
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="CInput" @click="ControlClick()">
-    <div v-if="config && (!ControlID)">
+    <div v-if="config && (!ControlID)" @click.stop>
       <div class="title">
         {{config.CTitleCN}}
       </div>
@@ -59,13 +59,19 @@
       if (this.ControlConfig) {
         this.config = this.ControlConfig
       }
-    },
-    mounted () {
-      // this.config.CValidate = this.VALIDATE
-      this.$emit('input', this.config)
       if (this.ControlID && (!this.config.ControlID)) {
         this.config.ControlID = this.ControlID
       }
+    },
+    mounted () {
+      this.config = this.initConfig
+      if (this.ControlConfig) {
+        this.config = this.ControlConfig
+      }
+      if (this.ControlID && (!this.config.ControlID)) {
+        this.config.ControlID = this.ControlID
+      }
+      this.$emit('input', this.config)
     },
     updated () {},
     /* keep-alive 组件激活时调用。 */
@@ -81,16 +87,28 @@
     destroyed () {},
     methods: {
       ControlClick () {
-        this.$emit(`getValue`, this.config)
+        this.emitConfig()
       },
       // 获得焦点事件
-      focusAction () {},
+      focusAction () {
+        this.emitConfig()
+      },
       // 失去焦点事件
       blurAction () {
-        this.$emit(`getValue`, this.config)
+        this.emitConfig()
       },
       // 值变更事件
       changeAction () {
+        this.emitConfig()
+      },
+      emitConfig () {
+        this.config = this.initConfig
+        if (this.ControlConfig) {
+          this.config = this.ControlConfig
+        }
+        if (this.ControlID && (!this.config.ControlID)) {
+          this.config.ControlID = this.ControlID
+        }
         this.$emit(`getValue`, this.config)
       }
     },

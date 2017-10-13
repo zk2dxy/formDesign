@@ -111,9 +111,11 @@
   export default {
     name: 'ControlConfig',
     props: ['config'],
+    destroy () {
+      console.info(`destroy`)
+    },
     methods: {
       changeConfig () {
-        // console.info(this.config)
         this.$emit('changeConfig', this.config)
       },
       chooseIcon (item) {
