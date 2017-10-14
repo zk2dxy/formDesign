@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "axios": "^0.16.2",
-    "element-ui": "^2.0.0-alpha.2",
+    "element-ui": "^1.4.6",
     "lockr": "^0.8.4",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
