@@ -17,7 +17,6 @@
               :is="controlItem.component"
             >
             </component>
-            aa:{{controlItem.config}}
           </div>
         </div>
       </draggable>
@@ -95,18 +94,25 @@
             }, // 容器配置
             controls: [
               {
-                CNameCN: '输入框',
-                CNameEN: 'input',
-                parent: 'form', // 父级对象
-                type: 'input', // 类型
-                component: 'CInput',
-                config: '' // 控件配置,
-              }, {
                 CNameCN: '单选框',
                 CNameEN: 'radio',
                 parent: 'form', // 父级对象
                 type: 'radio', // 类型
                 component: 'CRadio',
+                config: '' // 控件配置,
+              }, {
+                CNameCN: '多选框',
+                CNameEN: 'checkbox',
+                parent: 'form', // 父级对象
+                type: 'checkbox', // 类型
+                component: 'CCheckbox',
+                config: '' // 控件配置,
+              }, {
+                CNameCN: '选择器',
+                CNameEN: 'select',
+                parent: 'form', // 父级对象
+                type: 'select', // 类型
+                component: 'CSelect',
                 config: '' // 控件配置,
               }
             ]
@@ -126,6 +132,9 @@
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   @import "~assets/css/stylus/mixin"
+  .item
+    > div
+      margin-bottom 10px
   .HelloWorld
     > div
       float left
