@@ -16,6 +16,7 @@
           <div v-for="(itemIn,indexIn) in item">
             <div v-if="indexIn === 'currentValue'">
               <div>
+                <p>面板标题</p>
                 <el-input @change="changeConfig()" v-model="config[index].collapseItem[itemIn].title"></el-input>
               </div>
               <div>

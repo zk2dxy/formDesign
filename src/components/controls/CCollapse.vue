@@ -11,10 +11,10 @@
         {{ControlConfig.CTitleCN}}
       </div>
       <extend-collapse>
-        <template v-for="(item, index) in config.CAttribute.collapseItem">
+        <template v-for="(item, index) in ControlConfig.CAttribute.collapseItem">
           <extend-collapse-item
             :title="item.title"
-            :icon="config.Icon.className"
+            :icon="ControlConfig.Icon.className"
             :name="item.name"
             @click="collapseItem(index)">
             <template slot="title">
@@ -133,7 +133,7 @@
               }
             ],
             addCollapseStatus: false,
-            currentValue: '', // 点击各面板选项的当前值
+            currentValue: 0, // 点击各面板选项的当前值
             description: '', // 描述
             height: '', // 高度
             vertical: ['top', 'middle', 'bottom'] // 对齐方式

@@ -18,7 +18,7 @@
               :is="controlItem.component"
             >
             </component>
-            {{controlItem}}
+            <!--{{controlItem}}-->
           </div>
         </div>
       </draggable>
