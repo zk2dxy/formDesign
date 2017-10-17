@@ -10,28 +10,101 @@
       <div class="title">
         {{ControlConfig.CTitleCN}}
       </div>
-      <div v-if="ControlConfig.CAttribute.typeModel==='select'">
-        <el-select v-model="ControlConfig.CAttribute.defaultSelected">
-          <el-option
-            v-for="item in ControlConfig.CAttribute.itemAttrSelect"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"></el-option>
-        </el-select>
+      <div v-if="ControlConfig.CAttribute.typeModel === 'select'">
+        <div v-if="ControlConfig.CAttribute.isSelectRemote">
+          <el-select
+            v-model="ControlConfig.CAttribute.defaultSelected"
+            :size="ControlConfig.CAttribute.sizeModel"
+            :multiple="ControlConfig.CAttribute.isMultiple"
+            :multiple-limit="ControlConfig.CAttribute.ableSelectedMax"
+            :clearable="ControlConfig.CAttribute.isSelectClearable"
+            :filterable="ControlConfig.CAttribute.isSelectFilterable"
+            :allow-create="ControlConfig.CAttribute.isSelectCreate"
+            remote
+            :remote-method="RemoteMethod"
+            :loading="loading"
+            :placeholder="ControlConfig.CAttribute.placeholder">
+            <el-option
+              v-for="item in options"
+              :key="item.label"
+              :value="item.label"
+              :disabled="item.isDisabled">
+              <div @click="SelectedChange(item.label)">{{item.showContent}}</div>
+            </el-option>
+          </el-select>
+        </div>
+        <div v-else>
+          <el-select
+            v-model="ControlConfig.CAttribute.defaultSelected"
+            :size="ControlConfig.CAttribute.sizeModel"
+            :multiple="ControlConfig.CAttribute.isMultiple"
+            :multiple-limit="ControlConfig.CAttribute.ableSelectedMax"
+            :clearable="ControlConfig.CAttribute.isSelectClearable"
+            :filterable="ControlConfig.CAttribute.isSelectFilterable"
+            :allow-create="ControlConfig.CAttribute.isSelectCreate"
+            :placeholder="ControlConfig.CAttribute.placeholder">
+            <el-option
+              v-for="item in ControlConfig.CAttribute.itemAttr"
+              :key="item.label"
+              :value="item.label"
+              :disabled="item.isDisabled">
+              <div @click="SelectedChange(item.label)">{{item.showContent}}</div>
+            </el-option>
+          </el-select>
+        </div>
       </div>
       <div v-else>
-        <el-select v-model="ControlConfig.CAttribute.defaultSelected">
-          <el-option-group
-            v-for="group in ControlConfig.CAttribute.itemAttrSelectGroup"
-            :key="group.label"
-            :label="group.label">
-            <el-option
-              v-for="item in group.options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"></el-option>
-          </el-option-group>
-        </el-select>
+        <div v-if="ControlConfig.CAttribute.isSelectRemote">
+          <el-select
+            v-model="ControlConfig.CAttribute.defaultSelected"
+            :size="ControlConfig.CAttribute.sizeModel"
+            :multiple="ControlConfig.CAttribute.isMultiple"
+            :multiple-limit="ControlConfig.CAttribute.ableSelectedMax"
+            :clearable="ControlConfig.CAttribute.isSelectClearable"
+            :filterable="ControlConfig.CAttribute.isSelectFilterable"
+            :allow-create="ControlConfig.CAttribute.isSelectCreate"
+            remote
+            :remote-method="RemoteMethodGroup"
+            :loading="loading"
+            :placeholder="ControlConfig.CAttribute.placeholder">
+            <el-option-group
+              v-for="group in options"
+              :key="group.label"
+              :label="group.label">
+              <el-option
+                v-for="item in group.options"
+                :key="item.label"
+                :value="item.label"
+                :disabled="item.isDisabled">
+                <div @click="SelectedChange(item.label)">{{item.showContent}}</div>
+              </el-option>
+            </el-option-group>
+          </el-select>
+        </div>
+        <div v-else>
+          <el-select
+            v-model="ControlConfig.CAttribute.defaultSelected"
+            :size="ControlConfig.CAttribute.sizeModel"
+            :multiple="ControlConfig.CAttribute.isMultiple"
+            :multiple-limit="ControlConfig.CAttribute.ableSelectedMax"
+            :clearable="ControlConfig.CAttribute.isSelectClearable"
+            :filterable="ControlConfig.CAttribute.isSelectFilterable"
+            :allow-create="ControlConfig.CAttribute.isSelectCreate"
+            :placeholder="ControlConfig.CAttribute.placeholder">
+            <el-option-group
+              v-for="group in ControlConfig.CAttribute.itemAttrSelectGroup"
+              :key="group.label"
+              :label="group.label">
+              <el-option
+                v-for="item in group.options"
+                :key="item.label"
+                :value="item.label"
+                :disabled="item.isDisabled">
+                <div @click="SelectedChange(item.label)">{{item.showContent}}</div>
+              </el-option>
+            </el-option-group>
+          </el-select>
+        </div>
       </div>
     </div>
   </div>
@@ -79,10 +152,66 @@
       },
       ControlClick () {
         this.emitConfig()
+      },
+      SelectedChange (label) {
+        if (this.config.CAttribute.typeModel === 'select') {
+          this.config.CAttribute.itemAttr.forEach((item, index) => {
+            if (label === item.label) {
+              this.config.CAttribute.currentSelected = index
+            }
+          })
+        } else {
+          this.config.CAttribute.itemAttrSelectGroup.forEach((item, indexGroup) => {
+            item.options.forEach((option, indexItem) => {
+              if (label === option.label) {
+                this.config.CAttribute.currentSelectedGroup[0] = indexGroup
+                this.config.CAttribute.currentSelectedGroup[1] = indexItem
+              }
+            })
+          })
+        }
+      },
+      RemoteMethodGroup (query) {
+        this.options = []
+//        console.log('query', query)
+//        if (query !== '') {
+//          this.loading = true
+//          var optio
+//          this.options = this.config.CAttribute.itemAttrSelectGroup.map(item => {
+//             optio = item.options.map(itemOptions => {
+//              if (itemOptions.showContent === query) {
+//                return item
+//              }
+//            })
+//            console.log('option', optio)
+//            return optio
+//          })
+//        }
+      },
+      RemoteMethod (query) {
+        this.options = []
+        if (query !== '') {
+          this.loading = true
+          setTimeout(() => {
+            this.loading = false
+            this.options = this.config.CAttribute.itemAttr.filter(item => {
+              return item.showContent.toLowerCase()
+                .indexOf(query.toLowerCase()) > -1
+            })
+            console.log('oo', this.options)
+          }, 20)
+        } else {
+          this.options = []
+        }
       }
+    },
+    watch: {
+
     },
     data () {
       return {
+        loading: false,
+        options: [],
         initConfig: {
           ControlID: '', // 表单生成后的控件id
           CBelong: 'form',
@@ -112,16 +241,16 @@
             }
           },
           CAttribute: {
+            type: [{
+              value: 'select',
+              name: '选项不分组'
+            }, {
+              value: 'selectGroup',
+              name: '选项分组'
+            }], // Checkbox 类型 普通类型和按钮类型
+            typeModel: 'select',
             description: '', // 描述
             size: [{
-              type: [{
-                value: 'select',
-                name: '选项不分组'
-              }, {
-                value: 'selectGroup',
-                name: '选项分组'
-              }], // Checkbox 类型 普通类型和按钮类型
-              typeModel: 'select',
               value: 'large',
               name: '大'
             }, {
@@ -132,24 +261,36 @@
               name: 'mini'
             }], // select尺寸
             sizeModel: 'small',
-            itemAttrSelect: [{
-              label: '样例1',
-              value: '1'
+            itemAttr: [{
+              label: '1',
+              showContent: '样例1',
+              isDisabled: false // 是否禁用该选项
             }, {
-              label: '样例2',
-              value: '2'
+              label: '2',
+              showContent: '样例2',
+              isDisabled: false // 是否禁用该选项
             }],
             itemAttrSelectGroup: [
               {
                 label: '组名1',
-                options: [{label: '样例1', value: '1-1'}]
+                options: [{label: '1-1', showContent: '样例1', isDisabled: false}]
               }, {
                 label: '组名2',
-                options: [{label: '样例2', value: '2-1'}]
+                options: [{label: '2-1', showContent: '样例2', isDisabled: false}]
               }
             ],
+            placeholder: '', // select提示符
+            isMultiple: false, // 是否多选
+            ableSelectedMax: 0, // 多选时最多可选项目，默认为0，不限制
+            addStatus: false, // 增加Select选项状态
+            currentSelected: 0,
+            currentSelectedGroup: [0, 0],
             defaultSelected: '', // 默认选中项
-            isDisabled: false // 是否禁用该选项
+            isDisabled: false, // 是否禁用该选项
+            isSelectClearable: false, // 单选时是否显示清除选项
+            isSelectFilterable: false, // 是否可搜索
+            isSelectRemote: false, // 是否可远程搜索
+            isSelectCreate: false // 是否可创建
           },
           CKey: { // 控件值
             default: '', // 默认值
@@ -166,6 +307,10 @@
               {
                 value: '',
                 name: '隐藏'
+              },
+              {
+                value: '',
+                name: '禁用'
               }
             ], // 控件规则集合
             ruleList: [] // 选择集合

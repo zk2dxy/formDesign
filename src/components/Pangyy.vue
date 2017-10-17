@@ -1,6 +1,5 @@
 <template>
   <div class="HelloWorld">
-    test
     <div class="leftControlArea" v-if="ControlList!=null" v-for="container in ControlList">
       <draggable
         v-model="container.controls"

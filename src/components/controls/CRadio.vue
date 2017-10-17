@@ -43,7 +43,7 @@
       <div v-if="ControlConfig.CAttribute.typeModel==='radio'">
         <el-radio-group
           v-model="ControlConfig.CAttribute.defaultRadioSelected">
-            <!--增加div修改禁用状态-->
+            <!--增加span修改禁用状态-->
             <span class="radio"
                   @click="SelectedChange(item.label)"
                   v-for="(item, index) in ControlConfig.CAttribute.itemAttr"
@@ -123,7 +123,6 @@
         this.emitConfig()
       },
       SelectedChange (label) {
-        console.log('dfasf')
         this.config.CAttribute.itemAttr.forEach((item, index) => {
           if (label === item.label) {
             this.config.CAttribute.currentSelected = index
