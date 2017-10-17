@@ -1,12 +1,36 @@
 <template>
-  <div class="CLayout" @click="commitLayoutConfig()">
-    <div @click="clickStop($event)" class="layout" v-if="children.length > 0" v-for="(item,key) in children">
+  <div
+    class="CLayout"
+    @click="commitLayoutConfig()"
+    style="margin:5px;"
+  >
+    <!--
+    :class="[
+        config.layoutModel === 'percentLayout' ? 'layout-percent' : '',
+        config.layoutModel === 'pixelLayout' ? 'layout-pixel' : '',
+        config.layoutModel === 'flexLayout' ? 'layout-flex' : '',
+        config.layoutModel === 'columnLayout' ? 'layout-col' : ''
+      ]"
+    :style="[
+        config.layoutModel === 'percentLayout'  && getLayoutValue!==null ? {'width' : getLayoutValue+`%`} : null,
+        config.layoutModel === 'pixelLayout'  && getLayoutValue!==null ? {'width' : getLayoutValue+`px`} : null,
+        config.layoutModel === 'flexLayout'  && getLayoutValue!==null ? {'flex' : getLayoutValue} : null
+      ]"
+    -->
+    <div
+      @click="clickStop($event)"
+      class="layout" v-if="children.length > 0"
+      v-for="(item,key) in children"
+    >
       <draggable
+        v-if="children&&childrenDefault"
         class="dragBLOCK"
         v-model="children[key]"
         :options="{name:'list',animation: 100,group:{name:'controls'},ghostClass: 'item-block-drag'}"
       >
-        <div v-if="children[key].length > 0" v-for="controlItem in children[key]">
+        <div
+          v-if="(children[key].length > 0)&&(children[0].toString() !== childrenDefault[0].toString())"
+          v-for="controlItem in children[key]">
           <component
             :ControlConfig="controlItem.config"
             :ControlID='controlItem.id'
@@ -16,6 +40,7 @@
             :children="controlItem.children"
             :childrenDefault="controlItem.childrenDefault"
           >
+            <!--{{controlItem}}-->
           </component>
         </div>
       </draggable>
@@ -59,11 +84,15 @@
       if (this.ControlID && (!this.config.ControlID)) {
         this.config.ControlID = this.ControlID
       }
+      if (this.children) {
+        // console.error(JSON.stringify(this.children))
+        // console.error(this.children)
+      }
       this.$emit('input', this.config)
     },
     watch: {
-      'children' (val) {
-        // this.$emit('input', this.config)
+      'config.currentLayout' (val) {
+        console.error(val)
       }
     },
     methods: {
@@ -81,14 +110,12 @@
         if (this.ControlID && (!this.config.ControlID)) {
           this.config.ControlID = this.ControlID
         }
-        this.$emit(`getValue`, this.config)
+        this.$emit('getValue', this.config)
       },
       destroyDom () {
       },
       showAttribute (data, item) {
-        console.error(data)
-        // item.config = data
-        this.$emit(`getValue`, data)
+        this.$emit('getValue', data)
       },
       emitConfig () {
         this.config = this.initConfig
@@ -98,7 +125,30 @@
         if (this.ControlID && (!this.config.ControlID)) {
           this.config.ControlID = this.ControlID
         }
-        this.$emit(`getValue`, this.config)
+        this.$emit('getValue', this.config)
+      }
+    },
+    computed: {
+      getLayoutValue () {
+        if (this.config.CLayout === '') {
+          return null
+        }
+        let value = null
+        for (let key in this.config.CLayout) {
+          // console.info(this.config)
+          if (this.config.CLayout[key].status === false) {
+            continue
+          } else {
+            value = this.config.CLayout[key].default
+            break
+          }
+        }
+        // this.$emit('getValue', this.config)
+        if (value === null) {
+          return value
+        } else {
+          return value
+        }
       }
     },
     data () {
@@ -109,28 +159,42 @@
           CTitleCN: '布局控件', // 标题
           CTitleEN: 'layout Control', // 英文标题
           CName: 'CLayout', // 控件名称
-          CLayout: { // 布局
-            percentLayout: { // 百分比布局
+          layoutModel: 'flexLayout',
+          currentLayout: null,
+          CLayout: [ // 布局
+            { // flex 布局
               type: Number,
-              default: 100,
-              status: true
-            },
-            pixelLayout: { // 像素布局
-              type: Number,
-              default: 100,
-              status: true
-            },
-            flexLayout: { // flex 布局
-              type: Number,
+              name: '自适应布局',
               default: 1,
-              status: false
+              value: 'flexLayout',
+              status: true,
+              max: 10
             },
-            columnLayout: { // 栅格布局
+            { // 百分比布局
               type: Number,
+              name: '百分比布局',
+              default: 100,
+              value: 'percentLayout',
+              status: false,
+              max: 100
+            },
+            { // 像素布局
+              type: Number,
+              name: '像素布局',
+              default: 100,
+              value: 'pixelLayout',
+              status: false,
+              max: null
+            },
+            { // 栅格布局
+              type: Number,
+              name: '栅格布局',
               default: 12,
-              status: false
+              value: 'columnLayout',
+              status: false,
+              max: 12
             }
-          },
+          ],
           CAttribute: {
             description: '', // 描述
             height: '', // 高度
@@ -156,22 +220,36 @@
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   @import "~assets/css/stylus/mixin"
+
+  .layout-flex
+    display flex
+
+  .layout-pixel
+    display block
+
+  .layout-col
+    display block
+
+  .layout-percent
+    display block
+    > div
+      float left
+
   .dragBLOCK
+    margin 10px
     > div
       margin-bottom 10px
 
   .CLayout
     extend-click()
-    display flex
-    padding 11px 15px
+    padding 5px
     min-height 200px
     border 1px dashed $font-primary
 
   .layout
-    flex 1
-    min-height 100px
+    min-height 200px
 
   .dragBLOCK
-    min-height 100px
+    min-height 200px
 
 </style>

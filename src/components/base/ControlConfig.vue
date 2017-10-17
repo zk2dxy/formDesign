@@ -102,19 +102,109 @@
             </div>
           </div>
         </div>
+        <div v-else-if="index === 'CLayout'">
+          <el-radio-group
+            v-model="config.layoutModel"
+            @change="getLayoutItem()"
+          >
+            <el-radio
+              v-if="config.CLayout"
+              v-for="(layout, key) in config.CLayout"
+              :key="layout.value"
+              :label="layout.value">
+              {{layout.name}}
+            </el-radio>
+          </el-radio-group>
+          <div>
+            <div v-if="config.layoutModel==='percentLayout' && config.currentLayout">
+              {{config.currentLayout.name}}：
+              <el-input
+                @change="validateLayout(config.currentLayout,config.layoutModel)"
+                v-model="config.currentLayout.default"
+                :placeholder="config.currentLayout.name"
+                :maxlength=3
+              ></el-input>
+            </div>
+            <div v-else-if="config.layoutModel==='pixelLayout' && config.currentLayout">
+              {{config.currentLayout.name}}：
+              <el-input
+                @change="validateLayout(config.currentLayout,config.layoutModel)"
+                v-model="config.currentLayout.default"
+                :placeholder="config.currentLayout.name"
+                :maxlength=3
+              ></el-input>
+            </div>
+            <div v-else-if="config.layoutModel==='flexLayout' && config.currentLayout">
+              {{config.currentLayout.name}}：
+              <el-input
+                @change="validateLayout(config.currentLayout,config.layoutModel)"
+                v-model="config.currentLayout.default"
+                :placeholder="config.currentLayout.name"
+                :maxlength=3
+              ></el-input>
+            </div>
+            <div v-else-if="config.layoutModel==='columnLayout' && config.currentLayout">
+              {{config.currentLayout.name}}：
+              <el-input
+                @change="validateLayout(config.currentLayout,config.layoutModel)"
+                v-model="config.currentLayout.default"
+                :placeholder="config.currentLayout.name"
+                :maxlength=3
+              ></el-input>
+            </div>
+          </div>
+        </div>
         <hr class="hrLine" style="border-top:0; border-right:0;border-left:0; border-bottom:1px solid red">
       </div>
     </div>
   </div>
 </template>
 <script type="text/ecmascript-6">
+  import { layoutJudge } from '@/assets/js/common'
+
   export default {
     name: 'ControlConfig',
     props: ['config'],
     destroy () {
       console.info(`destroy`)
     },
+    mounted () {},
     methods: {
+      validateLayout (layoutItem, layoutType) {
+        console.error(`validateLayout`)
+        let returnValue = layoutJudge(layoutItem, layoutType)
+        if (!returnValue) {
+          return
+        }
+        if (returnValue.msg !== '') {
+          this.reverseLayoutValue(returnValue)
+          this.$message({
+            type: 'error',
+            message: returnValue.msg
+          })
+        }
+        // this.$emit('changeConfig', this.config)
+      },
+      reverseLayoutValue (item) {
+        for (let key in this.config.CLayout) {
+          if (this.config.CLayout[key].value === item.type) {
+            this.config.CLayout[key].default = item.value
+            break
+          } else {
+            continue
+          }
+        }
+      },
+      getLayoutItem () {
+        for (let key in this.config.CLayout) {
+          if (this.config.CLayout[key].value === this.config.layoutModel) {
+            this.config.CLayout[key].status = true
+            this.config.currentLayout = this.config.CLayout[key]
+          } else {
+            this.config.CLayout[key].status = false
+          }
+        }
+      },
       changeConfig () {
         this.$emit('changeConfig', this.config)
       },
@@ -146,7 +236,7 @@
         window.validateOBJ = item
       },
       setValidate (chooseRes) {
-        console.error(chooseRes)
+        // console.error(chooseRes)
         if (chooseRes !== '') {
           window.validateOBJ.validateModel = chooseRes
         }

@@ -6,7 +6,11 @@
         :options="{group:{name:'controls',pull:'clone', put: false}, animation: 0, ghostClass: 'ghost-none', sort:false}"
         :clone="formClone"
       >
-        <div class="item" v-if="container.controls" v-for="controlItem in container.controls">
+        <div
+          class="item"
+          v-if="container.controls"
+          v-for="controlItem in container.controls"
+        >
           <div class="singleControl" :key="controlItem.CNameCN">
             <el-button icon="circle-check">
               {{controlItem.CNameCN}}
@@ -24,12 +28,26 @@
       </draggable>
     </div>
     <div class="formContainer">
+      <!--布局容器-->
       <draggable
         v-model="list"
         :options="{name:'list',animation: 100,group:{name:'controls'},ghostClass: 'item-block-drag'}"
         style="min-height: 200px;"
+        :class=layoutClass
       >
-        <div v-if="list" v-for="controlItem in list" class="item">
+        <div
+          v-if="list"
+          v-for="controlItem in list"
+          class="item"
+        >
+          <!--
+          :class="[
+            controlItem.config.layoutModel === 'percentLayout' ? 'layout-percent' : '',
+            controlItem.config.layoutModel === 'pixelLayout' ? 'layout-pixel' : '',
+            controlItem.config.layoutModel === 'flexLayout' ? 'layout-flex' : '',
+            controlItem.config.layoutModel === 'columnLayout' ? 'layout-col' : ''
+          ]"
+          -->
           <component
             :ControlConfig="controlItem.config"
             :ControlID='controlItem.id'
@@ -56,6 +74,7 @@
 <script type="text/ecmascript-6">
   import draggable from 'vuedraggable'
   import uuid from 'node-uuid'
+  import { calcLayoutClass } from '@/assets/js/common'
 
   export default {
     components: {
@@ -75,6 +94,7 @@
     created () {
       this.loadAllControls()
       // console.error(this.I)
+      console.error(calcLayoutClass)
     },
     mounted () {
     },
@@ -130,22 +150,41 @@
         this.Config.CConfig = data
       },
       changeView (config) {
-        // console.error(config)
+        console.warn(`config =>`)
+        console.warn(JSON.stringify(config))
       }
     },
-    computed: {}
+    computed: {
+      layoutClass () {
+        return calcLayoutClass(this.list)
+      }
+    }
   }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   @import "~assets/css/stylus/mixin"
+  .layout-flex
+    display flex
+
+  .layout-pixel
+    display block
+
+  .layout-col
+    display block
+
+  .layout-percent
+    display block
+
   .dragBLOCK
+    min-height 200px
+    background lightpink
     > div
       margin-bottom 10px
 
   .HelloWorld
     > div
       float left
-      min-height 100px
+      min-height 200px
     .leftControlArea
       width 20%
       margin-right 2.5%
@@ -162,7 +201,7 @@
       width 20%
       margin-left 2.5%
     .draggable
-      min-height 100px
+      min-height 200px
 
   .item
     margin 20px 0
