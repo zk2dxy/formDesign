@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import Pyy from '@/components/Pangyy.vue'
 import Xyl from '@/components/Xuanyl.vue'
+import Mtw from '@/components/Mtw'
 
 Vue.use(Router)
 

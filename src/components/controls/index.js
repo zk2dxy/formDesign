@@ -10,6 +10,7 @@ import CCollapse from '@/components/controls/CCollapse'
 import CRadio from '@/components/controls/CRadio'
 import CCheckbox from '@/components/controls/CCheckbox'
 import CSelect from '@/components/controls/CSelect'
+import CTag from '@/components/controls/CTag'
 const components = [
   ControlConfig,
   ControlConfigPyy,
@@ -21,7 +22,8 @@ const components = [
   CInput,
   CRadio,
   CCheckbox,
-  CSelect
+  CSelect,
+  CTag
 ]
 export default {
   install () {
