@@ -14,59 +14,37 @@
         <div v-else-if="index === 'CAttribute'">
           <!--{{item}}-->
           <div v-for="(itemIn,indexIn) in item">
-            <div v-if="indexIn === 'type'">
-              <p>控件类型</p>
-              <!--<el-input @change="changeConfig()" placeholder="控件类型" v-model="config[index][indexIn]"></el-input>-->
-              <el-radio-group v-model="config[index].typeModel">
-                <el-radio :key="radio.value" v-for="radio in config[index][indexIn]" :label="radio.value">
-                  {{radio.name}}
-                </el-radio>
-              </el-radio-group>
+            <div v-if="indexIn === 'currentValue'">
+              <div>
+                <el-input @change="changeConfig()" v-model="config[index].collapseItem[itemIn].title"></el-input>
+              </div>
+              <div>
+                <p>面板内容</p>
+                <el-input @change="changeConfig()" v-model="config[index].collapseItem[itemIn].content"></el-input>
+              </div>
+              <!--<div>-->
+                <!--<p>唯一标识符</p>-->
+                <!--<el-input @change="changeConfig()" v-model="config[index].collapseItem[itemIn].name"></el-input>-->
+              <!--</div>-->
             </div>
             <div v-else-if="indexIn === 'description'">
               <p>控件描述</p>
               <el-input type="textarea" @change="changeConfig()" placeholder="控件描述(非必填)"
                         v-model="config[index][indexIn]"></el-input>
             </div>
-            <div v-else-if="indexIn === 'placeholder'">
-              <p>控件提示语</p>
-              <el-input @change="changeConfig()" placeholder="控件描述(非必填)"
-                        v-model="config[index][indexIn]"></el-input>
+            <div v-else-if="indexIn === 'addCollapseStatus'">
+              <el-button type="primary" @click="addItem()"><i class="el-icon-plus"></i></el-button>
+              <el-dialog :visible.sync="config.CAttribute.addCollapseStatus" :show-close="false">
+                <h4 slot="title">添加：</h4>
+                <el-input class="collapseItemIput" v-model="config.CAttribute.collapseItem[config.CAttribute.collapseItem.length - 1].name" placeholder="唯一标识符"></el-input>
+                <el-input class="collapseItemIput" v-model="config.CAttribute.collapseItem[config.CAttribute.collapseItem.length - 1].title" placeholder="面板标题"></el-input>
+                <el-input class="collapseItemIput" v-model="config.CAttribute.collapseItem[config.CAttribute.collapseItem.length - 1].content" placeholder="面板内容"></el-input>
+                <div slot="footer" class="dialog-footer">
+                  <el-button @click="closeCollapseDialog(false)">取 消</el-button>
+                  <el-button type="primary" @click="closeCollapseDialog(true)">确 定</el-button>
+                </div>
+              </el-dialog>
             </div>
-            <div v-else-if="indexIn === 'prepend' && config.CAttribute.typeModel==='input'">
-              <p>输入框前置追加</p>
-              <el-input @change="changeConfig()" placeholder="输入框前置追加头(非必填)"
-                        v-model="config[index][indexIn]"></el-input>
-            </div>
-            <div v-else-if="indexIn === 'append' && config.CAttribute.typeModel==='input'">
-              <p>输入框尾部增加</p>
-              <el-input @change="changeConfig()" placeholder="输入框尾部增加(非必填)"
-                        v-model="config[index][indexIn]"></el-input>
-            </div>
-          </div>
-        </div>
-        <div v-else-if="index === 'CKey'">
-          <!--{{item}}-->
-          <div v-for="(itemIn,indexIn) in item">
-            <div v-if="indexIn === 'default'">
-              <p>默认值</p>
-              <el-input @change="changeConfig()" placeholder="控件默认值"
-                        v-model="config[index][indexIn]"></el-input>
-            </div>
-          </div>
-        </div>
-        <div v-else-if="index === 'Status'">
-          <!--{{item}}-->
-          <div>
-            <el-checkbox v-model="item.status"></el-checkbox>
-            状态
-          </div>
-          <div v-if="item.status">
-            <el-checkbox-group v-model="config[index].ruleList">
-              <el-checkbox :key="checkbox.value" v-for="checkbox in config[index].rules" :label="checkbox.value">
-                {{checkbox.name}}
-              </el-checkbox>
-            </el-checkbox-group>
           </div>
         </div>
         <div v-else-if="index === 'Icon'">
@@ -76,17 +54,8 @@
           </div>
           <div v-if="item.status">
             <div>
-              <el-button @click="chooseIcon(item)" type="primary" size="small" icon="edit">选择图标</el-button>
+              <el-button @click="chooseIcon(item)" type="primary" size="small" icon="edit">添加图标</el-button>
               <c-icon @postIcon="setIcon" v-if="item.chooseStatus"></c-icon>
-            </div>
-            <div v-if="item.position!=''&&item.position.length>0&&item.status&&(item.className!='')">
-              <br/>
-              <div>图标放置位置</div>
-              <el-radio-group v-model="item.positionModel">
-                <el-radio v-for="radio in item.position" :key="radio.value" :label="radio.value">
-                  {{radio.name}}
-                </el-radio>
-              </el-radio-group>
             </div>
           </div>
         </div>
@@ -121,6 +90,18 @@
       chooseIcon (item) {
         item.chooseStatus = !item.chooseStatus
         window.iconOBJ = item
+      },
+//      添加条目
+      addItem () {
+        this.config.CAttribute.addCollapseStatus = !this.config.CAttribute.addCollapseStatus
+        this.config.CAttribute.collapseItem.push({name: '', title: '', content: ''})
+      },
+//      关闭对话框
+      closeCollapseDialog ($flag) {
+        if ($flag === false) {
+          this.config.CAttribute.collapseItem.pop()
+        }
+        this.config.CAttribute.addCollapseStatus = !this.config.CAttribute.addCollapseStatus
       },
       setIcon (chooseRes) {
         if (chooseRes !== '') {
@@ -167,4 +148,6 @@
       padding 0
       margin 0
       margin-bottom 5px
+    .collapseItemInput
+      margin-bottom 10px
 </style>

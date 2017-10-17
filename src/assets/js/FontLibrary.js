@@ -12,6 +12,13 @@ const FontLibrary = [
     title: 'office',
     library: 'assets/fonts/icon.styl',
     status: false
+  },
+  {
+    className: 'form-image',
+    content: '\\e90d',
+    title: 'image',
+    library: 'assets/fonts/icon.styl',
+    status: false
   }
 ]
 export default FontLibrary
