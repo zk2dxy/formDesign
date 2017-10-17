@@ -105,22 +105,20 @@
             }, // 容器配置
             controls: [
               {
-                CNameCN: '输入框',
-                CNameEN: 'input',
+                CNameCN: '折叠面板',
+                CNameEN: 'collapse',
                 parent: 'form', // 父级对象
-                type: 'input', // 类型
-                component: 'CInput',
+                type: 'collapse', // 类型
+                component: 'CCollapse',
                 config: '' // 控件配置,
               },
               {
-                CNameCN: '布局控件',
-                CNameEN: 'layout',
+                CNameCN: '卡片',
+                CNameEN: 'card',
                 parent: 'form', // 父级对象
-                type: 'layout', // 类型
-                component: 'CLayout',
-                config: '', // 控件配置
-                children: [[]], // 绑定值props
-                childrenDefault: [[]]
+                type: 'card', // 类型
+                component: 'CCard',
+                config: '' // 控件配置,
               }
             ]
           }
@@ -128,6 +126,7 @@
       },
       showAttribute (data, item) {
         this.Config.CConfig = data
+        this.destroyDom()
       },
       changeView (config) {
         // console.error(config)
@@ -150,7 +149,7 @@
       width 20%
       margin-right 2.5%
       > div
-        display flex
+        display block
         .singleControl
           flex 0 46%
           margin 0 2%
