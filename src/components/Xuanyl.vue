@@ -111,6 +111,14 @@
                 type: 'collapse', // 类型
                 component: 'CCollapse',
                 config: '' // 控件配置,
+              },
+              {
+                CNameCN: '卡片',
+                CNameEN: 'card',
+                parent: 'form', // 父级对象
+                type: 'card', // 类型
+                component: 'CCard',
+                config: '' // 控件配置,
               }
             ]
           }
@@ -141,7 +149,7 @@
       width 20%
       margin-right 2.5%
       > div
-        display flex
+        display block
         .singleControl
           flex 0 46%
           margin 0 2%
