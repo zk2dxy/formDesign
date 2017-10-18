@@ -92,7 +92,7 @@
     },
     watch: {
       'config.currentLayout' (val) {
-        console.error(val)
+        // console.error(val)
       }
     },
     methods: {

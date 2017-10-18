@@ -94,7 +94,7 @@
     created () {
       this.loadAllControls()
       // console.error(this.I)
-      console.error(calcLayoutClass)
+      // console.error(calcLayoutClass)
     },
     mounted () {
     },
@@ -131,8 +131,7 @@
                 type: 'input', // 类型
                 component: 'CInput',
                 config: '' // 控件配置,
-              },
-              {
+              }, {
                 CNameCN: '布局控件',
                 CNameEN: 'layout',
                 parent: 'form', // 父级对象
@@ -141,6 +140,41 @@
                 config: '', // 控件配置
                 children: [[]], // 绑定值props
                 childrenDefault: [[]]
+              }, {
+                CNameCN: '单选框',
+                CNameEN: 'radio',
+                parent: 'form', // 父级对象
+                type: 'radio', // 类型
+                component: 'CRadio',
+                config: '' // 控件配置,
+              }, {
+                CNameCN: '多选框',
+                CNameEN: 'checkbox',
+                parent: 'form', // 父级对象
+                type: 'checkbox', // 类型
+                component: 'CCheckbox',
+                config: '' // 控件配置,
+              }, {
+                CNameCN: '选择器',
+                CNameEN: 'select',
+                parent: 'form', // 父级对象
+                type: 'select', // 类型
+                component: 'CSelect',
+                config: '' // 控件配置,
+              }, {
+                CNameCN: '折叠面板',
+                CNameEN: 'collapse',
+                parent: 'form', // 父级对象
+                type: 'collapse', // 类型
+                component: 'CCollapse',
+                config: '' // 控件配置,
+              }, {
+                CNameCN: '标签',
+                CNameEN: 'tag',
+                parent: 'form', // 父级对象
+                type: 'tag', // 类型
+                component: 'CTag',
+                config: '' // 控件配置
               }
             ]
           }
@@ -150,8 +184,8 @@
         this.Config.CConfig = data
       },
       changeView (config) {
-        console.warn(`config =>`)
-        console.warn(JSON.stringify(config))
+        // console.warn(`config =>`)
+        // console.warn(JSON.stringify(config))
       }
     },
     computed: {
@@ -189,12 +223,9 @@
       width 20%
       margin-right 2.5%
       > div
-        display flex
-        .singleControl
-          flex 0 46%
-          margin 0 2%
-          *
-            width 100%
+        float left
+        display block
+
     .formContainer
       width 55%
     .rightControlArea

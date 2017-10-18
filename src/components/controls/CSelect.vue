@@ -13,7 +13,7 @@
       <div v-if="ControlConfig.CAttribute.typeModel === 'select'">
         <div v-if="ControlConfig.CAttribute.isSelectRemote">
           <el-select
-            v-model="ControlConfig.CAttribute.defaultSelected"
+            v-model="ControlConfig.CKey.default"
             :size="ControlConfig.CAttribute.sizeModel"
             :multiple="ControlConfig.CAttribute.isMultiple"
             :multiple-limit="ControlConfig.CAttribute.ableSelectedMax"
@@ -27,7 +27,7 @@
             <el-option
               v-for="item in options"
               :key="item.label"
-              :value="item.label"
+              :value="item.showContent"
               :disabled="item.isDisabled">
               <div @click="SelectedChange(item.label)">{{item.showContent}}</div>
             </el-option>
@@ -35,7 +35,7 @@
         </div>
         <div v-else>
           <el-select
-            v-model="ControlConfig.CAttribute.defaultSelected"
+            v-model="ControlConfig.CKey.default"
             :size="ControlConfig.CAttribute.sizeModel"
             :multiple="ControlConfig.CAttribute.isMultiple"
             :multiple-limit="ControlConfig.CAttribute.ableSelectedMax"
@@ -46,7 +46,7 @@
             <el-option
               v-for="item in ControlConfig.CAttribute.itemAttr"
               :key="item.label"
-              :value="item.label"
+              :value="item.showContent"
               :disabled="item.isDisabled">
               <div @click="SelectedChange(item.label)">{{item.showContent}}</div>
             </el-option>
@@ -56,7 +56,7 @@
       <div v-else>
         <div v-if="ControlConfig.CAttribute.isSelectRemote">
           <el-select
-            v-model="ControlConfig.CAttribute.defaultSelected"
+            v-model="ControlConfig.CKey.default"
             :size="ControlConfig.CAttribute.sizeModel"
             :multiple="ControlConfig.CAttribute.isMultiple"
             :multiple-limit="ControlConfig.CAttribute.ableSelectedMax"
@@ -74,7 +74,7 @@
               <el-option
                 v-for="item in group.options"
                 :key="item.label"
-                :value="item.label"
+                :value="item.showContent"
                 :disabled="item.isDisabled">
                 <div @click="SelectedChange(item.label)">{{item.showContent}}</div>
               </el-option>
@@ -83,7 +83,7 @@
         </div>
         <div v-else>
           <el-select
-            v-model="ControlConfig.CAttribute.defaultSelected"
+            v-model="ControlConfig.CKey.default"
             :size="ControlConfig.CAttribute.sizeModel"
             :multiple="ControlConfig.CAttribute.isMultiple"
             :multiple-limit="ControlConfig.CAttribute.ableSelectedMax"
@@ -98,7 +98,7 @@
               <el-option
                 v-for="item in group.options"
                 :key="item.label"
-                :value="item.label"
+                :value="item.showContent"
                 :disabled="item.isDisabled">
                 <div @click="SelectedChange(item.label)">{{item.showContent}}</div>
               </el-option>
@@ -218,28 +218,42 @@
           CTitleCN: '选择器', // 标题
           CTitleEN: 'select Control', // 英文标题
           CName: 'CSelect', // 控件名称
-          CLayout: { // 布局
-            percentLayout: { // 百分比布局
+          layoutModel: 'flexLayout',
+          currentLayout: null,
+          CLayout: [ // 布局
+            { // flex 布局
               type: Number,
-              default: 100,
-              status: true
-            },
-            pixelLayout: { // 像素布局
-              type: Number,
-              default: 100,
-              status: true
-            },
-            flexLayout: { // flex 布局
-              type: Number,
+              name: '自适应布局',
               default: 1,
-              status: false
+              value: 'flexLayout',
+              status: true,
+              max: 10
             },
-            columnLayout: { // 栅格布局
+            { // 百分比布局
               type: Number,
+              name: '百分比布局',
+              default: 100,
+              value: 'percentLayout',
+              status: false,
+              max: 100
+            },
+            { // 像素布局
+              type: Number,
+              name: '像素布局',
+              default: 100,
+              value: 'pixelLayout',
+              status: false,
+              max: null
+            },
+            { // 栅格布局
+              type: Number,
+              name: '栅格布局',
               default: 12,
-              status: false
+              value: 'columnLayout',
+              status: false,
+              max: 12
             }
-          },
+          ],
           CAttribute: {
             type: [{
               value: 'select',
@@ -262,6 +276,10 @@
             }], // select尺寸
             sizeModel: 'small',
             itemAttr: [{
+              label: '0',
+              showContent: '请选择默认值',
+              isDisabled: false // 是否禁用该选项
+            }, {
               label: '1',
               showContent: '样例1',
               isDisabled: false // 是否禁用该选项
@@ -293,7 +311,7 @@
             isSelectCreate: false // 是否可创建
           },
           CKey: { // 控件值
-            default: '', // 默认值
+            default: '请选择值', // 默认值
             type: '', // 控件值类型
             keyMethods: '' // 计算控件值方法
           },

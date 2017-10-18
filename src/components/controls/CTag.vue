@@ -205,7 +205,6 @@
     padding 8px 0px
     color $font-primary
     font-size $font-medium
-
   .radio
     margin-right 14px
 </style>

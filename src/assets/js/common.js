@@ -22,6 +22,6 @@ export function layoutJudge (VItem, param) {
 }
 
 export function calcLayoutClass (list) {
-  console.error(list)
+  // console.error(list)
   return list
 }
