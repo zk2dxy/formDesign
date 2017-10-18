@@ -111,6 +111,13 @@
                 type: 'collapse', // 类型
                 component: 'CCollapse',
                 config: '' // 控件配置,
+              }, {
+                CNameCN: 'Card卡片',
+                CNameEN: 'card',
+                parent: 'form', // 父级对象
+                type: 'card', // 类型
+                component: 'CCard',
+                config: '' // 控件配置,
               }
             ]
           }
