@@ -5,22 +5,22 @@
 ## 单属性及值
 
 ### ControlID
-> 控件ID
+> 控件ID String
 
 ### CTitleCN
-> 标题
+> 标题 String
 
 ### CTitleEN
-> 英文标题
+> 英文标题 String
 
 ### CName
-> 控件名称
+> 控件名称 String
 
 ### layoutModel
-> 布局绑定值
+> 布局绑定值 String
 
 ### currentLayout
-> 当前布局值
+> 当前布局值 String
 
 ### `prepend`
 > input 前置头部
@@ -161,4 +161,39 @@
 
 # `isSelectCreate`
   > 是否可创建
+
+```
+### `closable` => CTag 关闭属性
+```
+{
+  // 状态
+  closableStatus: false,  // 是否可关闭 (默认false）
+  transitionModel: false,  // 是否禁用渐变动画 (默认false）
+  closeTransition: [
+    {
+      value: true,
+      name: '禁用渐变动画'
+    },
+    {
+      value: false,
+      name: '使用渐变动画'
+    }
+  ]
+}
+```
+### `hit`
+```
+{
+  hitStatus: true, // 描边默认选中
+  hitable: [
+    {
+      value: true,
+      name: '是'
+    },
+    {
+      value: false,
+      name: '否'
+    }
+  ]
+} // 是否有边框描边 (默认false）
 ```
