@@ -75,7 +75,7 @@
   import draggable from 'vuedraggable'
   import uuid from 'node-uuid'
   import { calcLayoutClass } from '@/assets/js/common'
-  import CKeyApi from 'api/CKey'
+  //  import CKeyApi from 'api/CKey'
 
   export default {
     components: {
