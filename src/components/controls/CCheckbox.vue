@@ -4,7 +4,7 @@
       <div class="title">
         {{config.CTitleCN}}
       </div>
-       <!--初始化组件-->
+      <!--初始化组件-->
     </div>
     <div v-else>
       <div class="title">
@@ -13,9 +13,11 @@
       <div v-if="ControlConfig.CAttribute.typeModel==='checkbox'">
         <div>
           <el-checkbox
-            :indeterminate="ControlConfig.CAttribute.indeterminateCheckbox" v-model="ControlConfig.CAttribute.checkAllCheckbox"
+            :indeterminate="ControlConfig.CAttribute.indeterminateCheckbox"
+            v-model="ControlConfig.CAttribute.checkAllCheckbox"
             @change="CheckAllChange"
-            v-if="ControlConfig.CAttribute.showAllCheckbox">全选</el-checkbox>
+            v-if="ControlConfig.CAttribute.showAllCheckbox">全选
+          </el-checkbox>
         </div>
         <el-checkbox-group
           v-model="ControlConfig.CAttribute.defaultCheckboxSelected"

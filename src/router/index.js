@@ -5,6 +5,7 @@ import HelloWorld from '@/components/HelloWorld'
 import Pyy from '@/components/Pangyy.vue'
 import Xyl from '@/components/Xuanyl.vue'
 import Mtw from '@/components/Mtw'
+import Xx from '@/components/Xx'
 
 Vue.use(Router)
 
@@ -28,5 +29,9 @@ export default new Router({
     path: '/Mtw',
     name: 'Mtw',
     component: Mtw
+  }, {
+    path: '/Xx',
+    name: 'Xx',
+    component: Xx
   }]
 })
