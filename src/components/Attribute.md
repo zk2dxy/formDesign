@@ -163,8 +163,9 @@
   > 是否可创建
 
 ```
-### `closable` => CTag 关闭属性
+### CTag属性
 ```
+`closable` =>
 {
   // 状态
   closableStatus: false,  // 是否可关闭 (默认false）
@@ -180,9 +181,7 @@
     }
   ]
 }
-```
-### `hit`
-```
+`hit` =>
 {
   hitStatus: true, // 描边默认选中
   hitable: [
@@ -197,3 +196,4 @@
   ]
 } // 是否有边框描边 (默认false）
 ```
+
