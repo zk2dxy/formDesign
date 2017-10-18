@@ -8,6 +8,7 @@ import CValidate from '@/components/base/CValidate'
 import CInput from '@/components/controls/CInput'
 import CLayout from '@/components/layout/CLayout'
 import CCollapse from '@/components/controls/CCollapse'
+import CCard from '@/components/controls/CCard'
 import CRadio from '@/components/controls/CRadio'
 import CCheckbox from '@/components/controls/CCheckbox'
 import CSelect from '@/components/controls/CSelect'
@@ -21,6 +22,7 @@ const components = [
   CIcon,
   CLayout,
   CCollapse,
+  CCard,
   CValidate,
   CInput,
   CRadio,
