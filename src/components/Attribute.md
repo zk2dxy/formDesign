@@ -4,12 +4,23 @@
 
 ## 单属性及值
 
-> ControlID     控件ID
-> CTitleCN      标题
-> CTitleEN      英文标题
-> CName         控件名称
-> layoutModel   布局绑定值
-> currentLayout 当前布局值
+### ControlID     
+> 控件ID
+
+### CTitleCN      
+> 标题
+
+### CTitleEN      
+> 英文标题
+
+### CName         
+> 控件名称
+
+### layoutModel   
+> 布局绑定值
+
+### currentLayout 
+> 当前布局值
 
 
 ``` bash
