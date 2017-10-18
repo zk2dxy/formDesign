@@ -6,12 +6,15 @@
 
 ``` bash
 
-  prepend => input 前置头部
+  prepend =>
+    > input 前置头部
+    > 类型 string
 
-  append => input 后置尾部
+  append =>
+    > input 后置尾部
 
   type => 控件类型
-    example: { value: 'input', name: '文本框'}
+    > example: { value: 'input', name: '文本框'}
 
 
 ```
