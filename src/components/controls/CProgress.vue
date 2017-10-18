@@ -4,33 +4,29 @@
       <div class="title">
         {{config.CTitleCN}}
       </div>
-      <div v-if="config.CAttribute.typeModel==='progress'">
-        <el-progress
-          :type="config.CAttribute.typeDefaultSelect"
-          :percentage="config.CKey.default"
-          :status="config.progressStatus.progressStatusCurrent"
-          :show-text="config.CAttribute.showText.showTextStatus"
-          :text-inside="config.CAttribute.showText.textInsideStatus"
-          :stroke-width="config.CAttribute.showText.strokeWidth"
-          :width="config.CAttribute.showText.width"
-        ></el-progress>
-      </div>
+      <el-progress
+        :type="config.CAttribute.typeModel"
+        :percentage="config.CKey.default"
+        :status="config.progressStatus.progressStatusCurrent"
+        :show-text="config.CAttribute.showText.showTextStatus"
+        :text-inside="config.CAttribute.showText.textInsideStatus"
+        :stroke-width="config.CAttribute.showText.strokeWidth"
+        :width="config.CAttribute.showText.width"
+      ></el-progress>
     </div>
     <div v-else>
       <div class="title">
         {{ControlConfig.CTitleCN}}
       </div>
-      <div v-if="ControlConfig.CAttribute.typeModel==='progress'">
-        <el-progress
-          :type="ControlConfig.CAttribute.typeDefaultSelect"
-          :percentage="ControlConfig.CKey.default"
-          :status="ControlConfig.progressStatus.progressStatusCurrent"
-          :show-text="ControlConfig.CAttribute.showText.showTextStatus"
-          :text-inside="ControlConfig.CAttribute.showText.textInsideStatus"
-          :stroke-width="ControlConfig.CAttribute.showText.strokeWidth"
-          :width="ControlConfig.CAttribute.showText.width"
-        ></el-progress>
-      </div>
+      <el-progress
+        :type="ControlConfig.CAttribute.typeModel"
+        :percentage="ControlConfig.CKey.default"
+        :status="ControlConfig.progressStatus.progressStatusCurrent"
+        :show-text="ControlConfig.CAttribute.showText.showTextStatus"
+        :text-inside="ControlConfig.CAttribute.showText.textInsideStatus"
+        :stroke-width="ControlConfig.CAttribute.showText.strokeWidth"
+        :width="ControlConfig.CAttribute.showText.width"
+      ></el-progress>
     </div>
   </div>
 </template>
@@ -97,6 +93,10 @@
               this.config.CAttribute.showText.width = 60
             }, 20)
             this.emitConfig()
+          }
+          if (this.config.CAttribute.showText.width < this.config.CAttribute.showText.strokeWidth) {
+            this.config.CAttribute.showText.width = 60
+            console.log('')
           }
         },
         deep: true
@@ -183,8 +183,7 @@
               value: 'circle',
               name: '环形'
             }], // 进度条类型 line、circle
-            typeModel: 'progress',
-            typeDefaultSelect: 'line', // 进度条当前类型
+            typeModel: 'line', // 进度条当前类型
             description: '', // 描述
             showText: { // 是否显示进度条文字内容,默认true
               showTextStatus: true,

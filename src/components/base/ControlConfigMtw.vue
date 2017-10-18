@@ -20,7 +20,7 @@
             </div> <!--tag标签的基础属性-->
             <div v-else-if="indexIn === 'type'"> <!--input、tag标签、进度条的基础type属性-->
               <p>控件类型</p>
-              <el-radio-group v-model="config[index].typeDefaultSelect">
+              <el-radio-group v-model="config[index].typeModel">
                 <el-radio :key="radio.value" v-for="radio in config[index][indexIn]" :label="radio.value">
                   {{radio.name}}
                 </el-radio>
@@ -57,7 +57,7 @@
             <div v-else-if="indexIn === 'showText'"> <!--进度条的基础属性-->
               <p>是否显示文字</p>
               <el-checkbox  v-model="config[index][indexIn].showTextStatus"></el-checkbox>
-              <div v-if="config[index][indexIn].showTextStatus && config[index].typeDefaultSelect === 'line'">
+              <div v-if="config[index][indexIn].showTextStatus && config[index].typeModel === 'line'">
                 <p>文字显示位置</p>
                 <el-radio-group v-model="config[index][indexIn].textInsideStatus">
                   <el-radio :key="radio.value" v-for="radio in config[index][indexIn].textInside" :label="radio.value">
@@ -65,16 +65,14 @@
                   </el-radio>
                 </el-radio-group>
               </div>
-              <div v-if="config[index].typeDefaultSelect === 'circle'">
+              <div v-if="config[index].typeModel === 'circle'">
                 <p>环形宽度值</p>
                 <el-input @change="changeConfig()"
                           v-model.number="config[index][indexIn].width"></el-input>
               </div>
-              <!--<div v-if="config[index].typeDefaultSelect === 'line'">-->
-                <p>线形宽度值</p>
-                <el-input @change="changeConfig()"
-                          v-model.number="config[index][indexIn].strokeWidth"></el-input>
-              <!--</div>-->
+              <p>线形宽度值</p>
+              <el-input @change="changeConfig()"
+                        v-model.number="config[index][indexIn].strokeWidth"></el-input>
             </div> <!--进度条的基础属性-->
 
             <div v-else-if="indexIn === 'placeholder'">
