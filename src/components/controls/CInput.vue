@@ -20,23 +20,24 @@
       </extend-input>
     </div>
     <div v-else>
-      <div class="title">
-        {{ControlConfig.CTitleCN}}
-      </div>
-      <extend-input
-        @focus="focusAction()"
-        @blur="blurAction()"
-        :type="ControlConfig.CAttribute.typeModel"
-        :placeholder="ControlConfig.CAttribute.placeholder"
-        v-model="ControlConfig.CKey.default"
-        :icon="ControlConfig.Icon.className"
-        :position="ControlConfig.Icon.positionModel"
-      >
-        <template v-if="ControlConfig.CAttribute.prepend!=''" slot="prepend"><span
-          v-html="ControlConfig.CAttribute.prepend"></span></template>
-        <template v-if="ControlConfig.CAttribute.append!=''" slot="append"><span
-          v-html="ControlConfig.CAttribute.append"></span></template>
-      </extend-input>
+      <el-form :label-position="ControlConfig.labelPositionModel" :label-width=labelWidthCalc>
+        <el-form-item :label="ControlConfig.CTitleCN">
+          <extend-input
+            @focus="focusAction()"
+            @blur="blurAction()"
+            :type="ControlConfig.CAttribute.typeModel"
+            :placeholder="ControlConfig.CAttribute.placeholder"
+            v-model="ControlConfig.CKey.default"
+            :icon="ControlConfig.Icon.className"
+            :position="ControlConfig.Icon.positionModel"
+          >
+            <template v-if="ControlConfig.CAttribute.prepend!=''" slot="prepend"><span
+              v-html="ControlConfig.CAttribute.prepend"></span></template>
+            <template v-if="ControlConfig.CAttribute.append!=''" slot="append"><span
+              v-html="ControlConfig.CAttribute.append"></span></template>
+          </extend-input>
+        </el-form-item>
+      </el-form>
     </div>
   </div>
 </template>
@@ -71,6 +72,7 @@
       if (this.ControlID && (!this.config.ControlID)) {
         this.config.ControlID = this.ControlID
       }
+      this.getChildrenLayoutValue()
       this.$emit('input', this.config)
     },
     updated () {},
@@ -110,6 +112,27 @@
           this.config.ControlID = this.ControlID
         }
         this.$emit(`getValue`, this.config)
+      },
+      getChildrenLayoutValue () {
+        this.config.currentLayout = null
+        if (this.config.CLayout === '') {
+          return
+        }
+        for (let key in this.config.CLayout) {
+          if (this.config.CLayout[key].status === false) {
+            continue
+          } else {
+            this.config.currentLayout = this.config.CLayout[key]
+            break
+          }
+        }
+      }
+    },
+    computed: {
+      labelWidthCalc () {
+        if (this.config.labelWidth) {
+          return this.config.labelWidth + 'px'
+        }
       }
     },
     data () {
@@ -119,6 +142,13 @@
           CBelong: 'form',
           CTitleCN: '输入框', // 标题
           CTitleEN: 'input Control', // 英文标题
+          labelPositionModel: 'left',
+          labelPositionValue: [
+            {value: 'left', name: '文字左对齐'},
+            {value: 'right', name: '文字右对齐'},
+            {value: 'top', name: '文字居上对齐'}
+          ],
+          labelWidth: 80,
           CName: 'CInput', // 控件名称
           layoutModel: 'flexLayout',
           currentLayout: null,

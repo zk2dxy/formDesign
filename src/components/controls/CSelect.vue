@@ -7,12 +7,11 @@
       <!--初始化组件-->
     </div>
     <div v-else>
-      <div class="title">
-        {{ControlConfig.CTitleCN}}
-      </div>
-      <div v-if="ControlConfig.CAttribute.typeModel === 'select'">
-        <div v-if="ControlConfig.CAttribute.isSelectRemote">
+      <el-form :label-position="ControlConfig.labelPositionModel" :label-width=labelWidthCalc>
+        <el-form-item :label="ControlConfig.CTitleCN">
+          <!---->
           <el-select
+            v-if="ControlConfig.CAttribute.typeModel === 'select' && ControlConfig.CAttribute.isSelectRemote"
             v-model="ControlConfig.CKey.default"
             :size="ControlConfig.CAttribute.sizeModel"
             :multiple="ControlConfig.CAttribute.isMultiple"
@@ -32,9 +31,8 @@
               <div @click="SelectedChange(item.label)">{{item.showContent}}</div>
             </el-option>
           </el-select>
-        </div>
-        <div v-else>
           <el-select
+            v-else-if="ControlConfig.CAttribute.typeModel === 'select'"
             v-model="ControlConfig.CKey.default"
             :size="ControlConfig.CAttribute.sizeModel"
             :multiple="ControlConfig.CAttribute.isMultiple"
@@ -51,11 +49,9 @@
               <div @click="SelectedChange(item.label)">{{item.showContent}}</div>
             </el-option>
           </el-select>
-        </div>
-      </div>
-      <div v-else>
-        <div v-if="ControlConfig.CAttribute.isSelectRemote">
+          <!---->
           <el-select
+            v-else-if="ControlConfig.CAttribute.isSelectRemote"
             v-model="ControlConfig.CKey.default"
             :size="ControlConfig.CAttribute.sizeModel"
             :multiple="ControlConfig.CAttribute.isMultiple"
@@ -80,9 +76,8 @@
               </el-option>
             </el-option-group>
           </el-select>
-        </div>
-        <div v-else>
           <el-select
+            v-else
             v-model="ControlConfig.CKey.default"
             :size="ControlConfig.CAttribute.sizeModel"
             :multiple="ControlConfig.CAttribute.isMultiple"
@@ -104,8 +99,8 @@
               </el-option>
             </el-option-group>
           </el-select>
-        </div>
-      </div>
+        </el-form-item>
+      </el-form>
     </div>
   </div>
 </template>
@@ -203,10 +198,29 @@
         } else {
           this.options = []
         }
+      },
+      getChildrenLayoutValue () {
+        this.config.currentLayout = null
+        if (this.config.CLayout === '') {
+          return
+        }
+        for (let key in this.config.CLayout) {
+          if (this.config.CLayout[key].status === false) {
+            continue
+          } else {
+            this.config.currentLayout = this.config.CLayout[key]
+            break
+          }
+        }
       }
     },
-    watch: {
-
+    watch: {},
+    computed: {
+      labelWidthCalc () {
+        if (this.config.labelWidth) {
+          return this.config.labelWidth + 'px'
+        }
+      }
     },
     data () {
       return {
@@ -217,6 +231,13 @@
           CBelong: 'form',
           CTitleCN: '选择器', // 标题
           CTitleEN: 'select Control', // 英文标题
+          labelPositionModel: 'left',
+          labelPositionValue: [
+            {value: 'left', name: '文字左对齐'},
+            {value: 'right', name: '文字右对齐'},
+            {value: 'top', name: '文字居上对齐'}
+          ],
+          labelWidth: 80,
           CName: 'CSelect', // 控件名称
           layoutModel: 'flexLayout',
           currentLayout: null,

@@ -8,9 +8,9 @@
         <el-radio-group
           v-model="config.CAttribute.defaultRadioSelected">
             <span class="radio"
-                 @click="SelectedChange(item.label)"
-                 v-for="(item, index) in config.CAttribute.itemAttr"
-                 :key="item.label">
+                  @click="SelectedChange(item.label)"
+                  v-for="(item, index) in config.CAttribute.itemAttr"
+                  :key="item.label">
               <el-radio
                 :label="item.label"
                 :disabled="item.isDisabled">
@@ -25,9 +25,9 @@
           :text-color="config.CAttribute.textColor"
           :fill="config.CAttribute.fillColor">
           <span class="radio"
-               @click="SelectedChange(item.label)"
-               v-for="(item, index) in config.CAttribute.itemAttr"
-               :key="item.label">
+                @click="SelectedChange(item.label)"
+                v-for="(item, index) in config.CAttribute.itemAttr"
+                :key="item.label">
             <el-radio-button
               :label="item.label"
               :disabled="item.isDisabled">
@@ -37,12 +37,11 @@
       </div>
     </div>
     <div v-else>
-      <div class="title">
-        {{ControlConfig.CTitleCN}}
-      </div>
-      <div v-if="ControlConfig.CAttribute.typeModel==='radio'">
-        <el-radio-group
-          v-model="ControlConfig.CAttribute.defaultRadioSelected">
+      <el-form :label-position="ControlConfig.labelPositionModel" :label-width=labelWidthCalc>
+        <el-form-item :label="ControlConfig.CTitleCN">
+          <el-radio-group
+            v-if="ControlConfig.CAttribute.typeModel==='radio'"
+            v-model="ControlConfig.CAttribute.defaultRadioSelected">
             <!--增加span修改禁用状态-->
             <span class="radio"
                   @click="SelectedChange(item.label)"
@@ -54,15 +53,14 @@
                 @click="SelectedChange(item.label)">
                 {{item.showContent}}</el-radio>
             </span>
-        </el-radio-group>
-      </div>
-      <div v-else>
-        <el-radio-group
-          v-model="ControlConfig.CAttribute.defaultRadioSelected"
-          :size="ControlConfig.CAttribute.sizeModel"
-          :text-color="ControlConfig.CAttribute.textColor"
-          :fill="ControlConfig.CAttribute.fillColor"
-          @change="SelectedChange">
+          </el-radio-group>
+          <el-radio-group
+            v-else
+            v-model="ControlConfig.CAttribute.defaultRadioSelected"
+            :size="ControlConfig.CAttribute.sizeModel"
+            :text-color="ControlConfig.CAttribute.textColor"
+            :fill="ControlConfig.CAttribute.fillColor"
+            @change="SelectedChange">
             <span class="radio"
                   @click="SelectedChange(item.label)"
                   v-for="(item, index) in ControlConfig.CAttribute.itemAttr"
@@ -73,8 +71,9 @@
                 @click="SelectedChange(item.label)">
                 {{item.showContent}}</el-radio-button>
             </span>
-        </el-radio-group>
-      </div>
+          </el-radio-group>
+        </el-form-item>
+      </el-form>
     </div>
   </div>
 </template>
@@ -128,6 +127,27 @@
             this.config.CAttribute.currentSelected = index
           }
         })
+      },
+      getChildrenLayoutValue () {
+        this.config.currentLayout = null
+        if (this.config.CLayout === '') {
+          return
+        }
+        for (let key in this.config.CLayout) {
+          if (this.config.CLayout[key].status === false) {
+            continue
+          } else {
+            this.config.currentLayout = this.config.CLayout[key]
+            break
+          }
+        }
+      }
+    },
+    computed: {
+      labelWidthCalc () {
+        if (this.config.labelWidth) {
+          return this.config.labelWidth + 'px'
+        }
       }
     },
     data () {
@@ -137,6 +157,13 @@
           CBelong: 'form',
           CTitleCN: '单选框', // 标题
           CTitleEN: 'radio Control', // 英文标题
+          labelPositionModel: 'left',
+          labelPositionValue: [
+            {value: 'left', name: '文字左对齐'},
+            {value: 'right', name: '文字右对齐'},
+            {value: 'top', name: '文字居上对齐'}
+          ],
+          labelWidth: 80,
           CName: 'CRadio', // 控件名称
           layoutModel: 'flexLayout',
           currentLayout: null,
@@ -255,6 +282,7 @@
     padding 8px 0px
     color $font-primary
     font-size $font-medium
+
   .radio
     margin-right 14px
 </style>

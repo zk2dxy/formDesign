@@ -1,15 +1,22 @@
 <template>
   <div class="CCollapse" @click="ControlClick()">
     <div v-if="config && (!ControlID)" @click.stop>
-      <div class="title">
-        {{config.CTitleCN}}
-      </div>
-
+      <extend-collapse>
+        <template v-for="(item, index) in config.CAttribute.collapseItem">
+          <extend-collapse-item
+            :title="item.title"
+            :icon="config.Icon.className"
+            :name="item.name"
+            @click="collapseItem(index)">
+            <template slot="title">
+              {{item.title}}
+            </template>
+            <div>{{item.content}}</div>
+          </extend-collapse-item>
+        </template>
+      </extend-collapse>
     </div>
     <div v-else>
-      <div class="title">
-        {{ControlConfig.CTitleCN}}
-      </div>
       <extend-collapse>
         <template v-for="(item, index) in ControlConfig.CAttribute.collapseItem">
           <extend-collapse-item

@@ -16,19 +16,18 @@
       </div>
     </div>
     <div v-else>
-      <div class="title">
-        {{ControlConfig.CTitleCN}}
-      </div>
-      <div v-if="ControlConfig.CAttribute.typeModel==='tag'">
-        <el-tag
-          :type="ControlConfig.CAttribute.typeDefaultSelect"
-          :closable="ControlConfig.CAttribute.closable.closableStatus"
-          :close-transition="ControlConfig.CAttribute.closable.transitionModel"
-          :hit="ControlConfig.CAttribute.hit.hitStatus"
-          @close="handleClose">
-          {{ControlConfig.CAttribute.defaultTagName}}
-        </el-tag>
-      </div>
+      <el-form :label-position="ControlConfig.labelPositionModel" :label-width=labelWidthCalc>
+        <el-form-item :label="ControlConfig.CTitleCN">
+          <el-tag
+            :type="ControlConfig.CAttribute.typeDefaultSelect"
+            :closable="ControlConfig.CAttribute.closable.closableStatus"
+            :close-transition="ControlConfig.CAttribute.closable.transitionModel"
+            :hit="ControlConfig.CAttribute.hit.hitStatus"
+            @close="handleClose">
+            {{ControlConfig.CAttribute.defaultTagName}}
+          </el-tag>
+        </el-form-item>
+      </el-form>
     </div>
   </div>
 </template>
@@ -62,6 +61,13 @@
       }
       this.$emit('input', this.config)
     },
+    computed: {
+      labelWidthCalc () {
+        if (this.config.labelWidth) {
+          return this.config.labelWidth + 'px'
+        }
+      }
+    },
     methods: {
       emitConfig () {
         this.config = this.initConfig
@@ -80,6 +86,20 @@
         var tagArr = []
         tagArr.push(this.defaultTagName)
         tagArr.splice(tagArr.indexOf(0), 1)
+      },
+      getChildrenLayoutValue () {
+        this.config.currentLayout = null
+        if (this.config.CLayout === '') {
+          return
+        }
+        for (let key in this.config.CLayout) {
+          if (this.config.CLayout[key].status === false) {
+            continue
+          } else {
+            this.config.currentLayout = this.config.CLayout[key]
+            break
+          }
+        }
       }
     },
     data () {
@@ -89,6 +109,13 @@
           CBelong: 'form',
           CTitleCN: '标签', // 标题
           CTitleEN: 'Tag Control', // 英文标题
+          labelPositionModel: 'left',
+          labelPositionValue: [
+            {value: 'left', name: '文字左对齐'},
+            {value: 'right', name: '文字右对齐'},
+            {value: 'top', name: '文字居上对齐'}
+          ],
+          labelWidth: 80,
           CName: 'CTag', // 控件名称
           layoutModel: 'flexLayout',
           currentLayout: null,
@@ -205,6 +232,7 @@
     padding 8px 0px
     color $font-primary
     font-size $font-medium
+
   .radio
     margin-right 14px
 </style>

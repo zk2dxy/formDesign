@@ -32,33 +32,28 @@
       <draggable
         v-model="list"
         :options="{name:'list',animation: 100,group:{name:'controls'},ghostClass: 'item-block-drag'}"
-        style="min-height: 200px;"
+        style="min-height: 200px;display:flex"
         :class=layoutClass
       >
-        <div
+        <component
           v-if="list"
-          v-for="controlItem in list"
           class="item"
-        >
-          <!--
-          :class="[
-            controlItem.config.layoutModel === 'percentLayout' ? 'layout-percent' : '',
-            controlItem.config.layoutModel === 'pixelLayout' ? 'layout-pixel' : '',
-            controlItem.config.layoutModel === 'flexLayout' ? 'layout-flex' : '',
-            controlItem.config.layoutModel === 'columnLayout' ? 'layout-col' : ''
+          :key="controlItem.id"
+          v-for="controlItem in list"
+          :ControlConfig="controlItem.config"
+          :ControlID='controlItem.id'
+          :is="controlItem.component"
+          v-model="controlItem.config"
+          @getValue="showAttribute($event,controlItem)"
+          :children="controlItem.children"
+          :childrenDefault="controlItem.childrenDefault"
+          :style="[
+            controlItem.config.layoutModel === 'percentLayout'  && controlItem.config.currentLayout !== null ? {'width' : controlItem.config.currentLayout.default+`%`} : null,
+            controlItem.config.layoutModel === 'pixelLayout'  && controlItem.config.currentLayout !== null ? {'width' : controlItem.config.currentLayout.default+`px`} : null,
+            controlItem.config.layoutModel === 'flexLayout'  && controlItem.config.currentLayout !== null ? {'flex' : controlItem.config.currentLayout.default} : null
           ]"
-          -->
-          <component
-            :ControlConfig="controlItem.config"
-            :ControlID='controlItem.id'
-            :is="controlItem.component"
-            v-model="controlItem.config"
-            @getValue="showAttribute($event,controlItem)"
-            :children="controlItem.children"
-            :childrenDefault="controlItem.childrenDefault"
-          >
-          </component>
-        </div>
+        >
+        </component>
       </draggable>
       {{list}}
     </div>
@@ -221,6 +216,8 @@
       float left
       min-height 200px
     .leftControlArea
+      > .item
+        margin 5px
       width 20%
       margin-right 2.5%
       > div
@@ -237,4 +234,5 @@
 
   .item
     margin 20px 0
+    float left
 </style>

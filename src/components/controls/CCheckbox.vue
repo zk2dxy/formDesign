@@ -7,53 +7,55 @@
       <!--初始化组件-->
     </div>
     <div v-else>
-      <div class="title">
-        {{ControlConfig.CTitleCN}}
-      </div>
-      <div v-if="ControlConfig.CAttribute.typeModel==='checkbox'">
-        <div>
-          <el-checkbox
-            :indeterminate="ControlConfig.CAttribute.indeterminateCheckbox"
-            v-model="ControlConfig.CAttribute.checkAllCheckbox"
-            @change="CheckAllChange"
-            v-if="ControlConfig.CAttribute.showAllCheckbox">全选
-          </el-checkbox>
-        </div>
-        <el-checkbox-group
-          v-model="ControlConfig.CAttribute.defaultCheckboxSelected"
-          @change="SelectedChange"
-          :min="ControlConfig.CAttribute.ableSelectedMin"
-          :max="ControlConfig.CAttribute.ableSelectedMax">
-          <span class="checkbox"
-                @click="SelectedChange(item.label)"
-                v-for="(item, index) in ControlConfig.CAttribute.itemAttr"
-                :key="item.label">
-              <el-checkbox
-                :label="item.label"
-                :disabled="item.isDisabled">
-                {{item.showContent}}</el-checkbox>
-          </span>
-        </el-checkbox-group>
-      </div>
-      <div v-else>
-        <el-checkbox-group
-          v-model="ControlConfig.CAttribute.defaultCheckboxSelected"
-          :size="ControlConfig.CAttribute.sizeModel"
-          :text-color="ControlConfig.CAttribute.textColor"
-          :fill="ControlConfig.CAttribute.fillColor"
-          :min="ControlConfig.CAttribute.ableSelectedMin"
-          :max="ControlConfig.CAttribute.ableSelectedMax">
-          <span class="checkbox"
-                @click="SelectedChange(item.label)"
-                v-for="(item, index) in ControlConfig.CAttribute.itemAttr"
-                :key="item.label">
+      <el-form :label-position="ControlConfig.labelPositionModel" :label-width=labelWidthCalc>
+        <el-form-item :label="ControlConfig.CTitleCN">
+          <el-checkbox-group
+            v-if="ControlConfig.CAttribute.typeModel==='checkbox'"
+            v-model="ControlConfig.CAttribute.defaultCheckboxSelected"
+            @change="SelectedChange"
+            :min="ControlConfig.CAttribute.ableSelectedMin"
+            :max="ControlConfig.CAttribute.ableSelectedMax">
+            <el-checkbox
+              :indeterminate="ControlConfig.CAttribute.indeterminateCheckbox"
+              v-model="ControlConfig.CAttribute.checkAllCheckbox"
+              @change="CheckAllChange"
+              v-if="ControlConfig.CAttribute.showAllCheckbox&&ControlConfig.CAttribute.typeModel==='checkbox'">全选
+            </el-checkbox>
+            <span
+              class="checkbox"
+              @click="SelectedChange(item.label)"
+              v-for="(item, index) in ControlConfig.CAttribute.itemAttr"
+              :key="item.label">
+                <el-checkbox
+                  :label="item.label"
+                  :disabled="item.isDisabled"
+                >
+                  {{item.showContent}}
+                </el-checkbox>
+              </span>
+          </el-checkbox-group>
+          <el-checkbox-group
+            v-else
+            v-model="ControlConfig.CAttribute.defaultCheckboxSelected"
+            :size="ControlConfig.CAttribute.sizeModel"
+            :text-color="ControlConfig.CAttribute.textColor"
+            :fill="ControlConfig.CAttribute.fillColor"
+            :min="ControlConfig.CAttribute.ableSelectedMin"
+            :max="ControlConfig.CAttribute.ableSelectedMax">
+            <span
+              class="checkbox"
+              @click="SelectedChange(item.label)"
+              v-for="(item, index) in ControlConfig.CAttribute.itemAttr"
+              :key="item.label">
               <el-checkbox-button
                 :label="item.label"
                 :disabled="item.isDisabled">
-                {{item.showContent}}</el-checkbox-button>
-          </span>
-        </el-checkbox-group>
-      </div>
+                {{item.showContent}}
+              </el-checkbox-button>
+            </span>
+          </el-checkbox-group>
+        </el-form-item>
+      </el-form>
     </div>
   </div>
 </template>
@@ -87,6 +89,13 @@
         default: null
       }
     },
+    computed: {
+      labelWidthCalc () {
+        if (this.config.labelWidth) {
+          return this.config.labelWidth + 'px'
+        }
+      }
+    },
     methods: {
       emitConfig () {
         this.config = this.initConfig
@@ -115,6 +124,20 @@
           })
         }
         this.config.CAttribute.indeterminateCheckbox = false
+      },
+      getChildrenLayoutValue () {
+        this.config.currentLayout = null
+        if (this.config.CLayout === '') {
+          return
+        }
+        for (let key in this.config.CLayout) {
+          if (this.config.CLayout[key].status === false) {
+            continue
+          } else {
+            this.config.currentLayout = this.config.CLayout[key]
+            break
+          }
+        }
       }
     },
     data () {
@@ -124,6 +147,13 @@
           CBelong: 'form',
           CTitleCN: '多选框', // 标题
           CTitleEN: 'checkbox Control', // 英文标题
+          labelPositionModel: 'left',
+          labelPositionValue: [
+            {value: 'left', name: '文字左对齐'},
+            {value: 'right', name: '文字右对齐'},
+            {value: 'top', name: '文字居上对齐'}
+          ],
+          labelWidth: 80,
           CName: 'CCheckbox', // 控件名称
           layoutModel: 'flexLayout',
           currentLayout: null,

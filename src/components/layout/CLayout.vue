@@ -2,21 +2,7 @@
   <div
     class="CLayout"
     @click="commitLayoutConfig()"
-    style="margin:5px;"
   >
-    <!--
-    :class="[
-        config.layoutModel === 'percentLayout' ? 'layout-percent' : '',
-        config.layoutModel === 'pixelLayout' ? 'layout-pixel' : '',
-        config.layoutModel === 'flexLayout' ? 'layout-flex' : '',
-        config.layoutModel === 'columnLayout' ? 'layout-col' : ''
-      ]"
-    :style="[
-        config.layoutModel === 'percentLayout'  && getLayoutValue!==null ? {'width' : getLayoutValue+`%`} : null,
-        config.layoutModel === 'pixelLayout'  && getLayoutValue!==null ? {'width' : getLayoutValue+`px`} : null,
-        config.layoutModel === 'flexLayout'  && getLayoutValue!==null ? {'flex' : getLayoutValue} : null
-      ]"
-    -->
     <div
       @click="clickStop($event)"
       class="layout" v-if="children.length > 0"
@@ -27,22 +13,33 @@
         class="dragBLOCK"
         v-model="children[key]"
         :options="{name:'list',animation: 100,group:{name:'controls'},ghostClass: 'item-block-drag'}"
+        :class="[
+          config.layoutModel === 'percentLayout' ? 'layout-percent' : '',
+          config.layoutModel === 'pixelLayout' ? 'layout-pixel' : '',
+          config.layoutModel === 'flexLayout' ? 'layout-flex' : '',
+          config.layoutModel === 'columnLayout' ? 'layout-col' : ''
+        ]"
       >
-        <div
+        <component
+          :style="[
+            controlItem.config.layoutModel === 'percentLayout'  && controlItem.config.currentLayout !== null ? {'width' : controlItem.config.currentLayout.default+`%`} : null,
+            controlItem.config.layoutModel === 'pixelLayout'  && controlItem.config.currentLayout !== null ? {'width' : controlItem.config.currentLayout.default+`px`} : null,
+            controlItem.config.layoutModel === 'flexLayout'  && controlItem.config.currentLayout !== null ? {'flex' : controlItem.config.currentLayout.default} : null
+          ]"
+          class="block"
           v-if="(children[key].length > 0)&&(children[0].toString() !== childrenDefault[0].toString())"
-          v-for="controlItem in children[key]">
-          <component
-            :ControlConfig="controlItem.config"
-            :ControlID='controlItem.id'
-            :is="controlItem.component"
-            v-model="controlItem.config"
-            @getValue="showAttribute($event,controlItem)"
-            :children="controlItem.children"
-            :childrenDefault="controlItem.childrenDefault"
-          >
-            <!--{{controlItem}}-->
-          </component>
-        </div>
+          v-for="controlItem in children[key]"
+          :key="controlItem.config.ControlID"
+          :ControlConfig="controlItem.config"
+          :ControlID='controlItem.id'
+          :is="controlItem.component"
+          v-model="controlItem.config"
+          @getValue="showAttribute($event,controlItem)"
+          :children="controlItem.children"
+          :childrenDefault="controlItem.childrenDefault"
+        >
+          {{controlItem}}
+        </component>
       </draggable>
       <!--{{children}}-->
     </div>
@@ -84,10 +81,7 @@
       if (this.ControlID && (!this.config.ControlID)) {
         this.config.ControlID = this.ControlID
       }
-      if (this.children) {
-        // console.error(JSON.stringify(this.children))
-        // console.error(this.children)
-      }
+      this.getChildrenLayoutValue()
       this.$emit('input', this.config)
     },
     watch: {
@@ -126,6 +120,20 @@
           this.config.ControlID = this.ControlID
         }
         this.$emit('getValue', this.config)
+      },
+      getChildrenLayoutValue () {
+        this.config.currentLayout = null
+        if (this.config.CLayout === '') {
+          return
+        }
+        for (let key in this.config.CLayout) {
+          if (this.config.CLayout[key].status === false) {
+            continue
+          } else {
+            this.config.currentLayout = this.config.CLayout[key]
+            break
+          }
+        }
       }
     },
     computed: {
@@ -236,20 +244,22 @@
       float left
 
   .dragBLOCK
-    margin 10px
     > div
       margin-bottom 10px
 
   .CLayout
     extend-click()
-    padding 5px
     min-height 200px
     border 1px dashed $font-primary
+    overflow:auto
+    overflow-x hidden
+    overflow-y hidden
 
   .layout
     min-height 200px
 
   .dragBLOCK
     min-height 200px
+    padding 10px
 
 </style>
