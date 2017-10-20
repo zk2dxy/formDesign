@@ -1,5 +1,5 @@
 <template>
-  <div class="CCard" @click="ControlClick()">
+  <div class="CLoading" @click="ControlClick()">
     <div v-if="config && (!ControlID)" @click.stop>
       <div class="title">
         {{config.CTitleCN}}
@@ -10,51 +10,21 @@
       <div class="title">
         {{ControlConfig.CTitleCN}}
       </div>
-      <!--Card-->
-      <div
-        @click="cardItem(index)"
-        v-for="(item, index) in ControlConfig.CAttribute.cardItemAttribute.cardItem"
-      >
-        <!-- 基础卡片 cardBasic -->
-        <div v-if="ControlConfig.CAttribute.typeModel === 'cardBasic'">
-          <el-card class="box-card">
-            <div slot="header" class="clearfix">
-              <span>{{item.title}}</span>
-              <el-button style="float: right;" type="text">操作按钮</el-button>
-            </div>
-            <div v-for="(itemIn,indexIn) in item.contentItem" class="text item" @click="cardContentItem(indexIn)">
-              {{ itemIn.content }}
-            </div>
-          </el-card>
-        </div>
-        <!-- 简单卡片 card-->
-        <div v-else-if="ControlConfig.CAttribute.typeModel === 'cardSimple'">
-          <el-card class="box-card">
-            <div v-for="(itemIn,indexIn) in item.contentItem" class="text item" @click="cardContentItem(indexIn)">
-              {{ itemIn.content }}
-            </div>
-          </el-card>
-        </div>
+      <!--Loading-->
+      <div class="loading"
+           v-if="ControlConfig.CAttribute.typeModel === 'boxLoading'"
+           v-loading="true"
+           :element-loading-text="ControlConfig.CAttribute.loadingText">
       </div>
-
-      <!-- 带图片卡片 cardImg -->
-      <div class="card-img-item"
-           @click="cardItem(index)"
-           v-if="ControlConfig.CAttribute.typeModel === 'cardImg'"
-           v-for="(item, index) in ControlConfig.CAttribute.cardItemAttribute.cardItem"
-      >
-        <el-card :body-style="{ padding: '0px' }">
-          <img :src="item.imageUrl" class="image">
-          <div style="padding: 14px;">
-            <span>{{ item.title }}</span>
-            <div class="bottom clearfix">
-              <time class="time">{{ item.time }}</time>
-              <el-button type="text" class="button">操作按钮</el-button>
-            </div>
-          </div>
-        </el-card>
+      <div v-if="ControlConfig.CAttribute.typeModel === 'pageLoading'">
+        <el-button
+          type="primary"
+          @click="openFullScreen"
+          :element-loading-text="ControlConfig.CAttribute.loadingText"
+          v-loading.fullscreen.lock="ControlConfig.CAttribute.fullscreenLoading">
+          显示整页加载，3 秒后消失
+        </el-button>
       </div>
-
     </div>
   </div>
 </template>
@@ -62,7 +32,7 @@
   // 控件配置、表单配置、数据来源配置
   // props: ['ControlConfig', 'FormConfig', 'OriginDataConfig', 'value'],
   export default {
-    name: `CCard`,
+    name: `CLoading`,
     props: {
       ControlConfig: {
         type: Object
@@ -121,13 +91,12 @@
         }
         this.$emit(`getValue`, this.config)
       },
-//      点击卡片
-      cardItem (currentIndex) {
-        this.config.CAttribute.cardCurrent = currentIndex
-      },
-//      点击卡片中的内容条目
-      cardContentItem (currentIndex) {
-        this.config.CAttribute.cardItemAttribute.cardContentCurrent = currentIndex
+//      加载
+      openFullScreen () {
+        this.config.CAttribute.fullscreenLoading = true
+        setTimeout(() => {
+          this.config.CAttribute.fullscreenLoading = false
+        }, 3000)
       }
     },
     data () {
@@ -135,9 +104,8 @@
         initConfig: {
           ControlID: '', // 表单生成后的控件id
           CBelong: 'others',
-          CTitleCN: 'Card卡片', // 标题
-          CTitleEN: 'card Control', // 英文标题
-          CName: 'CCard', // 控件名称
+          CTitleEN: 'loading Control', // 英文标题
+          CName: 'CLoading', // 控件名称
           CLayout: { // 布局
             percentLayout: { // 百分比布局
               type: Number,
@@ -161,37 +129,16 @@
             }
           },
           CAttribute: {
-            cardItemAttribute: {
-              cardItem: [
-                {
-                  title: '卡片名称1',
-                  contentItem: [
-                    {
-                      content: '卡片内容条目1-1'
-                    },
-                    {
-                      content: '卡片内容条目1-2'
-                    }
-                  ],
-                  time: '2017-10-18', // 卡片时间
-                  imageUrl: 'http://image.woshipm.com/wp-files/2017/10/zhibochanpin-1.png!/both/215x140' // 卡片图片
-                }
-              ],
-              addCardItemFlag: false,
-              cardContentCurrent: 0   // 点击当前卡片内容条目的当前值
-            },
-            cardCurrent: 0, // 点击当前卡片的值
+            loadingText: '拼命加载中....', // 加载文本
+            fullscreenLoading: false, // 是否整页加载
             type: [{
-              value: 'cardSimple',
-              name: '简单卡片'
+              value: 'boxLoading',
+              name: '区域加载'
             }, {
-              value: 'cardImg',
-              name: '带图片的卡片'
-            }, {
-              value: 'cardBasic',
-              name: '基础卡片'
+              value: 'pageLoading',
+              name: '整页加载'
             }], // input 类型 text number......and so on
-            typeModel: 'cardSimple',
+            typeModel: 'boxLoading',
             description: '', // 描述
             height: '', // 高度
             vertical: ['top', 'middle', 'bottom'] // 对齐方式
@@ -258,27 +205,9 @@
 
   .CDom
     color $font-danger
-//    卡片样式
-  .box-card
-    float left
-    width 45%
-    margin-bottom 20px
-    margin-right 20px
-  .item
-    margin-bottom 20px
-  .CCard
-    display inline-block
-    width:100%
-  .cardImg, .card-category, .card-img-item
-    display inline-block
-  .card-img-item
-    margin-right 20px
-    margin-bottom 20px
-    > div
-        .bottom
-          margin-top: 13px
-          line-height: 12px
-  .button
-    padding 0
-    float right
+//    loading
+  .loading
+    width:200px;
+    height:200px;
+    background-color rgba(0, 0, 0, 0.8)
 </style>

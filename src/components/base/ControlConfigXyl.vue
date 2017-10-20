@@ -104,6 +104,12 @@
                 </div>
               </el-dialog>
             </div>
+            <!--loading-->
+            <div v-else-if="indexIn === 'loadingText'">
+              <p>加载文本</p>
+              <el-input type="text" @change="changeConfig()" placeholder="加载文本"
+                        v-model="config[index][indexIn]"></el-input>
+            </div>
             <!-- End-->
             <div v-else-if="indexIn === 'type'">
               <p>控件类型</p>

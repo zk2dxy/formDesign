@@ -118,6 +118,13 @@
                 type: 'card', // 类型
                 component: 'CCard',
                 config: '' // 控件配置,
+              }, {
+                CNameCN: 'Loading加载',
+                CNameEN: 'load',
+                parent: 'form', // 父级对象
+                type: 'load', // 类型
+                component: 'CLoading',
+                config: '' // 控件配置,
               }
             ]
           }
