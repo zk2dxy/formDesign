@@ -1,5 +1,6 @@
 <template>
   <div class="HelloWorld">
+    {{computedFormClass}}
     <div class="leftControlArea" v-if="ControlList!=null" v-for="container in ControlList">
       <draggable
         v-model="container.controls"
@@ -33,6 +34,9 @@
         v-model="list"
         :options="{name:'list',animation: 100,group:{name:'controls'},ghostClass: 'item-block-drag'}"
         style="min-height: 200px;display:flex"
+        :style="[
+          computedFormClass === true ?{'display' : 'flex'} : {'display' : 'block'}
+        ]"
         :class=layoutClass
       >
         <component
@@ -171,6 +175,13 @@
                 type: 'tag', // 类型
                 component: 'CTag',
                 config: '' // 控件配置
+              }, {
+                CNameCN: '按钮',
+                CNameEN: 'button',
+                parent: 'form', // 父级对象
+                type: 'button', // 类型
+                component: 'CButton',
+                config: '' // 控件配置
               }
             ]
           }
@@ -187,6 +198,22 @@
     computed: {
       layoutClass () {
         return calcLayoutClass(this.list)
+      },
+      computedFormClass () {
+        let flex = true
+        if (this.list.length > 0) {
+          let flexClass = 'flexLayout'
+          for (let key in this.list) {
+            console.error(this.list[key].config.currentLayout)
+            flex = (this.list[key].config.currentLayout.value === flexClass) && flex
+            if (!flex) {
+              break
+            }
+          }
+          return flex
+        } else {
+          return flex
+        }
       }
     }
   }
@@ -216,8 +243,6 @@
       float left
       min-height 200px
     .leftControlArea
-      > .item
-        margin 5px
       width 20%
       margin-right 2.5%
       > div
@@ -233,6 +258,6 @@
       min-height 200px
 
   .item
-    margin 20px 0
+    margin: 10px 0
     float left
 </style>

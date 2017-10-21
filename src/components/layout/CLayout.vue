@@ -249,8 +249,9 @@
 
   .CLayout
     extend-click()
+    padding 5px
     min-height 200px
-    border 1px dashed $font-primary
+    box-shadow inset 0 1px 1px rgba(0,0,0,.075), 0 0 1px rgba(102, 175, 233, .6)
     overflow:auto
     overflow-x hidden
     overflow-y hidden

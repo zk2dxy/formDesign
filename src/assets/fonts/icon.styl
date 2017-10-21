@@ -27,6 +27,35 @@
   line-height 100%
   vertical-align middle
 
+/*按钮对齐方式*/
+
+.el-button
+  [class*="el-icon-form-"]:before, [class^=el-icon-form-]:before
+    vertical-align top !important
+
+.el-button--primary
+  span
+    margin-left 2px !important
+
+.el-button--large
+  [class*="el-icon-form-"]:before, [class^=el-icon-form-]:before
+    font-size $font-huge
+    vertical-align top
+
+.el-button--mini
+  span
+    margin-left 0 !important
+  [class*="el-icon-form-"]:before, [class^=el-icon-form-]:before
+    font-size $font-mini
+    vertical-align top
+
+.el-button--small
+  span
+    margin-left 0 !important
+  [class*="el-icon-form-"]:before, [class^=el-icon-form-]:before
+    font-size $font-normal
+    vertical-align top
+
 .el-icon-form-home:before
   content: "\e900"
 

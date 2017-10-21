@@ -160,6 +160,16 @@
                 </div>
               </div>
             </div>
+            <div
+              v-else-if="indexIn === 'size' && (config.CName==='CButton')">
+              12345
+              <p>控件尺寸</p>
+              <el-radio-group v-model="config[index].sizeModel">
+                <el-radio :key="radio.value" v-for="radio in config[index][indexIn]" :label="radio.value">
+                  {{radio.name}}
+                </el-radio>
+              </el-radio-group>
+            </div>
             <div v-else-if="indexIn === 'addCollapseStatus'">
               <el-button type="primary" @click="addItem()"><i class="el-icon-plus"></i></el-button>
               <el-dialog :visible.sync="config.CAttribute.addCollapseStatus" :show-close="false">
@@ -232,7 +242,7 @@
               </el-radio-group>
             </div>
             <!--pyy-->
-            <!--radio,checkbox按钮样式尺寸-->
+            <!--radio,checkbox,button按钮样式尺寸-->
             <div
               v-else-if="indexIn === 'size' && (config.CAttribute.typeModel==='button' || config.CName === 'CSelect')">
               <p>控件尺寸</p>

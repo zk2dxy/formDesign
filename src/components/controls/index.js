@@ -12,6 +12,8 @@ import CRadio from '@/components/controls/CRadio'
 import CCheckbox from '@/components/controls/CCheckbox'
 import CSelect from '@/components/controls/CSelect'
 import CTag from '@/components/controls/CTag'
+import CButton from '@/components/controls/CButton'
+
 const components = [
   ControlConfig,
   ControlConfigPyy,
@@ -25,7 +27,8 @@ const components = [
   CRadio,
   CCheckbox,
   CSelect,
-  CTag
+  CTag,
+  CButton
 ]
 export default {
   install () {

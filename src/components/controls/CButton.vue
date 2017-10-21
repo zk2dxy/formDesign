@@ -1,44 +1,25 @@
 <template>
-  <div class="CCollapse" @click="ControlClick()">
-    <div v-if="config && (!ControlID)" @click.stop>
-      <extend-collapse>
-        <template v-for="(item, index) in config.CAttribute.collapseItem">
-          <extend-collapse-item
-            :title="item.title"
-            :icon="config.Icon.className"
-            :name="item.name"
-            @click="collapseItem(index)">
-            <template slot="title">
-              {{item.title}}
-            </template>
-            <div>{{item.content}}</div>
-          </extend-collapse-item>
-        </template>
-      </extend-collapse>
-    </div>
-    <div v-else>
-      <extend-collapse>
-        <template v-for="(item, index) in ControlConfig.CAttribute.collapseItem">
-          <extend-collapse-item
-            :title="item.title"
-            :icon="ControlConfig.Icon.className"
-            :name="item.name"
-            @click="collapseItem(index)">
-            <template slot="title">
-              {{item.title}}
-            </template>
-            <div>{{item.content}}</div>
-          </extend-collapse-item>
-        </template>
-      </extend-collapse>
-    </div>
+  <div class="CButton" @click="ControlClick()">
+    <el-button
+      v-if="config && (!ControlID)" @click.stop
+    >
+      {{config.CKey.default}}
+    </el-button>
+    <el-button
+      v-else
+      :type="ControlConfig.CAttribute.typeModel"
+      :icon="ControlConfig.Icon.className"
+      :size="ControlConfig.CAttribute.sizeModel"
+    >
+      {{ControlConfig.CKey.default}}
+    </el-button>
   </div>
 </template>
 <script type="text/ecmascript-6">
   // 控件配置、表单配置、数据来源配置
   // props: ['ControlConfig', 'FormConfig', 'OriginDataConfig', 'value'],
   export default {
-    name: `CCollapse`,
+    name: `CButton`,
     props: {
       ControlConfig: {
         type: Object
@@ -65,6 +46,7 @@
       if (this.ControlID && (!this.config.ControlID)) {
         this.config.ControlID = this.ControlID
       }
+      this.getChildrenLayoutValue()
       this.$emit('input', this.config)
     },
     updated () {},
@@ -83,6 +65,14 @@
       ControlClick () {
         this.emitConfig()
       },
+      // 获得焦点事件
+      focusAction () {
+        this.emitConfig()
+      },
+      // 失去焦点事件
+      blurAction () {
+        this.emitConfig()
+      },
       // 值变更事件
       changeAction () {
         this.emitConfig()
@@ -97,18 +87,36 @@
         }
         this.$emit(`getValue`, this.config)
       },
-      collapseItem (currentIndex) {
-        this.config.CAttribute.currentValue = currentIndex
+      getChildrenLayoutValue () {
+        this.config.currentLayout = null
+        if (this.config.CLayout === '') {
+          return
+        }
+        for (let key in this.config.CLayout) {
+          if (this.config.CLayout[key].status === false) {
+            continue
+          } else {
+            this.config.currentLayout = this.config.CLayout[key]
+            break
+          }
+        }
+      }
+    },
+    computed: {
+      labelWidthCalc () {
+        if (this.config.labelWidth) {
+          return this.config.labelWidth + 'px'
+        }
       }
     },
     data () {
       return {
         initConfig: {
           ControlID: '', // 表单生成后的控件id
-          CBelong: 'others',
-          CTitleCN: '折叠面板', // 标题
-          CTitleEN: 'collapse Control', // 英文标题
-          CName: 'CCollapse', // 控件名称
+          CBelong: 'form',
+          CTitleCN: '按钮', // 标题
+          CTitleEN: 'button', // 英文标题
+          CName: 'CButton', // 控件名称
           layoutModel: 'flexLayout',
           currentLayout: null,
           CLayout: [ // 布局
@@ -146,22 +154,44 @@
             }
           ],
           CAttribute: {
-            typeModel: 'collapse',
-            collapseItem: [
-              {
-                name: '0', // 面板的唯一标识符
-                title: '面板标题', // 面板标题
-                content: '面板内容' // 面板内容
-              }
-            ],
-            addCollapseStatus: false,
-            currentValue: 0, // 点击各面板选项的当前值
+            type: [{
+              value: 'primary',
+              name: '提交按钮',
+              default: 'primary'
+            }, {
+              value: 'danger',
+              name: '审批按钮',
+              default: 'danger'
+            }, {
+              value: '',
+              name: '普通按钮',
+              default: ''
+            }, {
+              value: 'info',
+              name: '详情按钮',
+              default: 'info'
+            }], // input 类型 text number......and so on
+            typeModel: 'primary',
+            size: [{
+              value: 'large',
+              name: '大'
+            }, {
+              value: '',
+              name: '普通'
+            }, {
+              value: 'small',
+              name: '小'
+            }, {
+              value: 'mini',
+              name: '微型'
+            }],
+            sizeModel: '',
             description: '', // 描述
             height: '', // 高度
             vertical: ['top', 'middle', 'bottom'] // 对齐方式
           },
           CKey: { // 控件值
-            default: '', // 默认值
+            default: '按钮', // 默认值
             type: '', // 控件值类型
             keyMethods: '' // 计算控件值方法
           },
@@ -205,8 +235,10 @@
             methodName: 'save', // 英文名称 (Example)
             action: '/form/saveAction' // postAction(接口名称)
           }]
-
-        }
+        },
+        currentConfig: null,
+        config: null,
+        validate: ''
       }
     }
   }
