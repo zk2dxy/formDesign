@@ -111,6 +111,27 @@
                 type: 'collapse', // 类型
                 component: 'CCollapse',
                 config: '' // 控件配置,
+              }, {
+                CNameCN: 'Card卡片',
+                CNameEN: 'card',
+                parent: 'form', // 父级对象
+                type: 'card', // 类型
+                component: 'CCard',
+                config: '' // 控件配置,
+              }, {
+                CNameCN: 'Loading加载',
+                CNameEN: 'load',
+                parent: 'form', // 父级对象
+                type: 'load', // 类型
+                component: 'CLoading',
+                config: '' // 控件配置,
+              }, {
+                CNameCN: 'Page分页',
+                CNameEN: 'page',
+                parent: 'form', // 父级对象
+                type: 'page', // 类型
+                component: 'CPage',
+                config: '' // 控件配置,
               }
             ]
           }
@@ -129,31 +150,42 @@
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   @import "~assets/css/stylus/mixin"
+  .layout-flex
+    display flex
+
+  .layout-pixel
+    display block
+
+  .layout-col
+    display block
+
+  .layout-percent
+    display block
+
   .dragBLOCK
+    min-height 200px
+    background lightpink
     > div
       margin-bottom 10px
 
   .HelloWorld
     > div
       float left
-      min-height 100px
+      min-height 200px
     .leftControlArea
       width 20%
       margin-right 2.5%
       > div
+        float left
         display block
-        .singleControl
-          flex 0 46%
-          margin 0 2%
-          *
-            width 100%
+
     .formContainer
       width 55%
     .rightControlArea
       width 20%
       margin-left 2.5%
     .draggable
-      min-height 100px
+      min-height 200px
 
   .item
     margin 20px 0

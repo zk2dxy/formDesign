@@ -1,29 +1,44 @@
 <template>
-  <div class="CCollapse" @click="ControlClick()">
+  <div class="CLoading" @click="ControlClick()">
     <div v-if="config && (!ControlID)" @click.stop>
       <div class="title">
         {{config.CTitleCN}}
       </div>
-
+      <!--Loading-->
+      <div class="loading"
+           v-if="config.CAttribute.typeModel === 'boxLoading'"
+           v-loading="true"
+           :element-loading-text="config.CAttribute.loadingText">
+      </div>
+      <div v-if="config.CAttribute.typeModel === 'pageLoading'">
+        <el-button
+          type="primary"
+          @click="openFullScreen"
+          :element-loading-text="config.CAttribute.loadingText"
+          v-loading.fullscreen.lock="config.CAttribute.fullscreenLoading">
+          显示整页加载，3 秒后消失
+        </el-button>
+      </div>
     </div>
     <div v-else>
       <div class="title">
         {{ControlConfig.CTitleCN}}
       </div>
-      <extend-collapse>
-        <template v-for="(item, index) in ControlConfig.CAttribute.collapseItem">
-          <extend-collapse-item
-            :title="item.title"
-            :icon="ControlConfig.Icon.className"
-            :name="item.name"
-            @click="collapseItem(index)">
-            <template slot="title">
-              {{item.title}}
-            </template>
-            <div>{{item.content}}</div>
-          </extend-collapse-item>
-        </template>
-      </extend-collapse>
+      <!--Loading-->
+      <div class="loading"
+           v-if="ControlConfig.CAttribute.typeModel === 'boxLoading'"
+           v-loading="true"
+           :element-loading-text="ControlConfig.CAttribute.loadingText">
+      </div>
+      <div v-if="ControlConfig.CAttribute.typeModel === 'pageLoading'">
+        <el-button
+          type="primary"
+          @click="openFullScreen"
+          :element-loading-text="ControlConfig.CAttribute.loadingText"
+          v-loading.fullscreen.lock="ControlConfig.CAttribute.fullscreenLoading">
+          显示整页加载，3 秒后消失
+        </el-button>
+      </div>
     </div>
   </div>
 </template>
@@ -31,7 +46,7 @@
   // 控件配置、表单配置、数据来源配置
   // props: ['ControlConfig', 'FormConfig', 'OriginDataConfig', 'value'],
   export default {
-    name: `CCollapse`,
+    name: `CLoading`,
     props: {
       ControlConfig: {
         type: Object
@@ -90,8 +105,12 @@
         }
         this.$emit(`getValue`, this.config)
       },
-      collapseItem (currentIndex) {
-        this.config.CAttribute.currentValue = currentIndex
+//      加载
+      openFullScreen () {
+        this.config.CAttribute.fullscreenLoading = true
+        setTimeout(() => {
+          this.config.CAttribute.fullscreenLoading = false
+        }, 3000)
       }
     },
     data () {
@@ -99,9 +118,8 @@
         initConfig: {
           ControlID: '', // 表单生成后的控件id
           CBelong: 'others',
-          CTitleCN: '折叠面板', // 标题
-          CTitleEN: 'collapse Control', // 英文标题
-          CName: 'CCollapse', // 控件名称
+          CTitleEN: 'loading Control', // 英文标题
+          CName: 'CLoading', // 控件名称
           CLayout: { // 布局
             percentLayout: { // 百分比布局
               type: Number,
@@ -125,16 +143,16 @@
             }
           },
           CAttribute: {
-            collapseItem: [
-              {
-                name: '0', // 面板的唯一标识符
-                title: '面板标题', // 面板标题
-                content: '面板内容' // 面板内容
-              }
-            ],
-            addCollapseStatus: false,
-            currentValue: 0, // 点击各面板选项的当前值
-            typeModel: 'collapse',
+            loadingText: '拼命加载中....', // 加载文本
+            fullscreenLoading: false, // 是否整页加载
+            type: [{
+              value: 'boxLoading',
+              name: '区域加载'
+            }, {
+              value: 'pageLoading',
+              name: '整页加载'
+            }], // input 类型 text number......and so on
+            typeModel: 'boxLoading',
             description: '', // 描述
             height: '', // 高度
             vertical: ['top', 'middle', 'bottom'] // 对齐方式
@@ -201,4 +219,9 @@
 
   .CDom
     color $font-danger
+//    loading
+  .loading
+    width:200px;
+    height:200px;
+    background-color rgba(0, 0, 0, 0.8)
 </style>
