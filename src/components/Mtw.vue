@@ -22,6 +22,7 @@
           </div>
         </div>
       </draggable>
+      </br></br>
     </div>
     <div class="formContainer">
       <draggable
@@ -42,6 +43,9 @@
           </component>
         </div>
       </draggable>
+      <c-dialog
+        @getValue="showAttribute2"
+      ></c-dialog>
       {{list}}
     </div>
     <div class="rightControlArea">
@@ -137,12 +141,39 @@
                 type: 'line', // 类型
                 component: 'CProgress',
                 config: '' // 控件配置,
+              },
+              {
+                CNameCN: '标记',
+                CNameEN: 'badge',
+                parent: 'form', // 父级对象
+                type: 'number', // 类型
+                component: 'CBadge',
+                config: '' // 控件配置,
+              },
+              {
+                CNameCN: '标签页',
+                CNameEN: 'tabs',
+                parent: 'form', // 父级对象
+                type: '', // 类型
+                component: 'CTabs',
+                config: '' // 控件配置,
+              },
+              {
+                CNameCN: '弹框',
+                CNameEN: 'MessageBox',
+                parent: 'form', // 父级对象
+                type: 'MessageBox', // 类型
+                component: 'CMessageBox',
+                config: '' // 控件配置,
               }
             ]
           }
         }
       },
       showAttribute (data, item) {
+        this.Config.CConfig = data
+      },
+      showAttribute2 (data) {
         this.Config.CConfig = data
       },
       changeView (config) {

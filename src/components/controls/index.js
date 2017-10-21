@@ -13,6 +13,10 @@ import CCheckbox from '@/components/controls/CCheckbox'
 import CSelect from '@/components/controls/CSelect'
 import CTag from '@/components/controls/CTag'
 import CProgress from '@/components/controls/CProgress'
+import CBadge from '@/components/controls/CBadge'
+import CTabs from '@/components/controls/CTabs'
+import CDialog from '@/components/controls/CDialog'
+import CMessageBox from '@/components/controls/CMessageBox'
 const components = [
   ControlConfig,
   ControlConfigPyy,
@@ -27,7 +31,11 @@ const components = [
   CCheckbox,
   CSelect,
   CTag,
-  CProgress
+  CProgress,
+  CBadge,
+  CTabs,
+  CDialog,
+  CMessageBox
 ]
 export default {
   install () {
