@@ -4,39 +4,29 @@
       <div class="title">
         {{config.CTitleCN}}
       </div>
-      <extend-input
-        @focus="focusAction()"
-        @blur="blurAction()"
-        :type="config.CAttribute.typeModel"
-        :placeholder="config.CAttribute.placeholder"
-        v-model="config.CKey.default"
-        :icon="config.Icon.className"
-        :position="config.Icon.positionModel"
-      >
-        <template v-if="config.CAttribute.prepend!=''" slot="prepend"><span v-html="config.CAttribute.prepend"></span>
-        </template>
-        <template v-if="config.CAttribute.append!=''" slot="append"><span v-html="config.CAttribute.append"></span>
-        </template>
-      </extend-input>
+      <el-popover
+        ref="popover1"
+        :placement="config.CAttribute.placement.placement"
+        :title="config.CAttribute.title"
+        :width="config.CAttribute.width"
+        :trigger="config.CAttribute.triggerModel"
+        :content="config.CAttribute.content">
+      </el-popover>
+      <el-button v-popover:popover1>激活</el-button>
     </div>
     <div v-else>
       <div class="title">
         {{ControlConfig.CTitleCN}}
       </div>
-      <extend-input
-        @focus="focusAction()"
-        @blur="blurAction()"
-        :type="ControlConfig.CAttribute.typeModel"
-        :placeholder="ControlConfig.CAttribute.placeholder"
-        v-model="ControlConfig.CKey.default"
-        :icon="ControlConfig.Icon.className"
-        :position="ControlConfig.Icon.positionModel"
-      >
-        <template v-if="ControlConfig.CAttribute.prepend!=''" slot="prepend"><span
-          v-html="ControlConfig.CAttribute.prepend"></span></template>
-        <template v-if="ControlConfig.CAttribute.append!=''" slot="append"><span
-          v-html="ControlConfig.CAttribute.append"></span></template>
-      </extend-input>
+      <el-popover
+        ref="popover1"
+        :placement="ControlConfig.CAttribute.placement.placement"
+        :title="ControlConfig.CAttribute.title"
+        :width="ControlConfig.CAttribute.width"
+        :trigger="ControlConfig.CAttribute.triggerModel"
+        :content="ControlConfig.CAttribute.content">
+      </el-popover>
+      <el-button v-popover:popover1>激活</el-button>
     </div>
   </div>
 </template>
@@ -44,7 +34,7 @@
   // 控件配置、表单配置、数据来源配置
   // props: ['ControlConfig', 'FormConfig', 'OriginDataConfig', 'value'],
   export default {
-    name: `CInput`,
+    name: `CPopover`,
     props: {
       ControlConfig: {
         type: Object
@@ -117,9 +107,9 @@
         initConfig: {
           ControlID: '', // 表单生成后的控件id
           CBelong: 'form',
-          CTitleCN: '标记', // 标题
-          CTitleEN: 'badge Control', // 英文标题
-          CName: 'CBadge', // 控件名称
+          CTitleCN: '输入框', // 标题
+          CTitleEN: 'Popover Control', // 英文标题
+          CName: 'CPopover', // 控件名称
           CLayout: { // 布局
             percentLayout: { // 百分比布局
               type: Number,
@@ -143,36 +133,96 @@
             }
           },
           CAttribute: {
-            badgeValue: [{
-              type: string,
-              value: '',
-
+            trigger: [{
+              value: 'click',
+              name: '点击'
             }, {
-              type: number,
-              value: 10,
-              max: 100
-            }], // badge值类型 string、number
-            typeModel: 'CBadge',
-            typeDefaultSelect: number, // badge当前类型
+              value: 'focus',
+              name: '聚焦'
+            }, {
+              value: 'hover',
+              name: '悬浮'
+            }, {
+              value: 'manual',
+              name: 'manual'
+            }], // Popover 触发方式 click/focus/hover/manual
+            triggerModel: 'click',
+            title: '提示',
+            width: '200', // 宽度
             description: '', // 描述
+            content: '这是一段内容,这是一段内容,这是一段内容,这是一段内容。',
+            placement: {
+              placement: 'top',
+              placementable: [
+                {
+                  value: 'top',
+                  name: '上'
+                }, {
+                  value: 'top-start',
+                  name: '上左'
+                }, {
+                  value: 'top-end',
+                  name: '上右'
+                }, {
+                  value: 'bottom',
+                  name: '下'
+                }, {
+                  value: 'bottom-start',
+                  name: '下左'
+                }, {
+                  value: 'bottom-end',
+                  name: '下右'
+                }, {
+                  value: 'left',
+                  name: '左'
+                }, {
+                  value: 'left-start',
+                  name: '左上'
+                }, {
+                  value: 'left-end',
+                  name: '左下'
+                }, {
+                  value: 'right',
+                  name: '右'
+                }, {
+                  value: 'right-start',
+                  name: '右上'
+                }, {
+                  value: 'right-end',
+                  name: '右下'
+                }
+              ]
+            }
           },
-//          CKey: { // 控件值
-//            default: '', // 默认值
-//            type: '', // 控件值类型
-//            keyMethods: '' // 计算控件值方法
-//          },
-          badgeStatus: { // 状态
-            hidden: false, // 是否应用状态
-            hiddenAble: [
+          Status: { // 状态
+            status: false, // 是否应用状态
+            rules: [
               {
-                value: false,
-                name: '显示'
+                value: 'readonly',
+                name: '只读'
               },
               {
-                value: true,
+                value: '',
                 name: '隐藏'
               }
-            ]
+            ], // 控件规则集合
+            ruleList: [] // 选择集合
+          },
+          Icon: {
+            status: false, // 是否启用icon
+            chooseStatus: false, // 是否启用CIcon控件去选择图标
+            position: [{ // 控件位置 (中文显示名称/英文属性名称)
+              name: '左侧',
+              value: 'left'
+            }, {
+              name: '右侧',
+              value: 'right'
+            }],
+            positionModel: '', // 绑定的图标位置
+            className: '', // 类名
+            content: '', // 图标content
+            title: '', // 图标标题
+            library: '' // 图标库
           },
           CValidate: {
             status: false,

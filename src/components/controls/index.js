@@ -20,6 +20,7 @@ import CBadge from '@/components/controls/CBadge'
 import CTabs from '@/components/controls/CTabs'
 import CDialog from '@/components/controls/CDialog'
 import CMessageBox from '@/components/controls/CMessageBox'
+import CPopover from '@/components/controls/CPopover'
 const components = [
   ControlConfig,
   ControlConfigPyy,
@@ -41,7 +42,8 @@ const components = [
   CBadge,
   CTabs,
   CDialog,
-  CMessageBox
+  CMessageBox,
+  CPopover
 ]
 export default {
   install () {

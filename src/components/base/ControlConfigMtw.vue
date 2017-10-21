@@ -99,7 +99,7 @@
               </el-radio-group>
             </div> <!--进度条的状态属性-->
 
-            <div v-if="indexIn === 'badgeValue'"> <!--badge标记的基础值属性-->
+            <div v-else-if="indexIn === 'badgeValue'"> <!--badge标记的基础值属性-->
               <p>标记值</p>
               <template v-if="config[index].typeModel === 'string' && !config[index].isDot.dotStatus">
                 <p>字符串值</p>
@@ -115,7 +115,6 @@
                           v-model.number="config[index][indexIn].max"></el-input>
               </template>
             </div> <!--badge标记的基础值属性-->
-
             <div v-else-if="indexIn === 'isDot'"> <!--badge标记的is-dot（点）属性-->
               <p>显示类型</p>
               <el-radio-group v-model="config[index][indexIn].dotStatus">
@@ -161,7 +160,7 @@
             <div v-else-if="indexIn === 'title'"> <!--Dialog对话框的title属性-->
               <p>控件标题</p>
               <el-input type="input" @change="changeConfig()" v-model="config[index][indexIn]"></el-input>
-            </div> <!--Dialog对话框的title属性-->
+            </div> <!--Dialog对话框、Popover的title属性-->
             <div v-else-if="indexIn === 'size'"> <!--Dialog对话框的size属性-->
               <p>控件大小</p>
               <el-radio-group v-model="config[index][indexIn].currentSize">
@@ -236,6 +235,30 @@
               <el-input type="input" @change="changeConfig()" v-model="config[index][indexIn]"></el-input>
             </div> <!--弹框MessageBox的cancelButtonText属性-->
 
+            <div v-else-if="indexIn === 'trigger'"> <!--Popover的trigger属性-->
+              <p>触发方式</p>
+              <el-radio-group v-model="config[index].triggerModel">
+                <el-radio :key="radio.value" v-for="radio in config[index][indexIn]" :label="radio.value">
+                  {{radio.name}}
+                </el-radio>
+              </el-radio-group>
+            </div> <!--Popover弹出框的trigger属性-->
+            <div v-else-if="indexIn === 'width'"> <!--Dialog对话框的title属性-->
+              <p>控件宽度</p>
+              <el-input type="input" @change="changeConfig()" v-model="config[index][indexIn]"></el-input>
+            </div> <!--Popover弹出框的width属性-->
+            <div v-else-if="indexIn === 'content'">
+              <p>控件内容</p>
+              <el-input type="textarea" @change="changeConfig()" v-model="config[index][indexIn]"></el-input>
+            </div> <!--Popover弹出框的content属性-->
+            <div v-else-if="indexIn === 'placement'"> <!--Popover弹出框的位置属性-->
+              <p>控件位置</p>
+              <el-radio-group v-model="config[index][indexIn].placement">
+                <el-radio :key="radio.name" v-for="radio in config[index][indexIn].placementable" :label="radio.name">
+                  {{radio.name}}
+                </el-radio>
+              </el-radio-group>
+            </div> <!--Popover弹出框的位置属性-->
           </div>
         </div> <!--CAttribute结束-->
 
@@ -309,7 +332,6 @@
             </div>
           </div>
         </div>
-
         <div v-else-if="index === 'MessageBoxStatus'"> <!--弹框MessageBox的状态属性-->
           <div v-for="(itemIn, indexIn) in item">
             <div v-if="indexIn === 'showConfirmButton'">

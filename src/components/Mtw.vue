@@ -126,44 +126,52 @@
                 children: [[]], // 绑定值props
                 childrenDefault: [[]]
               },
-              {
-                CNameCN: '标签',
-                CNameEN: 'tag',
-                parent: 'form', // 父级对象
-                type: 'tag', // 类型
-                component: 'CTag',
-                config: '' // 控件配置
-              },
-              {
-                CNameCN: '进度条',
-                CNameEN: 'progress',
-                parent: 'form', // 父级对象
-                type: 'line', // 类型
-                component: 'CProgress',
-                config: '' // 控件配置,
-              },
-              {
-                CNameCN: '标记',
-                CNameEN: 'badge',
-                parent: 'form', // 父级对象
-                type: 'number', // 类型
-                component: 'CBadge',
-                config: '' // 控件配置,
-              },
-              {
-                CNameCN: '标签页',
-                CNameEN: 'tabs',
-                parent: 'form', // 父级对象
-                type: '', // 类型
-                component: 'CTabs',
-                config: '' // 控件配置,
-              },
+//              {
+//                CNameCN: '标签',
+//                CNameEN: 'tag',
+//                parent: 'form', // 父级对象
+//                type: 'tag', // 类型
+//                component: 'CTag',
+//                config: '' // 控件配置
+//              },
+//              {
+//                CNameCN: '进度条',
+//                CNameEN: 'progress',
+//                parent: 'form', // 父级对象
+//                type: 'line', // 类型
+//                component: 'CProgress',
+//                config: '' // 控件配置,
+//              },
+//              {
+//                CNameCN: '标记',
+//                CNameEN: 'badge',
+//                parent: 'form', // 父级对象
+//                type: 'number', // 类型
+//                component: 'CBadge',
+//                config: '' // 控件配置,
+//              },
+//              {
+//                CNameCN: '标签页',
+//                CNameEN: 'tabs',
+//                parent: 'form', // 父级对象
+//                type: '', // 类型
+//                component: 'CTabs',
+//                config: '' // 控件配置,
+//              },
               {
                 CNameCN: '弹框',
                 CNameEN: 'MessageBox',
                 parent: 'form', // 父级对象
                 type: 'MessageBox', // 类型
                 component: 'CMessageBox',
+                config: '' // 控件配置,
+              },
+              {
+                CNameCN: '弹出框',
+                CNameEN: 'Popover',
+                parent: 'form', // 父级对象
+                type: 'Popover', // 类型
+                component: 'CPopover',
                 config: '' // 控件配置,
               }
             ]
