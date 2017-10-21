@@ -6,7 +6,7 @@
       </div>
       <div v-if="config.CAttribute.typeModel==='radio'">
         <el-radio-group
-          v-model="config.CAttribute.defaultRadioSelected">
+          v-model="config.CKey.default">
             <span class="radio"
                  @click="SelectedChange(item.label)"
                  v-for="(item, index) in config.CAttribute.itemAttr"
@@ -20,7 +20,7 @@
       </div>
       <div v-else>
         <el-radio-group
-          v-model="config.CAttribute.defaultRadioSelected"
+          v-model="config.CKey.default"
           :size="config.CAttribute.sizeModel"
           :text-color="config.CAttribute.textColor"
           :fill="config.CAttribute.fillColor">
@@ -42,7 +42,7 @@
       </div>
       <div v-if="ControlConfig.CAttribute.typeModel==='radio'">
         <el-radio-group
-          v-model="ControlConfig.CAttribute.defaultRadioSelected">
+          v-model="ControlConfig.CKey.default">
             <!--增加span修改禁用状态-->
             <span class="radio"
                   @click="SelectedChange(item.label)"
@@ -58,7 +58,7 @@
       </div>
       <div v-else>
         <el-radio-group
-          v-model="ControlConfig.CAttribute.defaultRadioSelected"
+          v-model="ControlConfig.CKey.default"
           :size="ControlConfig.CAttribute.sizeModel"
           :text-color="ControlConfig.CAttribute.textColor"
           :fill="ControlConfig.CAttribute.fillColor"

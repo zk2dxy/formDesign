@@ -10,7 +10,9 @@ import CCollapse from '@/components/controls/CCollapse'
 import CRadio from '@/components/controls/CRadio'
 import CCheckbox from '@/components/controls/CCheckbox'
 import CSelect from '@/components/controls/CSelect'
-import CTag from '@/components/controls/CTag'
+import CSwitch from '@/components/controls/CSwitch'
+import CSlider from '@/components/controls/CSlider'
+import CDateTimePicker from '@/components/controls/CDateTimePicker'
 const components = [
   ControlConfig,
   ControlConfigPyy,
@@ -23,7 +25,9 @@ const components = [
   CRadio,
   CCheckbox,
   CSelect,
-  CTag
+  CSwitch,
+  CSlider,
+  CDateTimePicker
 ]
 export default {
   install () {

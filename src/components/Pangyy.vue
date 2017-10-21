@@ -114,6 +114,27 @@
                 type: 'select', // 类型
                 component: 'CSelect',
                 config: '' // 控件配置,
+              }, {
+                CNameCN: '开关',
+                CNameEN: 'switch',
+                parent: 'form', // 父级对象
+                type: 'switch', // 类型
+                component: 'CSwitch',
+                config: '' // 控件配置,
+              }, {
+                CNameCN: '滑块',
+                CNameEN: 'slider',
+                parent: 'form', // 父级对象
+                type: 'slider', // 类型
+                component: 'CSlider',
+                config: '' // 控件配置,
+              }, {
+                CNameCN: '日期时间选择器',
+                CNameEN: 'dateTimePicker',
+                parent: 'form', // 父级对象
+                type: 'dateTimePicker', // 类型
+                component: 'CDateTimePicker',
+                config: '' // 控件配置,
               }
             ]
           }
@@ -143,7 +164,7 @@
       width 20%
       margin-right 2.5%
       > div
-        display flex
+        display block
         .singleControl
           flex 0 46%
           margin 0 2%

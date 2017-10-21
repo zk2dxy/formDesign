@@ -23,11 +23,15 @@
             remote
             :remote-method="RemoteMethod"
             :loading="loading"
+            :loading-text="ControlConfig.CAttribute.loadingText"
+            :no-match-text="ControlConfig.CAttribute.noMatchText"
+            :no-data-text="ControlConfig.CAttribute.noDataText"
             :placeholder="ControlConfig.CAttribute.placeholder">
             <el-option
               v-for="item in options"
               :key="item.label"
               :value="item.label"
+              :label="item.showContent"
               :disabled="item.isDisabled">
               <div @click="SelectedChange(item.label)">{{item.showContent}}</div>
             </el-option>
@@ -42,11 +46,14 @@
             :clearable="ControlConfig.CAttribute.isSelectClearable"
             :filterable="ControlConfig.CAttribute.isSelectFilterable"
             :allow-create="ControlConfig.CAttribute.isSelectCreate"
+            :no-match-text="ControlConfig.CAttribute.noMatchText"
+            :no-data-text="ControlConfig.CAttribute.noDataText"
             :placeholder="ControlConfig.CAttribute.placeholder">
             <el-option
               v-for="item in ControlConfig.CAttribute.itemAttr"
               :key="item.label"
               :value="item.label"
+              :label="item.showContent"
               :disabled="item.isDisabled">
               <div @click="SelectedChange(item.label)">{{item.showContent}}</div>
             </el-option>
@@ -66,15 +73,19 @@
             remote
             :remote-method="RemoteMethodGroup"
             :loading="loading"
+            :loading-text="ControlConfig.CAttribute.loadingText"
+            :no-match-text="ControlConfig.CAttribute.noMatchText"
+            :no-data-text="ControlConfig.CAttribute.noDataText"
             :placeholder="ControlConfig.CAttribute.placeholder">
             <el-option-group
-              v-for="group in options"
+              v-for="group in optionsGroup"
               :key="group.label"
               :label="group.label">
               <el-option
                 v-for="item in group.options"
                 :key="item.label"
                 :value="item.label"
+                :label="item.showContent"
                 :disabled="item.isDisabled">
                 <div @click="SelectedChange(item.label)">{{item.showContent}}</div>
               </el-option>
@@ -90,6 +101,8 @@
             :clearable="ControlConfig.CAttribute.isSelectClearable"
             :filterable="ControlConfig.CAttribute.isSelectFilterable"
             :allow-create="ControlConfig.CAttribute.isSelectCreate"
+            :no-match-text="ControlConfig.CAttribute.noMatchText"
+            :no-data-text="ControlConfig.CAttribute.noDataText"
             :placeholder="ControlConfig.CAttribute.placeholder">
             <el-option-group
               v-for="group in ControlConfig.CAttribute.itemAttrSelectGroup"
@@ -99,6 +112,7 @@
                 v-for="item in group.options"
                 :key="item.label"
                 :value="item.label"
+                :label="item.showContent"
                 :disabled="item.isDisabled">
                 <div @click="SelectedChange(item.label)">{{item.showContent}}</div>
               </el-option>
@@ -172,33 +186,30 @@
         }
       },
       RemoteMethodGroup (query) {
-        this.options = []
-//        console.log('query', query)
-//        if (query !== '') {
-//          this.loading = true
-//          var optio
-//          this.options = this.config.CAttribute.itemAttrSelectGroup.map(item => {
-//             optio = item.options.map(itemOptions => {
-//              if (itemOptions.showContent === query) {
-//                return item
-//              }
-//            })
-//            console.log('option', optio)
-//            return optio
-//          })
-//        }
+        if (query !== '') {
+          this.loading = true
+          setTimeout(() => {
+            this.loading = false
+            this.config.CAttribute.itemAttrSelectGroup.map(item => {
+              item.options.map(itemOptions => {
+                if (itemOptions.label === query) {
+                  this.optionsGroup[0] = item
+                }
+              })
+            })
+          }, 200)
+        } else {
+          this.optionsGroup = []
+        }
       },
       RemoteMethod (query) {
-        this.options = []
         if (query !== '') {
           this.loading = true
           setTimeout(() => {
             this.loading = false
             this.options = this.config.CAttribute.itemAttr.filter(item => {
-              return item.showContent.toLowerCase()
-                .indexOf(query.toLowerCase()) > -1
+              return item.label === query
             })
-            console.log('oo', this.options)
           }, 20)
         } else {
           this.options = []
@@ -212,6 +223,8 @@
       return {
         loading: false,
         options: [],
+        // [{label: '', showContent: '', isDisabled: false}]}
+        optionsGroup: [{label: 'aa', options: [{label: '', showContent: '', isDisabled: false}]}],
         initConfig: {
           ControlID: '', // 表单生成后的控件id
           CBelong: 'form',
@@ -247,7 +260,7 @@
             }, {
               value: 'selectGroup',
               name: '选项分组'
-            }], // Checkbox 类型 普通类型和按钮类型
+            }],
             typeModel: 'select',
             description: '', // 描述
             size: [{
@@ -290,13 +303,16 @@
             isSelectClearable: false, // 单选时是否显示清除选项
             isSelectFilterable: false, // 是否可搜索
             isSelectRemote: false, // 是否可远程搜索
-            isSelectCreate: false // 是否可创建
+            isSelectCreate: false, // 是否可创建
+            loadingText: 'loading', // 远程加载时的文字
+            noMatchText: 'no match', // 搜索条件无匹配时的文字
+            noDataText: 'no data' // 选项为空时显示的文字
           },
-          CKey: { // 控件值
-            default: '', // 默认值
-            type: '', // 控件值类型
-            keyMethods: '' // 计算控件值方法
-          },
+//          CKey: { // 控件值
+//            default: '', // 默认值
+//            type: '', // 控件值类型
+//            keyMethods: '' // 计算控件值方法
+//          },
           Status: { // 状态
             status: false, // 是否应用状态
             rules: [

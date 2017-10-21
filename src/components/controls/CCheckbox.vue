@@ -12,45 +12,40 @@
       </div>
       <div v-if="ControlConfig.CAttribute.typeModel==='checkbox'">
         <div>
-          <el-checkbox
+          <extend-checkbox
             :indeterminate="ControlConfig.CAttribute.indeterminateCheckbox" v-model="ControlConfig.CAttribute.checkAllCheckbox"
             @change="CheckAllChange"
-            v-if="ControlConfig.CAttribute.showAllCheckbox">全选</el-checkbox>
+            v-if="ControlConfig.CAttribute.showAllCheckbox">全选</extend-checkbox>
         </div>
-        <el-checkbox-group
+        <extend-checkbox-group
           v-model="ControlConfig.CAttribute.defaultCheckboxSelected"
-          @change="SelectedChange"
           :min="ControlConfig.CAttribute.ableSelectedMin"
           :max="ControlConfig.CAttribute.ableSelectedMax">
-          <span class="checkbox"
-                @click="SelectedChange(item.label)"
-                v-for="(item, index) in ControlConfig.CAttribute.itemAttr"
-                :key="item.label">
-              <el-checkbox
-                :label="item.label"
-                :disabled="item.isDisabled">
-                {{item.showContent}}</el-checkbox>
-          </span>
-        </el-checkbox-group>
+            <extend-checkbox
+              @click="SelectedChange(item.label)"
+              v-for="(item, index) in ControlConfig.CAttribute.itemAttr"
+              :key="item.label"
+              :label="item.label"
+              :disabled="item.isDisabled">
+              {{item.showContent}}</extend-checkbox>
+        </extend-checkbox-group>
       </div>
       <div v-else>
-        <el-checkbox-group
+        <extend-checkbox-group
           v-model="ControlConfig.CAttribute.defaultCheckboxSelected"
           :size="ControlConfig.CAttribute.sizeModel"
           :text-color="ControlConfig.CAttribute.textColor"
           :fill="ControlConfig.CAttribute.fillColor"
           :min="ControlConfig.CAttribute.ableSelectedMin"
           :max="ControlConfig.CAttribute.ableSelectedMax">
-          <span class="checkbox"
-                @click="SelectedChange(item.label)"
-                v-for="(item, index) in ControlConfig.CAttribute.itemAttr"
-                :key="item.label">
-              <el-checkbox-button
-                :label="item.label"
-                :disabled="item.isDisabled">
-                {{item.showContent}}</el-checkbox-button>
-          </span>
-        </el-checkbox-group>
+            <extend-checkbox-button
+              @click="SelectedChange(item.label)"
+              v-for="(item, index) in ControlConfig.CAttribute.itemAttr"
+              :key="item.label"
+              :label="item.label"
+              :disabled="item.isDisabled">
+              {{item.showContent}}</extend-checkbox-button>
+        </extend-checkbox-group>
       </div>
     </div>
   </div>
@@ -101,7 +96,7 @@
       },
       SelectedChange (label) {
         this.config.CAttribute.itemAttr.forEach((item, index) => {
-          if (label[label.length - 1] === item.label) {
+          if (label === item.label) {
             this.config.CAttribute.currentSelected = index
           }
         })
@@ -183,11 +178,11 @@
             ableSelectedMin: 1, // 可被勾选的 checkbox 的最小数量
             ableSelectedMax: 2 // 可被勾选的 checkbox 的最大数量
           },
-          CKey: { // 控件值
-            default: '', // 默认值
-            type: '', // 控件值类型
-            keyMethods: '' // 计算控件值方法
-          },
+//          CKey: { // 控件值
+//            default: '', // 默认值
+//            type: '', // 控件值类型
+//            keyMethods: '' // 计算控件值方法
+//          },
           Status: { // 状态
             status: false, // 是否应用状态
             rules: [
