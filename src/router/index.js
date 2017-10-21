@@ -22,5 +22,9 @@ export default new Router({
     path: '/Xyl',
     name: 'Xyl',
     component: Xyl
+  }, {
+    path: '/Mtw',
+    name: 'Mtw',
+    component: Mtw
   }]
 })

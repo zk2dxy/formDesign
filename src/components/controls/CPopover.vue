@@ -1,29 +1,32 @@
 <template>
-  <div class="CCollapse" @click="ControlClick()">
+  <div class="CInput" @click="ControlClick()">
     <div v-if="config && (!ControlID)" @click.stop>
       <div class="title">
         {{config.CTitleCN}}
       </div>
-
+      <el-popover
+        ref="popover1"
+        :placement="config.CAttribute.placement.placement"
+        :title="config.CAttribute.title"
+        :width="config.CAttribute.width"
+        :trigger="config.CAttribute.triggerModel"
+        :content="config.CAttribute.content">
+      </el-popover>
+      <el-button v-popover:popover1>激活</el-button>
     </div>
     <div v-else>
       <div class="title">
         {{ControlConfig.CTitleCN}}
       </div>
-      <extend-collapse>
-        <template v-for="(item, index) in ControlConfig.CAttribute.collapseItem">
-          <extend-collapse-item
-            :title="item.title"
-            :icon="ControlConfig.Icon.className"
-            :name="item.name"
-            @click="collapseItem(index)">
-            <template slot="title">
-              {{item.title}}
-            </template>
-            <div>{{item.content}}</div>
-          </extend-collapse-item>
-        </template>
-      </extend-collapse>
+      <el-popover
+        ref="popover1"
+        :placement="ControlConfig.CAttribute.placement.placement"
+        :title="ControlConfig.CAttribute.title"
+        :width="ControlConfig.CAttribute.width"
+        :trigger="ControlConfig.CAttribute.triggerModel"
+        :content="ControlConfig.CAttribute.content">
+      </el-popover>
+      <el-button v-popover:popover1>激活</el-button>
     </div>
   </div>
 </template>
@@ -31,7 +34,7 @@
   // 控件配置、表单配置、数据来源配置
   // props: ['ControlConfig', 'FormConfig', 'OriginDataConfig', 'value'],
   export default {
-    name: `CCollapse`,
+    name: `CPopover`,
     props: {
       ControlConfig: {
         type: Object
@@ -60,25 +63,28 @@
       }
       this.$emit('input', this.config)
     },
-    updated () {
-    },
+    updated () {},
     /* keep-alive 组件激活时调用。 */
-    activated () {
-    },
+    activated () {},
     /* keep-alive 组件停用时调用。 */
-    deactivated () {
-    },
+    deactivated () {},
     watch: {
       'config.CKey.default' (val, old) {
         // console.log(val)
       }
     },
-    beforeDestroy () {
-    },
-    destroyed () {
-    },
+    beforeDestroy () {},
+    destroyed () {},
     methods: {
       ControlClick () {
+        this.emitConfig()
+      },
+      // 获得焦点事件
+      focusAction () {
+        this.emitConfig()
+      },
+      // 失去焦点事件
+      blurAction () {
         this.emitConfig()
       },
       // 值变更事件
@@ -94,19 +100,16 @@
           this.config.ControlID = this.ControlID
         }
         this.$emit(`getValue`, this.config)
-      },
-      collapseItem (currentIndex) {
-        this.config.CAttribute.currentValue = currentIndex
       }
     },
     data () {
       return {
         initConfig: {
           ControlID: '', // 表单生成后的控件id
-          CBelong: 'others',
-          CTitleCN: '折叠面板', // 标题
-          CTitleEN: 'collapse Control', // 英文标题
-          CName: 'CCollapse', // 控件名称
+          CBelong: 'form',
+          CTitleCN: '输入框', // 标题
+          CTitleEN: 'Popover Control', // 英文标题
+          CName: 'CPopover', // 控件名称
           CLayout: { // 布局
             percentLayout: { // 百分比布局
               type: Number,
@@ -130,24 +133,66 @@
             }
           },
           CAttribute: {
-            collapseItem: [
-              {
-                name: '0', // 面板的唯一标识符
-                title: '面板标题', // 面板标题
-                content: '面板内容' // 面板内容
-              }
-            ],
-            addCollapseStatus: false,
-            currentValue: 0, // 点击各面板选项的当前值
-            typeModel: 'collapse',
+            trigger: [{
+              value: 'click',
+              name: '点击'
+            }, {
+              value: 'focus',
+              name: '聚焦'
+            }, {
+              value: 'hover',
+              name: '悬浮'
+            }, {
+              value: 'manual',
+              name: 'manual'
+            }], // Popover 触发方式 click/focus/hover/manual
+            triggerModel: 'click',
+            title: '提示',
+            width: '200', // 宽度
             description: '', // 描述
-            height: '', // 高度
-            vertical: ['top', 'middle', 'bottom'] // 对齐方式
-          },
-          CKey: { // 控件值
-            default: '', // 默认值
-            type: '', // 控件值类型
-            keyMethods: '' // 计算控件值方法
+            content: '这是一段内容,这是一段内容,这是一段内容,这是一段内容。',
+            placement: {
+              placement: 'top',
+              placementable: [
+                {
+                  value: 'top',
+                  name: '上'
+                }, {
+                  value: 'top-start',
+                  name: '上左'
+                }, {
+                  value: 'top-end',
+                  name: '上右'
+                }, {
+                  value: 'bottom',
+                  name: '下'
+                }, {
+                  value: 'bottom-start',
+                  name: '下左'
+                }, {
+                  value: 'bottom-end',
+                  name: '下右'
+                }, {
+                  value: 'left',
+                  name: '左'
+                }, {
+                  value: 'left-start',
+                  name: '左上'
+                }, {
+                  value: 'left-end',
+                  name: '左下'
+                }, {
+                  value: 'right',
+                  name: '右'
+                }, {
+                  value: 'right-start',
+                  name: '右上'
+                }, {
+                  value: 'right-end',
+                  name: '右下'
+                }
+              ]
+            }
           },
           Status: { // 状态
             status: false, // 是否应用状态

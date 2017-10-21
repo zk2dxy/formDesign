@@ -22,6 +22,7 @@
           </div>
         </div>
       </draggable>
+      </br></br>
     </div>
     <div class="formContainer">
       <draggable
@@ -42,14 +43,17 @@
           </component>
         </div>
       </draggable>
+      <c-dialog
+        @getValue="showAttribute2"
+      ></c-dialog>
       {{list}}
     </div>
     <div class="rightControlArea">
-      <control-config-xyl
+      <control-config-mtw
         v-if="Config.CConfig"
         :config="Config.CConfig"
         @changeConfig="changeView"
-      ></control-config-xyl>
+      ></control-config-mtw>
     </div>
   </div>
 </template>
@@ -61,7 +65,7 @@
     components: {
       draggable
     },
-    name: `HelloWorld`,
+    name: `Mtw`,
     data () {
       return {
         list: [],
@@ -105,39 +109,69 @@
             }, // 容器配置
             controls: [
               {
-                CNameCN: '折叠面板',
-                CNameEN: 'collapse',
+                CNameCN: '输入框',
+                CNameEN: 'input',
                 parent: 'form', // 父级对象
-                type: 'collapse', // 类型
-                component: 'CCollapse',
+                type: 'input', // 类型
+                component: 'CInput',
                 config: '' // 控件配置,
-              }, {
-                CNameCN: 'Card卡片',
-                CNameEN: 'card',
+              },
+              {
+                CNameCN: '布局控件',
+                CNameEN: 'layout',
                 parent: 'form', // 父级对象
-                type: 'card', // 类型
-                component: 'CCard',
+                type: 'layout', // 类型
+                component: 'CLayout',
+                config: '', // 控件配置
+                children: [[]], // 绑定值props
+                childrenDefault: [[]]
+              },
+//              {
+//                CNameCN: '标签',
+//                CNameEN: 'tag',
+//                parent: 'form', // 父级对象
+//                type: 'tag', // 类型
+//                component: 'CTag',
+//                config: '' // 控件配置
+//              },
+//              {
+//                CNameCN: '进度条',
+//                CNameEN: 'progress',
+//                parent: 'form', // 父级对象
+//                type: 'line', // 类型
+//                component: 'CProgress',
+//                config: '' // 控件配置,
+//              },
+//              {
+//                CNameCN: '标记',
+//                CNameEN: 'badge',
+//                parent: 'form', // 父级对象
+//                type: 'number', // 类型
+//                component: 'CBadge',
+//                config: '' // 控件配置,
+//              },
+//              {
+//                CNameCN: '标签页',
+//                CNameEN: 'tabs',
+//                parent: 'form', // 父级对象
+//                type: '', // 类型
+//                component: 'CTabs',
+//                config: '' // 控件配置,
+//              },
+              {
+                CNameCN: '弹框',
+                CNameEN: 'MessageBox',
+                parent: 'form', // 父级对象
+                type: 'MessageBox', // 类型
+                component: 'CMessageBox',
                 config: '' // 控件配置,
-              }, {
-                CNameCN: 'Loading加载',
-                CNameEN: 'load',
+              },
+              {
+                CNameCN: '弹出框',
+                CNameEN: 'Popover',
                 parent: 'form', // 父级对象
-                type: 'load', // 类型
-                component: 'CLoading',
-                config: '' // 控件配置,
-              }, {
-                CNameCN: 'Page分页',
-                CNameEN: 'page',
-                parent: 'form', // 父级对象
-                type: 'page', // 类型
-                component: 'CPage',
-                config: '' // 控件配置,
-              }, {
-                CNameCN: 'Cascader级联选择器',
-                CNameEN: 'cascader',
-                parent: 'form', // 父级对象
-                type: 'cascader', // 类型
-                component: 'CCascader',
+                type: 'Popover', // 类型
+                component: 'CPopover',
                 config: '' // 控件配置,
               }
             ]
@@ -146,7 +180,9 @@
       },
       showAttribute (data, item) {
         this.Config.CConfig = data
-        this.destroyDom()
+      },
+      showAttribute2 (data) {
+        this.Config.CConfig = data
       },
       changeView (config) {
         // console.error(config)
@@ -157,42 +193,31 @@
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   @import "~assets/css/stylus/mixin"
-  .layout-flex
-    display flex
-
-  .layout-pixel
-    display block
-
-  .layout-col
-    display block
-
-  .layout-percent
-    display block
-
   .dragBLOCK
-    min-height 200px
-    background lightpink
     > div
       margin-bottom 10px
 
   .HelloWorld
     > div
       float left
-      min-height 200px
+      min-height 100px
     .leftControlArea
       width 20%
       margin-right 2.5%
       > div
-        float left
-        display block
-
+        display flex
+        .singleControl
+          flex 0 46%
+          margin 0 2%
+          *
+            width 100%
     .formContainer
       width 55%
     .rightControlArea
       width 20%
       margin-left 2.5%
     .draggable
-      min-height 200px
+      min-height 100px
 
   .item
     margin 20px 0

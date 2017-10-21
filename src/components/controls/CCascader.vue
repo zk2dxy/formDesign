@@ -1,5 +1,5 @@
 <template>
-  <div class="CCollapse" @click="ControlClick()">
+  <div class="CCascader" @click="ControlClick()">
     <div v-if="config && (!ControlID)" @click.stop>
       <div class="title">
         {{config.CTitleCN}}
@@ -10,20 +10,20 @@
       <div class="title">
         {{ControlConfig.CTitleCN}}
       </div>
-      <extend-collapse>
-        <template v-for="(item, index) in ControlConfig.CAttribute.collapseItem">
-          <extend-collapse-item
-            :title="item.title"
-            :icon="ControlConfig.Icon.className"
-            :name="item.name"
-            @click="collapseItem(index)">
-            <template slot="title">
-              {{item.title}}
-            </template>
-            <div>{{item.content}}</div>
-          </extend-collapse-item>
-        </template>
-      </extend-collapse>
+      <!--Cascader级联选择器-->
+      <div class="block">
+        <el-cascader
+          :options="ControlConfig.CAttribute.cascadeList"
+          :props="ControlConfig.CAttribute.cascadeProps"
+          :show-all-levels="ControlConfig.CAttribute.showAllLevelFlag"
+          :filterable="ControlConfig.CAttribute.filterable"
+          :change-on-select="ControlConfig.CAttribute.changeOnSelect"
+          :size="ControlConfig.CAttribute.cascadeSize"
+          :placeholder="ControlConfig.CAttribute.cascadePlaceholder"
+          v-model="ControlConfig.CAttribute.selectedOptions"
+          @change="handleChange">
+        </el-cascader>
+      </div>
     </div>
   </div>
 </template>
@@ -31,7 +31,7 @@
   // 控件配置、表单配置、数据来源配置
   // props: ['ControlConfig', 'FormConfig', 'OriginDataConfig', 'value'],
   export default {
-    name: `CCollapse`,
+    name: `CCascader`,
     props: {
       ControlConfig: {
         type: Object
@@ -60,23 +60,18 @@
       }
       this.$emit('input', this.config)
     },
-    updated () {
-    },
+    updated () {},
     /* keep-alive 组件激活时调用。 */
-    activated () {
-    },
+    activated () {},
     /* keep-alive 组件停用时调用。 */
-    deactivated () {
-    },
+    deactivated () {},
     watch: {
       'config.CKey.default' (val, old) {
         // console.log(val)
       }
     },
-    beforeDestroy () {
-    },
-    destroyed () {
-    },
+    beforeDestroy () {},
+    destroyed () {},
     methods: {
       ControlClick () {
         this.emitConfig()
@@ -95,8 +90,9 @@
         }
         this.$emit(`getValue`, this.config)
       },
-      collapseItem (currentIndex) {
-        this.config.CAttribute.currentValue = currentIndex
+//      级联菜单
+      handleChange (value) {
+        this.config.CAttribute.cascadePropsTitle = value[value.length - 1]
       }
     },
     data () {
@@ -104,9 +100,8 @@
         initConfig: {
           ControlID: '', // 表单生成后的控件id
           CBelong: 'others',
-          CTitleCN: '折叠面板', // 标题
-          CTitleEN: 'collapse Control', // 英文标题
-          CName: 'CCollapse', // 控件名称
+          CTitleEN: 'cascader Control', // 英文标题
+          CName: 'CCascader', // 控件名称
           CLayout: { // 布局
             percentLayout: { // 百分比布局
               type: Number,
@@ -130,16 +125,77 @@
             }
           },
           CAttribute: {
-            collapseItem: [
-              {
-                name: '0', // 面板的唯一标识符
-                title: '面板标题', // 面板标题
-                content: '面板内容' // 面板内容
-              }
-            ],
-            addCollapseStatus: false,
-            currentValue: 0, // 点击各面板选项的当前值
-            typeModel: 'collapse',
+            cascadeList: [{
+              value: 'jilianyi',
+              label: '级联一',
+              children: [{
+                value: 'jilian1-1',
+                label: '级联1-1',
+                children: [{
+                  value: 'jilian1-1-1',
+                  label: '级联1-1-1'
+                }, {
+                  value: 'jilian1-1-2',
+                  label: '级联1-1-2'
+                }]
+              }]
+            }, {
+              value: 'jilianer',
+              label: '级联2',
+              children: [{
+                value: 'jilian2-2',
+                label: '级联2-2',
+                children: [{
+                  value: 'jilian2-2-2',
+                  label: '级联2-2-2'
+                }, {
+                  value: 'jilian2-2-3',
+                  label: '级联2-2-3'
+                }]
+              }]
+            }],
+            cascadeProps: {
+              value: 'value',
+              children: 'children'
+            },
+            cascadePropsTitle: '',
+            showAllLevelFlag: true, // 是否显示完整路径
+            showAllLevels: [{
+              value: true,
+              name: '是'
+            }, {
+              value: false,
+              name: '否'
+            }],
+            filterable: false, // 是否可搜索选项
+            filterableOption: [{
+              value: true,
+              name: '是'
+            }, {
+              value: false,
+              name: '否'
+            }],
+            changeOnSelect: true, // 是否允许选择任意一级的选项
+            changeOnSelectOption: [{
+              value: true,
+              name: '是'
+            }, {
+              value: false,
+              name: '否'
+            }],
+            cascadeSize: 'small', // 尺寸
+            cascadeSizeOption: [{
+              value: 'large',
+              name: '大'
+            }, {
+              value: 'small',
+              name: '小型'
+            }, {
+              value: 'mini',
+              name: '超小'
+            }],
+            cascadePlaceholder: '请选择*****', // 默认文本
+            selectedOptions: [],
             description: '', // 描述
             height: '', // 高度
             vertical: ['top', 'middle', 'bottom'] // 对齐方式
@@ -206,4 +262,27 @@
 
   .CDom
     color $font-danger
+//    卡片样式
+  .box-card
+    float left
+    width 45%
+    margin-bottom 20px
+    margin-right 20px
+  .item
+    margin-bottom 20px
+  .CCard
+    display inline-block
+    width:100%
+  .cardImg, .card-category, .card-img-item
+    display inline-block
+  .card-img-item
+    margin-right 20px
+    margin-bottom 20px
+    > div
+        .bottom
+          margin-top: 13px
+          line-height: 12px
+  .button
+    padding 0
+    float right
 </style>

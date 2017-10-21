@@ -1,29 +1,28 @@
 <template>
-  <div class="CCollapse" @click="ControlClick()">
+  <div class="CInput" @click="ControlClick()">
     <div v-if="config && (!ControlID)" @click.stop>
       <div class="title">
         {{config.CTitleCN}}
       </div>
-
+      <el-badge
+        :value="config.CAttribute.badgeValue.defaultValue"
+        :max="config.CAttribute.badgeValue.max"
+        :is-dot="config.CAttribute.isDot.dotStatus"
+        :hidden="config.CAttribute.badgeStatus.hidden">
+        <el-button size="small">查看</el-button>
+      </el-badge>
     </div>
     <div v-else>
       <div class="title">
         {{ControlConfig.CTitleCN}}
       </div>
-      <extend-collapse>
-        <template v-for="(item, index) in ControlConfig.CAttribute.collapseItem">
-          <extend-collapse-item
-            :title="item.title"
-            :icon="ControlConfig.Icon.className"
-            :name="item.name"
-            @click="collapseItem(index)">
-            <template slot="title">
-              {{item.title}}
-            </template>
-            <div>{{item.content}}</div>
-          </extend-collapse-item>
-        </template>
-      </extend-collapse>
+      <el-badge
+        :value="ControlConfig.CAttribute.badgeValue.defaultValue"
+        :max="ControlConfig.CAttribute.badgeValue.max"
+        :is-dot="ControlConfig.CAttribute.isDot.dotStatus"
+        :hidden="ControlConfig.CAttribute.badgeStatus.hidden">
+        <el-button size="small">查看</el-button>
+      </el-badge>
     </div>
   </div>
 </template>
@@ -31,7 +30,7 @@
   // 控件配置、表单配置、数据来源配置
   // props: ['ControlConfig', 'FormConfig', 'OriginDataConfig', 'value'],
   export default {
-    name: `CCollapse`,
+    name: `CBadge`,
     props: {
       ControlConfig: {
         type: Object
@@ -60,25 +59,31 @@
       }
       this.$emit('input', this.config)
     },
-    updated () {
-    },
+    updated () {},
     /* keep-alive 组件激活时调用。 */
-    activated () {
-    },
+    activated () {},
     /* keep-alive 组件停用时调用。 */
-    deactivated () {
-    },
+    deactivated () {},
     watch: {
-      'config.CKey.default' (val, old) {
-        // console.log(val)
+      'config.CAttribute.typeModel': {
+        handler () {
+          this.config.CAttribute.badgeValue.defaultValue = ''
+        },
+        deep: true
       }
     },
-    beforeDestroy () {
-    },
-    destroyed () {
-    },
+    beforeDestroy () {},
+    destroyed () {},
     methods: {
       ControlClick () {
+        this.emitConfig()
+      },
+      // 获得焦点事件
+      focusAction () {
+        this.emitConfig()
+      },
+      // 失去焦点事件
+      blurAction () {
         this.emitConfig()
       },
       // 值变更事件
@@ -94,19 +99,16 @@
           this.config.ControlID = this.ControlID
         }
         this.$emit(`getValue`, this.config)
-      },
-      collapseItem (currentIndex) {
-        this.config.CAttribute.currentValue = currentIndex
       }
     },
     data () {
       return {
         initConfig: {
           ControlID: '', // 表单生成后的控件id
-          CBelong: 'others',
-          CTitleCN: '折叠面板', // 标题
-          CTitleEN: 'collapse Control', // 英文标题
-          CName: 'CCollapse', // 控件名称
+          CBelong: 'form',
+          CTitleCN: '标记', // 标题
+          CTitleEN: 'badge Control', // 英文标题
+          CName: 'CBadge', // 控件名称
           CLayout: { // 布局
             percentLayout: { // 百分比布局
               type: Number,
@@ -130,54 +132,45 @@
             }
           },
           CAttribute: {
-            collapseItem: [
-              {
-                name: '0', // 面板的唯一标识符
-                title: '面板标题', // 面板标题
-                content: '面板内容' // 面板内容
-              }
-            ],
-            addCollapseStatus: false,
-            currentValue: 0, // 点击各面板选项的当前值
-            typeModel: 'collapse',
-            description: '', // 描述
-            height: '', // 高度
-            vertical: ['top', 'middle', 'bottom'] // 对齐方式
-          },
-          CKey: { // 控件值
-            default: '', // 默认值
-            type: '', // 控件值类型
-            keyMethods: '' // 计算控件值方法
-          },
-          Status: { // 状态
-            status: false, // 是否应用状态
-            rules: [
-              {
-                value: 'readonly',
-                name: '只读'
-              },
-              {
-                value: '',
-                name: '隐藏'
-              }
-            ], // 控件规则集合
-            ruleList: [] // 选择集合
-          },
-          Icon: {
-            status: false, // 是否启用icon
-            chooseStatus: false, // 是否启用CIcon控件去选择图标
-            position: [{ // 控件位置 (中文显示名称/英文属性名称)
-              name: '左侧',
-              value: 'left'
+            type: [{
+              value: 'string',
+              name: '字符串'
             }, {
-              name: '右侧',
-              value: 'right'
-            }],
-            positionModel: '', // 绑定的图标位置
-            className: '', // 类名
-            content: '', // 图标content
-            title: '', // 图标标题
-            library: '' // 图标库
+              value: 'number',
+              name: '数字值'
+            }], // badge值类型 string、number、dot
+            typeModel: 'number', // badge当前类型
+            description: '', // 描述
+            isDot: {
+              dotStatus: false,
+              dotAble: [
+                {
+                  value: false,
+                  name: '数值'
+                },
+                {
+                  value: true,
+                  name: '小圆点'
+                }
+              ]
+            },
+            badgeValue: {
+              defaultValue: '',
+              max: 99
+            },
+            badgeStatus: { // 状态
+              hidden: false, // 是否应用状态
+              hiddenAble: [
+                {
+                  value: false,
+                  name: '显示'
+                },
+                {
+                  value: true,
+                  name: '隐藏'
+                }
+              ]
+            }
           },
           CValidate: {
             status: false,
