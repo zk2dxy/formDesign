@@ -243,7 +243,7 @@
                 </el-radio>
               </el-radio-group>
             </div> <!--Popover弹出框的trigger属性-->
-            <div v-else-if="indexIn === 'width'"> <!--Dialog对话框的title属性-->
+            <div v-else-if="indexIn === 'width'"> <!--Popover弹出框的width属性-->
               <p>控件宽度</p>
               <el-input type="input" @change="changeConfig()" v-model="config[index][indexIn]"></el-input>
             </div> <!--Popover弹出框的width属性-->
@@ -251,6 +251,18 @@
               <p>控件内容</p>
               <el-input type="textarea" @change="changeConfig()" v-model="config[index][indexIn]"></el-input>
             </div> <!--Popover弹出框的content属性-->
+            <div v-else-if="indexIn === 'visibleArrow'"> <!--Popover弹出框的visibleArrow属性-->
+              <p>是否显示Tooltip 箭头</p>
+              <el-radio-group v-model="config[index][indexIn].visibleArrow">
+                <el-radio :key="radio.value" v-for="radio in config[index][indexIn].visibleArrowable" :label="radio.value">
+                  {{radio.name}}
+                </el-radio>
+              </el-radio-group>
+            </div> <!--Popover弹出框的visibleArrow属性-->
+            <div v-else-if="indexIn === 'offset'"> <!--Popover弹出框的offset属性-->
+              <p>位置偏移</p>
+              <el-input type="input" @change="changeConfig()" v-model.number="config[index][indexIn]"></el-input>
+            </div> <!--Popover弹出框的offset属性-->
             <div v-else-if="indexIn === 'placement'"> <!--Popover弹出框的位置属性-->
               <p>控件位置</p>
               <el-radio-group v-model="config[index][indexIn].placement">

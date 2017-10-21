@@ -10,7 +10,10 @@
         :title="config.CAttribute.title"
         :width="config.CAttribute.width"
         :trigger="config.CAttribute.triggerModel"
-        :content="config.CAttribute.content">
+        :visible-arrowable="config.CAttribute.visibleArrow.visibleArrow"
+        :content="config.CAttribute.content"
+        :transition="config.CAttribute.transition"
+        :offset="config.CAttribute.offset">
       </el-popover>
       <el-button v-popover:popover1>激活</el-button>
     </div>
@@ -24,7 +27,10 @@
         :title="ControlConfig.CAttribute.title"
         :width="ControlConfig.CAttribute.width"
         :trigger="ControlConfig.CAttribute.triggerModel"
-        :content="ControlConfig.CAttribute.content">
+        :visible-arrowable="ControlConfig.CAttribute.visibleArrow.visibleArrow"
+        :content="ControlConfig.CAttribute.content"
+        :transition="config.CAttribute.transition"
+        :offset="config.CAttribute.offset">
       </el-popover>
       <el-button v-popover:popover1>激活</el-button>
     </div>
@@ -151,6 +157,7 @@
             width: '200', // 宽度
             description: '', // 描述
             content: '这是一段内容,这是一段内容,这是一段内容,这是一段内容。',
+            offset: 0, // 出现位置的偏移量
             placement: {
               placement: 'top',
               placementable: [
@@ -192,10 +199,24 @@
                   name: '右下'
                 }
               ]
-            }
+            },
+            transition: 'fade-in-linear',
+            visibleArrow: {
+              visibleArrow: true,
+              visibleArrowable: [
+                {
+                  value: true,
+                  name: '是'
+                },
+                {
+                  value: false,
+                  name: '否'
+                }
+              ]
+            } // 是否显示 Tooltip 箭头
           },
-          Status: { // 状态
-            status: false, // 是否应用状态
+          Status: { // 状态是否可见
+            Status: false, // 是否应用状态
             rules: [
               {
                 value: 'readonly',
