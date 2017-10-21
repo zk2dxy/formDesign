@@ -2,10 +2,11 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import HelloWorld from '@/components/HelloWorld'
-import Pyy from '@/components/Pangyy.vue'
-import Xyl from '@/components/Xuanyl.vue'
+import Pyy from '@/components/Pangyy'
+import Xyl from '@/components/Xuanyl'
 import Mtw from '@/components/Mtw'
 import Xx from '@/components/Xx'
+import Form from '@/components/Form'
 
 Vue.use(Router)
 
@@ -13,6 +14,11 @@ export default new Router({
   routes: [{
     path: '/',
     redirect: '/HelloWorld'
+  }, {
+    path: '/Form',
+    name: 'Form',
+    alias: '/Index',
+    component: Form
   }, {
     path: '/HelloWorld',
     name: 'TEST',

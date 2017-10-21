@@ -16,9 +16,11 @@ export function layoutJudge (VItem, param) {
   if (param === 'flexLayout') {
     console.error('param => flexLayout')
   }
-  if (param === 'columnLayout') {
-    console.error('param => columnLayout')
-  }
+  /*
+    if (param === 'columnLayout') {
+      console.error('param => columnLayout')
+    }
+  */
 }
 
 export function calcLayoutClass (list) {
