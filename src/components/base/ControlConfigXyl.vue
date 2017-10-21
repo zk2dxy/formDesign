@@ -104,12 +104,42 @@
                 </div>
               </el-dialog>
             </div>
-            <!--loading-->
+            <!--Loading加载-->
             <div v-else-if="indexIn === 'loadingText'">
               <p>加载文本</p>
               <el-input type="text" @change="changeConfig()" placeholder="加载文本"
                         v-model="config[index][indexIn]"></el-input>
             </div>
+            <!--分页-->
+            <div v-else-if="indexIn === 'pageSmall'">
+              <p>是否使用小型分页样式</p>
+              <el-radio-group v-model="config[index][indexIn]">
+                <el-radio :key="radio.value" v-for="radio in config[index].pageSmallList" :label="radio.value">
+                  {{radio.name}}
+                </el-radio>
+              </el-radio-group>
+            </div>
+            <div v-else-if="indexIn === 'pageSize'">
+              <div v-if="config[index].typeModel === 'pageBasic' ||
+                            config[index].typeModel === 'pageTotal' ||
+                            config[index].typeModel === 'pageDirect'">
+                <p>分页页数</p>
+                <el-input type="text" @change="changeConfig()" placeholder="分页页数"
+                          v-model.number="config[index][indexIn]"></el-input>
+              </div>
+
+            </div>
+            <div v-else-if="indexIn === 'pageCurrent'">
+              <p>当前页数</p>
+              <el-input type="text" @change="changeConfig()" placeholder="当前页数"
+                        v-model.number="config[index][indexIn]"></el-input>
+            </div>
+            <div v-else-if="indexIn === 'pageTotal'">
+              <p>总条目数</p>
+              <el-input type="text" @change="changeConfig()" placeholder="总条目数"
+                        v-model.number="config[index][indexIn]"></el-input>
+            </div>
+
             <!-- End-->
             <div v-else-if="indexIn === 'type'">
               <p>控件类型</p>

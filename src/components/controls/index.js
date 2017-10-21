@@ -9,6 +9,7 @@ import CInput from '@/components/controls/CInput'
 import CLayout from '@/components/layout/CLayout'
 import CCollapse from '@/components/controls/CCollapse'
 import CCard from '@/components/controls/CCard'
+import CPage from '@/components/controls/CPage'
 import CLoading from '@/components/controls/CLoading'
 import CRadio from '@/components/controls/CRadio'
 import CCheckbox from '@/components/controls/CCheckbox'
@@ -25,6 +26,7 @@ const components = [
   CCollapse,
   CCard,
   CLoading,
+  CPage,
   CValidate,
   CInput,
   CRadio,

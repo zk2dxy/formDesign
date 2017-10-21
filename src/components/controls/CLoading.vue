@@ -4,7 +4,21 @@
       <div class="title">
         {{config.CTitleCN}}
       </div>
-
+      <!--Loading-->
+      <div class="loading"
+           v-if="config.CAttribute.typeModel === 'boxLoading'"
+           v-loading="true"
+           :element-loading-text="config.CAttribute.loadingText">
+      </div>
+      <div v-if="config.CAttribute.typeModel === 'pageLoading'">
+        <el-button
+          type="primary"
+          @click="openFullScreen"
+          :element-loading-text="config.CAttribute.loadingText"
+          v-loading.fullscreen.lock="config.CAttribute.fullscreenLoading">
+          显示整页加载，3 秒后消失
+        </el-button>
+      </div>
     </div>
     <div v-else>
       <div class="title">
