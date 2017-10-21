@@ -110,7 +110,7 @@
               <el-input type="text" @change="changeConfig()" placeholder="加载文本"
                         v-model="config[index][indexIn]"></el-input>
             </div>
-            <!--分页-->
+            <!--page分页-->
             <div v-else-if="indexIn === 'pageSmall'">
               <p>是否使用小型分页样式</p>
               <el-radio-group v-model="config[index][indexIn]">
@@ -140,7 +140,54 @@
                         v-model.number="config[index][indexIn]"></el-input>
             </div>
 
+            <!--Cascader 级联-->
+            <div v-else-if="indexIn === 'showAllLevels'">
+              <p>是否显示完整路径</p>
+              <el-radio-group v-model="config[index].showAllLevelFlag">
+                <el-radio :key="radio.value" v-for="radio in config[index][indexIn]" :label="radio.value">
+                  {{radio.name}}
+                </el-radio>
+              </el-radio-group>
+            </div>
+            <div v-else-if="indexIn === 'filterableOption'">
+              <p>是否可搜索选项</p>
+              <el-radio-group v-model="config[index].filterable">
+                <el-radio :key="radio.value" v-for="radio in config[index][indexIn]" :label="radio.value">
+                  {{radio.name}}
+                </el-radio>
+              </el-radio-group>
+            </div>
+            <div v-else-if="indexIn === 'changeOnSelectOption'">
+              <p>是否允许选择任意一级的选项</p>
+              <el-radio-group v-model="config[index].changeOnSelect">
+                <el-radio :key="radio.value" v-for="radio in config[index][indexIn]" :label="radio.value">
+                  {{radio.name}}
+                </el-radio>
+              </el-radio-group>
+            </div>
+            <div v-else-if="indexIn === 'cascadeSizeOption'">
+              <p>尺寸</p>
+              <el-radio-group v-model="config[index].cascadeSize">
+                <el-radio :key="radio.value" v-for="radio in config[index][indexIn]" :label="radio.value">
+                  {{radio.name}}
+                </el-radio>
+              </el-radio-group>
+            </div>
+            <div v-else-if="indexIn === 'cascadePropsTitle'">
+              <p>标题</p>
+              <div v-for="(item,index) in config[index].cascadeList">
+                <p v-text="item"></p>
+              </div>
+              <el-input @change="changeConfig()" placeholder="级联标题"
+                        v-model="config[index][indexIn]"></el-input>
+            </div>
+            <div v-else-if="indexIn === 'cascadePlaceholder'">
+              <p>控件提示语</p>
+              <el-input @change="changeConfig()" placeholder="控件描述(非必填)"
+                        v-model="config[index][indexIn]"></el-input>
+            </div>
             <!-- End-->
+
             <div v-else-if="indexIn === 'type'">
               <p>控件类型</p>
               <el-radio-group v-model="config[index].typeModel">

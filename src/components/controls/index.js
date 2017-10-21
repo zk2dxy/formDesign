@@ -11,6 +11,7 @@ import CCollapse from '@/components/controls/CCollapse'
 import CCard from '@/components/controls/CCard'
 import CPage from '@/components/controls/CPage'
 import CLoading from '@/components/controls/CLoading'
+import CCascade from '@/components/controls/CCascader'
 import CRadio from '@/components/controls/CRadio'
 import CCheckbox from '@/components/controls/CCheckbox'
 import CSelect from '@/components/controls/CSelect'
@@ -32,6 +33,7 @@ const components = [
   CCard,
   CLoading,
   CPage,
+  CCascade,
   CValidate,
   CInput,
   CRadio,

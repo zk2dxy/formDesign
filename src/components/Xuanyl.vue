@@ -132,6 +132,13 @@
                 type: 'page', // 类型
                 component: 'CPage',
                 config: '' // 控件配置,
+              }, {
+                CNameCN: 'Cascader级联选择器',
+                CNameEN: 'cascader',
+                parent: 'form', // 父级对象
+                type: 'cascader', // 类型
+                component: 'CCascader',
+                config: '' // 控件配置,
               }
             ]
           }
