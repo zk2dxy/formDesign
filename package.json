@@ -2,7 +2,7 @@
   "name": "design",
   "version": "1.0.0",
   "description": "form design for HKHF",
-  "author": "zhangkun <zk870626!>",
+  "author": "zhangkun",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
