@@ -63,12 +63,14 @@
       }
     },
     mounted () {
+      this.config = this.initConfig
       if (this.ControlConfig) {
         this.config = this.ControlConfig
       }
       if (this.ControlID && (!this.config.ControlID)) {
         this.config.ControlID = this.ControlID
       }
+      this.getChildrenLayoutValue()
       this.$emit('input', this.config)
     },
     props: {

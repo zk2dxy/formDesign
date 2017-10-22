@@ -11,12 +11,14 @@ import _ from 'lodash'
 import 'element-ui/lib/theme-default/index.css'
 import CPackage from '@/components/controls'
 import ExPackage from '@/components/extend'
+import DebugPackage from '@/components/debug'
 import 'assets/fonts/icon.styl'
 import FontLibrary from 'assets/js/FontLibrary'
 import Validate from 'assets/js/validateReg'
 
 CPackage.install() // 安装所有 工具
 ExPackage.install() // 扩展组件 安装
+DebugPackage.install() // debug 工具开发安装
 
 Vue.prototype.ApiUtils = ApiUtils // 拓展 axios
 Vue.prototype.AppUtils = AppUtils // 拓展 element-ui 提示组件

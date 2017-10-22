@@ -65,20 +65,33 @@
       if (this.ControlID && (!this.config.ControlID)) {
         this.config.ControlID = this.ControlID
       }
+      this.getChildrenLayoutValue()
       this.$emit('input', this.config)
     },
-    updated () {},
+    updated () {
+    },
     /* keep-alive 组件激活时调用。 */
-    activated () {},
+    activated () {
+    },
     /* keep-alive 组件停用时调用。 */
-    deactivated () {},
+    deactivated () {
+    },
     watch: {
       'config.CKey.default' (val, old) {
         // console.log(val)
       }
     },
-    beforeDestroy () {},
-    destroyed () {},
+    beforeDestroy () {
+    },
+    destroyed () {
+    },
+    computed: {
+      labelWidthCalc () {
+        if (this.config.labelWidth) {
+          return this.config.labelWidth + 'px'
+        }
+      }
+    },
     methods: {
       ControlClick () {
         this.emitConfig()
@@ -99,6 +112,20 @@
       },
       collapseItem (currentIndex) {
         this.config.CAttribute.currentValue = currentIndex
+      },
+      getChildrenLayoutValue () {
+        this.config.currentLayout = null
+        if (this.config.CLayout === '') {
+          return
+        }
+        for (let key in this.config.CLayout) {
+          if (this.config.CLayout[key].status === false) {
+            continue
+          } else {
+            this.config.currentLayout = this.config.CLayout[key]
+            break
+          }
+        }
       }
     },
     data () {
