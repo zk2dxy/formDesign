@@ -1,41 +1,31 @@
 <template>
-  <div class="CInput" @click="ControlClick()">
+  <div class="CProgress" @click="ControlClick()">
     <div v-if="config && (!ControlID)" @click.stop>
       <div class="title">
         {{config.CTitleCN}}
       </div>
-      <extend-input
-        @focus="focusAction()"
-        @blur="blurAction()"
+      <el-progress
         :type="config.CAttribute.typeModel"
-        :placeholder="config.CAttribute.placeholder"
-        v-model="config.CKey.default"
-        :icon="config.Icon.className"
-        :position="config.Icon.positionModel"
-      >
-        <template v-if="config.CAttribute.prepend!=''" slot="prepend"><span v-html="config.CAttribute.prepend"></span>
-        </template>
-        <template v-if="config.CAttribute.append!=''" slot="append"><span v-html="config.CAttribute.append"></span>
-        </template>
-      </extend-input>
+        :percentage="config.CKey.default"
+        :status="config.progressStatus.progressStatusCurrent"
+        :show-text="config.CAttribute.showText.showTextStatus"
+        :text-inside="config.CAttribute.showText.textInsideStatus"
+        :stroke-width="config.CAttribute.showText.strokeWidth"
+        :width="config.CAttribute.showText.width"
+      ></el-progress>
     </div>
     <div v-else>
       <el-form :label-position="ControlConfig.labelPositionModel" :label-width=labelWidthCalc>
         <el-form-item :label="ControlConfig.CTitleCN">
-          <extend-input
-            @focus="focusAction()"
-            @blur="blurAction()"
+          <el-progress
             :type="ControlConfig.CAttribute.typeModel"
-            :placeholder="ControlConfig.CAttribute.placeholder"
-            v-model="ControlConfig.CKey.default"
-            :icon="ControlConfig.Icon.className"
-            :position="ControlConfig.Icon.positionModel"
-          >
-            <template v-if="ControlConfig.CAttribute.prepend!=''" slot="prepend"><span
-              v-html="ControlConfig.CAttribute.prepend"></span></template>
-            <template v-if="ControlConfig.CAttribute.append!=''" slot="append"><span
-              v-html="ControlConfig.CAttribute.append"></span></template>
-          </extend-input>
+            :percentage="ControlConfig.CKey.default"
+            :status="ControlConfig.progressStatus.progressStatusCurrent"
+            :show-text="ControlConfig.CAttribute.showText.showTextStatus"
+            :text-inside="ControlConfig.CAttribute.showText.textInsideStatus"
+            :stroke-width="ControlConfig.CAttribute.showText.strokeWidth"
+            :width="ControlConfig.CAttribute.showText.width"
+          ></el-progress>
         </el-form-item>
       </el-form>
     </div>
@@ -45,7 +35,7 @@
   // 控件配置、表单配置、数据来源配置
   // props: ['ControlConfig', 'FormConfig', 'OriginDataConfig', 'value'],
   export default {
-    name: `CInput`,
+    name: `CProgress`,
     props: {
       ControlConfig: {
         type: Object
@@ -75,18 +65,68 @@
       this.getChildrenLayoutValue()
       this.$emit('input', this.config)
     },
-    updated () {},
+    updated () {
+    },
     /* keep-alive 组件激活时调用。 */
-    activated () {},
+    activated () {
+    },
     /* keep-alive 组件停用时调用。 */
-    deactivated () {},
+    deactivated () {
+    },
     watch: {
-      'config.CKey.default' (val, old) {
-        // console.log(val)
+      'config.CKey.default': {
+        handler () {
+          if (this.config.CKey.default === '') {
+            this.config.CKey.default = 0
+          }
+          var reg = new RegExp('^(\\d|[1-9]\\d|100)$')
+          if (!reg.test(this.config.CKey.default)) {
+            this.config.CKey.default = 0
+            alert('请输入0-100的整数！')
+          }
+        },
+        deep: true
+      },
+      'config.CAttribute.showText.width': {
+        handler () {
+          if (this.config.CAttribute.showText.width === '') {
+            this.config.CAttribute.showText.width = 10
+            setTimeout(() => {
+              this.config.CAttribute.showText.width = 60
+            }, 20)
+            this.emitConfig()
+          }
+          if (this.config.CAttribute.showText.width < this.config.CAttribute.showText.strokeWidth) {
+            this.config.CAttribute.showText.width = 60
+            console.log('')
+          }
+        },
+        deep: true
+      },
+      'config.CAttribute.showText.strokeWidth': {
+        handler () {
+          if (this.config.CAttribute.showText.strokeWidth === '') {
+            this.config.CAttribute.showText.strokeWidth = 0
+            setTimeout(() => {
+              this.config.CAttribute.showText.strokeWidth = 1
+            }, 20)
+            this.emitConfig()
+          }
+        },
+        deep: true
       }
     },
-    beforeDestroy () {},
-    destroyed () {},
+    beforeDestroy () {
+    },
+    destroyed () {
+    },
+    computed: {
+      labelWidthCalc () {
+        if (this.config.labelWidth) {
+          return this.config.labelWidth + 'px'
+        }
+      }
+    },
     methods: {
       ControlClick () {
         this.emitConfig()
@@ -128,21 +168,14 @@
         }
       }
     },
-    computed: {
-      labelWidthCalc () {
-        if (this.config.labelWidth) {
-          return this.config.labelWidth + 'px'
-        }
-      }
-    },
     data () {
       return {
         initConfig: {
           ControlID: '', // 表单生成后的控件id
           CBelong: 'form',
-          CTitleCN: '输入框', // 标题
-          CTitleEN: 'input Control', // 英文标题
-          CName: 'CInput', // 控件名称
+          CTitleCN: '进度条', // 标题
+          CTitleEN: 'progress Control', // 英文标题
+          CName: 'CProgress', // 控件名称
           labelPositionModel: 'left',
           labelPositionValue: [
             {value: 'left', name: '文字左对齐'},
@@ -187,60 +220,53 @@
             }
           ],
           CAttribute: {
-            prepend: '', // input 前置头
-            append: '', // input 追尾说明
             type: [{
-              value: 'input',
-              name: '文本框'
+              value: 'line',
+              name: '线性'
             }, {
-              value: 'textarea',
-              name: '多行文本'
-            }], // input 类型 text number......and so on
-            typeModel: 'input',
+              value: 'circle',
+              name: '环形'
+            }], // 进度条类型 line、circle
+            typeModel: 'line', // 进度条当前类型
             description: '', // 描述
-            placeholder: '请输入默认值或者为空', // 控件提示值
-            height: '', // 高度
-            vertical: ['top', 'middle', 'bottom'] // 对齐方式
+            showText: { // 是否显示进度条文字内容,默认true
+              showTextStatus: true,
+              textInsideStatus: false,
+              textInside: [
+                {
+                  value: false,
+                  name: '进度条外'
+                },
+                {
+                  value: true,
+                  name: '进度条内'
+                }
+              ],  // 进度条显示文字是否内置在进度条内（只在 type=line 时可用）,默认false
+              width: 60,  // 环形进度条画布宽度（只在 type=circle 时可用）
+              strokeWidth: 6 // 线形宽度，单位 px
+            }
           },
           CKey: { // 控件值
-            default: '', // 默认值
+            default: 60, // 默认值
             type: '', // 控件值类型
             keyMethods: '' // 计算控件值方法
           },
-          Status: { // 状态
-            status: false, // 是否应用状态
-            rules: [
+          progressStatus: {
+            progressStatusCurrent: 'success', // 进度条当前状态
+            status: [
               {
-                value: 'readonly',
-                name: '只读'
+                value: 'success',
+                name: '成功'
+              },
+              {
+                value: 'exception',
+                name: '异常'
               },
               {
                 value: '',
-                name: '隐藏'
+                name: '默认'
               }
-            ], // 控件规则集合
-            ruleList: [] // 选择集合
-          },
-          Icon: {
-            status: false, // 是否启用icon
-            chooseStatus: false, // 是否启用CIcon控件去选择图标
-            position: [{ // 控件位置 (中文显示名称/英文属性名称)
-              name: '左侧',
-              value: 'left'
-            }, {
-              name: '右侧',
-              value: 'right'
-            }],
-            positionModel: '', // 绑定的图标位置
-            className: '', // 类名
-            content: '', // 图标content
-            title: '', // 图标标题
-            library: '' // 图标库
-          },
-          CValidate: {
-            status: false,
-            chooseStatus: false,
-            validateModel: ''
+            ] // 进度条可选状态
           },
           methodDB: [{
             name: '提交', // 中文名称（Example）
@@ -257,6 +283,8 @@
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   @import "~assets/css/stylus/mixin"
+  .el-progress
+    padding-top 2%
   .title
     padding 8px 0px
     color $font-primary

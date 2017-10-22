@@ -1,58 +1,62 @@
 <template>
-  <div class="CCheckbox" @click="ControlClick()">
+  <div class="CLoading" @click="ControlClick()">
     <div v-if="config && (!ControlID)" @click.stop>
       <div class="title">
         {{config.CTitleCN}}
       </div>
-      <!--初始化组件-->
+      <!--Loading-->
+      <div class="loading"
+           v-if="config.CAttribute.typeModel === 'boxLoading'"
+           v-loading="true"
+           :element-loading-text="config.CAttribute.loadingText">
+      </div>
+      <div v-if="config.CAttribute.typeModel === 'pageLoading'">
+        <el-button
+          type="primary"
+          @click="openFullScreen"
+          :element-loading-text="config.CAttribute.loadingText"
+          v-loading.fullscreen.lock="config.CAttribute.fullscreenLoading">
+          显示整页加载，3 秒后消失
+        </el-button>
+      </div>
     </div>
     <div v-else>
-      <div class="title">
-        {{ControlConfig.CTitleCN}}
-      </div>
-      <div v-if="ControlConfig.CAttribute.typeModel==='checkbox'">
-        <div>
-          <extend-checkbox
-            :indeterminate="ControlConfig.CAttribute.indeterminateCheckbox" v-model="ControlConfig.CAttribute.checkAllCheckbox"
-            @change="CheckAllChange"
-            v-if="ControlConfig.CAttribute.showAllCheckbox">全选</extend-checkbox>
-        </div>
-        <extend-checkbox-group
-          v-model="ControlConfig.CAttribute.defaultCheckboxSelected"
-          :min="ControlConfig.CAttribute.ableSelectedMin"
-          :max="ControlConfig.CAttribute.ableSelectedMax">
-          <extend-checkbox
-            @click="SelectedChange(item.label)"
-            v-for="(item, index) in ControlConfig.CAttribute.itemAttr"
-            :key="item.label"
-            :label="item.label"
-            :disabled="item.isDisabled">
-            {{item.showContent}}</extend-checkbox>
-        </extend-checkbox-group>
-      </div>
-      <div v-else>
-        <extend-checkbox-group
-          v-model="ControlConfig.CAttribute.defaultCheckboxSelected"
-          :size="ControlConfig.CAttribute.sizeModel"
-          :text-color="ControlConfig.CAttribute.textColor"
-          :fill="ControlConfig.CAttribute.fillColor"
-          :min="ControlConfig.CAttribute.ableSelectedMin"
-          :max="ControlConfig.CAttribute.ableSelectedMax">
-          <extend-checkbox-button
-            @click="SelectedChange(item.label)"
-            v-for="(item, index) in ControlConfig.CAttribute.itemAttr"
-            :key="item.label"
-            :label="item.label"
-            :disabled="item.isDisabled">
-            {{item.showContent}}</extend-checkbox-button>
-        </extend-checkbox-group>
-      </div>
+      <el-form :label-position="ControlConfig.labelPositionModel" :label-width=labelWidthCalc>
+        <el-form-item :label="ControlConfig.CTitleCN">
+          <!--Loading-->
+          <div class="loading"
+               v-if="ControlConfig.CAttribute.typeModel === 'boxLoading'"
+               v-loading="true"
+               :element-loading-text="ControlConfig.CAttribute.loadingText">
+          </div>
+          <div v-if="ControlConfig.CAttribute.typeModel === 'pageLoading'">
+            <el-button
+              type="primary"
+              @click="openFullScreen"
+              :element-loading-text="ControlConfig.CAttribute.loadingText"
+              v-loading.fullscreen.lock="ControlConfig.CAttribute.fullscreenLoading">
+              显示整页加载，3 秒后消失
+            </el-button>
+          </div>
+        </el-form-item>
+      </el-form>
     </div>
   </div>
 </template>
 <script type="text/ecmascript-6">
+  // 控件配置、表单配置、数据来源配置
+  // props: ['ControlConfig', 'FormConfig', 'OriginDataConfig', 'value'],
   export default {
-    name: `CCheckbox`,
+    name: `CLoading`,
+    props: {
+      ControlConfig: {
+        type: Object
+      },
+      ControlID: {
+        type: String,
+        default: null
+      }
+    },
     created () {
       this.config = this.initConfig
       if (this.ControlConfig) {
@@ -63,22 +67,32 @@
       }
     },
     mounted () {
+      this.config = this.initConfig
       if (this.ControlConfig) {
         this.config = this.ControlConfig
       }
       if (this.ControlID && (!this.config.ControlID)) {
         this.config.ControlID = this.ControlID
       }
+      this.getChildrenLayoutValue()
       this.$emit('input', this.config)
     },
-    props: {
-      ControlConfig: {
-        type: Object
-      },
-      ControlID: {
-        type: String,
-        default: null
+    updated () {
+    },
+    /* keep-alive 组件激活时调用。 */
+    activated () {
+    },
+    /* keep-alive 组件停用时调用。 */
+    deactivated () {
+    },
+    watch: {
+      'config.CKey.default' (val, old) {
+        // console.log(val)
       }
+    },
+    beforeDestroy () {
+    },
+    destroyed () {
     },
     computed: {
       labelWidthCalc () {
@@ -88,6 +102,13 @@
       }
     },
     methods: {
+      ControlClick () {
+        this.emitConfig()
+      },
+      // 值变更事件
+      changeAction () {
+        this.emitConfig()
+      },
       emitConfig () {
         this.config = this.initConfig
         if (this.ControlConfig) {
@@ -98,23 +119,12 @@
         }
         this.$emit(`getValue`, this.config)
       },
-      ControlClick () {
-        this.emitConfig()
-      },
-      SelectedChange (label) {
-        this.config.CAttribute.itemAttr.forEach((item, index) => {
-          if (label[label.length - 1] === item.label) {
-            this.config.CAttribute.currentSelected = index
-          }
-        })
-      },
-      CheckAllChange (event) {
-        if (event.target.checked) {
-          this.config.CAttribute.defaultCheckboxSelected = this.config.CAttribute.itemAttr.map((item) => {
-            return item.label
-          })
-        }
-        this.config.CAttribute.indeterminateCheckbox = false
+//      加载
+      openFullScreen () {
+        this.config.CAttribute.fullscreenLoading = true
+        setTimeout(() => {
+          this.config.CAttribute.fullscreenLoading = false
+        }, 3000)
       },
       getChildrenLayoutValue () {
         this.config.currentLayout = null
@@ -135,9 +145,10 @@
       return {
         initConfig: {
           ControlID: '', // 表单生成后的控件id
-          CBelong: 'form',
-          CTitleCN: '多选框', // 标题
-          CTitleEN: 'checkbox Control', // 英文标题
+          CBelong: 'others',
+          CTitleCN: '等待框',
+          CTitleEN: 'loading Control', // 英文标题
+          CName: 'CLoading', // 控件名称
           labelPositionModel: 'left',
           labelPositionValue: [
             {value: 'left', name: '文字左对齐'},
@@ -145,7 +156,6 @@
             {value: 'top', name: '文字居上对齐'}
           ],
           labelWidth: 80,
-          CName: 'CCheckbox', // 控件名称
           layoutModel: 'flexLayout',
           currentLayout: null,
           CLayout: [ // 布局
@@ -183,42 +193,19 @@
             }
           ],
           CAttribute: {
+            loadingText: '拼命加载中....', // 加载文本
+            fullscreenLoading: false, // 是否整页加载
             type: [{
-              value: 'checkbox',
-              name: '普通样式'
+              value: 'boxLoading',
+              name: '区域加载'
             }, {
-              value: 'button',
-              name: '按钮样式'
-            }], // Checkbox 类型 普通类型和按钮类型
-            typeModel: 'checkbox',
+              value: 'pageLoading',
+              name: '整页加载'
+            }], // input 类型 text number......and so on
+            typeModel: 'boxLoading',
             description: '', // 描述
-            size: [{
-              value: 'large',
-              name: '大'
-            }, {
-              value: 'small',
-              name: '小'
-            }], // 按钮尺寸
-            sizeModel: 'small',
-            itemAttr: [{
-              label: '1',
-              showContent: '样例1',
-              isDisabled: false // 是否禁用该选项
-            }, {
-              label: '2',
-              showContent: '样例2',
-              isDisabled: false // 是否禁用该选项
-            }],
-            indeterminateCheckbox: true, // 全选样式
-            checkAllCheckbox: true, // 默认全选选中
-            showAllCheckbox: false, // 是否显示全选选项
-            addStatus: false, // 增加Checkbox选项状态
-            currentSelected: 0, // 现在选中项的index
-            defaultCheckboxSelected: [], // 默认选中项
-            textColor: '#fff', // 按钮激活时的文本颜色
-            fillColor: '', // 按钮激活时的填充色和边框色（默认继承主题样式：设置default）
-            ableSelectedMin: 1, // 可被勾选的 checkbox 的最小数量
-            ableSelectedMax: 2 // 可被勾选的 checkbox 的最大数量
+            height: '', // 高度
+            vertical: ['top', 'middle', 'bottom'] // 对齐方式
           },
           CKey: { // 控件值
             default: '', // 默认值
@@ -235,13 +222,25 @@
               {
                 value: '',
                 name: '隐藏'
-              },
-              {
-                value: '',
-                name: '禁用'
               }
             ], // 控件规则集合
             ruleList: [] // 选择集合
+          },
+          Icon: {
+            status: false, // 是否启用icon
+            chooseStatus: false, // 是否启用CIcon控件去选择图标
+            position: [{ // 控件位置 (中文显示名称/英文属性名称)
+              name: '左侧',
+              value: 'left'
+            }, {
+              name: '右侧',
+              value: 'right'
+            }],
+            positionModel: '', // 绑定的图标位置
+            className: '', // 类名
+            content: '', // 图标content
+            title: '', // 图标标题
+            library: '' // 图标库
           },
           CValidate: {
             status: false,
@@ -267,4 +266,13 @@
     padding 8px 0px
     color $font-primary
     font-size $font-medium
+
+  .CDom
+    color $font-danger
+
+  //    loading
+  .loading
+    width: 200px;
+    height: 200px;
+    background-color rgba(0, 0, 0, 0.8)
 </style>

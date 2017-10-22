@@ -1,6 +1,6 @@
 <template>
   <div class="HelloWorld">
-    {{computedFormClass}}
+    <!--{{computedFormClass}}-->
     <div class="leftControlArea" v-if="ControlList!=null" v-for="container in ControlList">
       <draggable
         v-model="container.controls"
@@ -73,7 +73,7 @@
 <script type="text/ecmascript-6">
   import draggable from 'vuedraggable'
   import uuid from 'node-uuid'
-  import { calcLayoutClass } from '@/assets/js/common'
+  import {calcLayoutClass} from '@/assets/js/common'
   //  import CKeyApi from 'api/CKey'
 
   export default {
@@ -182,6 +182,76 @@
                 type: 'button', // 类型
                 component: 'CButton',
                 config: '' // 控件配置
+              }, {
+                CNameCN: '标记',
+                CNameEN: 'badge',
+                parent: 'form', // 父级对象
+                type: 'badge', // 类型
+                component: 'CBadge',
+                config: '' // 控件配置
+              }, {
+                CNameCN: '面板',
+                CNameEN: 'CCard',
+                parent: 'form', // 父级对象
+                type: 'card', // 类型
+                component: 'CCard',
+                config: '' // 控件配置
+              }, {
+                CNameCN: '级联选择器',
+                CNameEN: 'cascader',
+                parent: 'form', // 父级对象
+                type: 'cascader', // 类型
+                component: 'CCascader',
+                config: '' // 控件配置
+              }, {
+                CNameCN: '时间选择器',
+                CNameEN: 'CDateTimePicker',
+                parent: 'form', // 父级对象
+                type: 'timePicker', // 类型
+                component: 'CDateTimePicker',
+                config: '' // 控件配置
+              }, {
+                CNameCN: '等待框配置',
+                CNameEN: 'loading',
+                parent: 'form', // 父级对象
+                type: 'loading', // 类型
+                component: 'CLoading',
+                config: '' // 控件配置
+              }, {
+                CNameCN: '分页控件',
+                CNameEN: 'CPage',
+                parent: 'form', // 父级对象
+                type: 'page', // 类型
+                component: 'CPage',
+                config: '' // 控件配置
+              }, {
+                CNameCN: '弹出框',
+                CNameEN: 'popover',
+                parent: 'form', // 父级对象
+                type: 'popover', // 类型
+                component: 'CPopover',
+                config: '' // 控件配置
+              }, {
+                CNameCN: '进度条',
+                CNameEN: 'progress',
+                parent: 'form', // 父级对象
+                type: 'progress', // 类型
+                component: 'CProgress',
+                config: '' // 控件配置
+              }, {
+                CNameCN: '滑块',
+                CNameEN: 'slider',
+                parent: 'form', // 父级对象
+                type: 'slider', // 类型
+                component: 'CSlider',
+                config: '' // 控件配置
+              }, {
+                CNameCN: '开关',
+                CNameEN: 'switch',
+                parent: 'form', // 父级对象
+                type: 'switch', // 类型
+                component: 'CSwitch',
+                config: '' // 控件配置
               }
             ]
           }
@@ -204,7 +274,7 @@
         if (this.list.length > 0) {
           let flexClass = 'flexLayout'
           for (let key in this.list) {
-            console.error(this.list[key].config.currentLayout)
+            console.error(this.list[key].config)
             flex = (this.list[key].config.currentLayout.value === flexClass) && flex
             if (!flex) {
               break

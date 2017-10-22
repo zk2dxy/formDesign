@@ -1,41 +1,58 @@
 <template>
-  <div class="CInput" @click="ControlClick()">
+  <div class="CCard" @click="ControlClick()">
     <div v-if="config && (!ControlID)" @click.stop>
       <div class="title">
         {{config.CTitleCN}}
       </div>
-      <extend-input
-        @focus="focusAction()"
-        @blur="blurAction()"
-        :type="config.CAttribute.typeModel"
-        :placeholder="config.CAttribute.placeholder"
-        v-model="config.CKey.default"
-        :icon="config.Icon.className"
-        :position="config.Icon.positionModel"
-      >
-        <template v-if="config.CAttribute.prepend!=''" slot="prepend"><span v-html="config.CAttribute.prepend"></span>
-        </template>
-        <template v-if="config.CAttribute.append!=''" slot="append"><span v-html="config.CAttribute.append"></span>
-        </template>
-      </extend-input>
+
     </div>
     <div v-else>
+
       <el-form :label-position="ControlConfig.labelPositionModel" :label-width=labelWidthCalc>
         <el-form-item :label="ControlConfig.CTitleCN">
-          <extend-input
-            @focus="focusAction()"
-            @blur="blurAction()"
-            :type="ControlConfig.CAttribute.typeModel"
-            :placeholder="ControlConfig.CAttribute.placeholder"
-            v-model="ControlConfig.CKey.default"
-            :icon="ControlConfig.Icon.className"
-            :position="ControlConfig.Icon.positionModel"
+          <div
+            @click="cardItem(index)"
+            v-for="(item, index) in ControlConfig.CAttribute.cardItemAttribute.cardItem"
           >
-            <template v-if="ControlConfig.CAttribute.prepend!=''" slot="prepend"><span
-              v-html="ControlConfig.CAttribute.prepend"></span></template>
-            <template v-if="ControlConfig.CAttribute.append!=''" slot="append"><span
-              v-html="ControlConfig.CAttribute.append"></span></template>
-          </extend-input>
+            <!-- 基础卡片 cardBasic -->
+            <div v-if="ControlConfig.CAttribute.typeModel === 'cardBasic'">
+              <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                  <span>{{item.title}}</span>
+                  <el-button style="float: right;" type="text">操作按钮</el-button>
+                </div>
+                <div v-for="(itemIn,indexIn) in item.contentItem" class="text item" @click="cardContentItem(indexIn)">
+                  {{ itemIn.content }}
+                </div>
+              </el-card>
+            </div>
+            <!-- 简单卡片 card-->
+            <div v-else-if="ControlConfig.CAttribute.typeModel === 'cardSimple'">
+              <el-card class="box-card">
+                <div v-for="(itemIn,indexIn) in item.contentItem" class="text item" @click="cardContentItem(indexIn)">
+                  {{ itemIn.content }}
+                </div>
+              </el-card>
+            </div>
+          </div>
+
+          <!-- 带图片卡片 cardImg -->
+          <div class="card-img-item"
+               @click="cardItem(index)"
+               v-if="ControlConfig.CAttribute.typeModel === 'cardImg'"
+               v-for="(item, index) in ControlConfig.CAttribute.cardItemAttribute.cardItem"
+          >
+            <el-card :body-style="{ padding: '0px' }">
+              <img :src="item.imageUrl" class="image">
+              <div style="padding: 14px;">
+                <span>{{ item.title }}</span>
+                <div class="bottom clearfix">
+                  <time class="time">{{ item.time }}</time>
+                  <el-button type="text" class="button">操作按钮</el-button>
+                </div>
+              </div>
+            </el-card>
+          </div>
         </el-form-item>
       </el-form>
     </div>
@@ -45,7 +62,7 @@
   // 控件配置、表单配置、数据来源配置
   // props: ['ControlConfig', 'FormConfig', 'OriginDataConfig', 'value'],
   export default {
-    name: `CInput`,
+    name: `CCard`,
     props: {
       ControlConfig: {
         type: Object
@@ -75,28 +92,32 @@
       this.getChildrenLayoutValue()
       this.$emit('input', this.config)
     },
-    updated () {},
+    updated () {
+    },
     /* keep-alive 组件激活时调用。 */
-    activated () {},
+    activated () {
+    },
     /* keep-alive 组件停用时调用。 */
-    deactivated () {},
+    deactivated () {
+    },
     watch: {
       'config.CKey.default' (val, old) {
         // console.log(val)
       }
     },
-    beforeDestroy () {},
-    destroyed () {},
+    beforeDestroy () {
+    },
+    destroyed () {
+    },
+    computed: {
+      labelWidthCalc () {
+        if (this.config.labelWidth) {
+          return this.config.labelWidth + 'px'
+        }
+      }
+    },
     methods: {
       ControlClick () {
-        this.emitConfig()
-      },
-      // 获得焦点事件
-      focusAction () {
-        this.emitConfig()
-      },
-      // 失去焦点事件
-      blurAction () {
         this.emitConfig()
       },
       // 值变更事件
@@ -113,6 +134,14 @@
         }
         this.$emit(`getValue`, this.config)
       },
+//      点击卡片
+      cardItem (currentIndex) {
+        this.config.CAttribute.cardCurrent = currentIndex
+      },
+//      点击卡片中的内容条目
+      cardContentItem (currentIndex) {
+        this.config.CAttribute.cardItemAttribute.cardContentCurrent = currentIndex
+      },
       getChildrenLayoutValue () {
         this.config.currentLayout = null
         if (this.config.CLayout === '') {
@@ -128,21 +157,14 @@
         }
       }
     },
-    computed: {
-      labelWidthCalc () {
-        if (this.config.labelWidth) {
-          return this.config.labelWidth + 'px'
-        }
-      }
-    },
     data () {
       return {
         initConfig: {
           ControlID: '', // 表单生成后的控件id
-          CBelong: 'form',
-          CTitleCN: '输入框', // 标题
-          CTitleEN: 'input Control', // 英文标题
-          CName: 'CInput', // 控件名称
+          CBelong: 'others',
+          CTitleCN: 'Card卡片', // 标题
+          CTitleEN: 'card Control', // 英文标题
+          CName: 'CCard', // 控件名称
           labelPositionModel: 'left',
           labelPositionValue: [
             {value: 'left', name: '文字左对齐'},
@@ -187,18 +209,38 @@
             }
           ],
           CAttribute: {
-            prepend: '', // input 前置头
-            append: '', // input 追尾说明
+            cardItemAttribute: {
+              cardItem: [
+                {
+                  title: '卡片名称1',
+                  contentItem: [
+                    {
+                      content: '卡片内容条目1-1'
+                    },
+                    {
+                      content: '卡片内容条目1-2'
+                    }
+                  ],
+                  time: '2017-10-18', // 卡片时间
+                  imageUrl: 'http://image.woshipm.com/wp-files/2017/10/zhibochanpin-1.png!/both/215x140' // 卡片图片
+                }
+              ],
+              addCardItemFlag: false,
+              cardContentCurrent: 0   // 点击当前卡片内容条目的当前值
+            },
+            cardCurrent: 0, // 点击当前卡片的值
             type: [{
-              value: 'input',
-              name: '文本框'
+              value: 'cardSimple',
+              name: '简单卡片'
             }, {
-              value: 'textarea',
-              name: '多行文本'
+              value: 'cardImg',
+              name: '带图片的卡片'
+            }, {
+              value: 'cardBasic',
+              name: '基础卡片'
             }], // input 类型 text number......and so on
-            typeModel: 'input',
+            typeModel: 'cardSimple',
             description: '', // 描述
-            placeholder: '请输入默认值或者为空', // 控件提示值
             height: '', // 高度
             vertical: ['top', 'middle', 'bottom'] // 对齐方式
           },
@@ -264,4 +306,32 @@
 
   .CDom
     color $font-danger
+
+  //    卡片样式
+  .box-card
+    float left
+    width 100%
+    margin-bottom 20px
+
+  .item
+    margin-bottom 20px
+
+  .CCard
+    display inline-block
+    width: 100%
+
+  .cardImg, .card-category, .card-img-item
+    display inline-block
+
+  .card-img-item
+    margin-right 20px
+    margin-bottom 20px
+    > div
+      .bottom
+        margin-top: 13px
+        line-height: 12px
+
+  .button
+    padding 0
+    float right
 </style>

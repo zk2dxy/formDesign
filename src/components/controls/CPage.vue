@@ -1,41 +1,104 @@
 <template>
-  <div class="CInput" @click="ControlClick()">
+  <div class="CPage" @click="ControlClick()">
     <div v-if="config && (!ControlID)" @click.stop>
       <div class="title">
         {{config.CTitleCN}}
       </div>
-      <extend-input
-        @focus="focusAction()"
-        @blur="blurAction()"
-        :type="config.CAttribute.typeModel"
-        :placeholder="config.CAttribute.placeholder"
-        v-model="config.CKey.default"
-        :icon="config.Icon.className"
-        :position="config.Icon.positionModel"
-      >
-        <template v-if="config.CAttribute.prepend!=''" slot="prepend"><span v-html="config.CAttribute.prepend"></span>
-        </template>
-        <template v-if="config.CAttribute.append!=''" slot="append"><span v-html="config.CAttribute.append"></span>
-        </template>
-      </extend-input>
+      <!--page-->
+      <!--基础用法-->
+      <div class="block" v-if="config.CAttribute.typeModel === 'pageBasic'">
+        <el-pagination
+          :small="config.CAttribute.pageSmall"
+          :page-size="config.CAttribute.pageSize"
+          :current-page="config.CAttribute.pageCurrent"
+          layout="prev, pager, next"
+          :total="config.CAttribute.pageTotal">
+        </el-pagination>
+      </div>
+      <!--显示总数-->
+      <div class="block" v-if="config.CAttribute.typeModel === 'pageTotal'">
+        <el-pagination
+          :small="config.CAttribute.pageSmall"
+          :page-size="config.CAttribute.pageSize"
+          :current-page.sync="config.CAttribute.pageCurrent"
+          layout="total, prev, pager, next"
+          :total="config.CAttribute.pageTotal">
+        </el-pagination>
+      </div>
+      <!--调整每页显示条数-->
+      <div class="block" v-if="config.CAttribute.typeModel === 'pageItem'">
+        <el-pagination
+          :small="config.CAttribute.pageSmall"
+          :page-size="config.CAttribute.pageSize"
+          :current-page.sync="config.CAttribute.pageCurrent"
+          layout="sizes, prev, pager, next"
+          :total="config.CAttribute.pageTotal">
+        </el-pagination>
+      </div>
+      <!--直接前往-->
+      <div class="block" v-if="config.CAttribute.typeModel === 'pageDirect'">
+        <el-pagination
+          :current-page="config.CAttribute.pageCurrent"
+          :page-size="config.CAttribute.pageSize"
+          layout="prev, pager, next, jumper"
+          :total="config.CAttribute.pageTotal">
+        </el-pagination>
+      </div>
+      <!--完整功能-->
+      <div class="block" v-if="config.CAttribute.typeModel === 'pageComplete'">
+        <el-pagination
+          :current-page="config.CAttribute.pageCurrent"
+          :page-size="config.CAttribute.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="config.CAttribute.pageTotal">
+        </el-pagination>
+      </div>
     </div>
     <div v-else>
       <el-form :label-position="ControlConfig.labelPositionModel" :label-width=labelWidthCalc>
         <el-form-item :label="ControlConfig.CTitleCN">
-          <extend-input
-            @focus="focusAction()"
-            @blur="blurAction()"
-            :type="ControlConfig.CAttribute.typeModel"
-            :placeholder="ControlConfig.CAttribute.placeholder"
-            v-model="ControlConfig.CKey.default"
-            :icon="ControlConfig.Icon.className"
-            :position="ControlConfig.Icon.positionModel"
-          >
-            <template v-if="ControlConfig.CAttribute.prepend!=''" slot="prepend"><span
-              v-html="ControlConfig.CAttribute.prepend"></span></template>
-            <template v-if="ControlConfig.CAttribute.append!=''" slot="append"><span
-              v-html="ControlConfig.CAttribute.append"></span></template>
-          </extend-input>
+          <el-pagination
+            v-if="ControlConfig.CAttribute.typeModel === 'pageBasic'"
+            :small="ControlConfig.CAttribute.pageSmall"
+            :page-size="ControlConfig.CAttribute.pageSize"
+            :current-page="ControlConfig.CAttribute.pageCurrent"
+            layout="prev, pager, next"
+            :total="ControlConfig.CAttribute.pageTotal">
+          </el-pagination>
+          <!--显示总数-->
+          <el-pagination
+            v-if="ControlConfig.CAttribute.typeModel === 'pageTotal'"
+            :small="ControlConfig.CAttribute.pageSmall"
+            :page-size="ControlConfig.CAttribute.pageSize"
+            :current-page.sync="ControlConfig.CAttribute.pageCurrent"
+            layout="total, prev, pager, next"
+            :total="ControlConfig.CAttribute.pageTotal">
+          </el-pagination>
+          <!--调整每页显示条数-->
+          <el-pagination
+            v-if="ControlConfig.CAttribute.typeModel === 'pageItem'"
+            :small="ControlConfig.CAttribute.pageSmall"
+            :page-size="ControlConfig.CAttribute.pageSize"
+            :current-page.sync="ControlConfig.CAttribute.pageCurrent"
+            layout="sizes, prev, pager, next"
+            :total="ControlConfig.CAttribute.pageTotal">
+          </el-pagination>
+          <!--直接前往-->
+          <el-pagination
+            v-if="ControlConfig.CAttribute.typeModel === 'pageDirect'"
+            :current-page="ControlConfig.CAttribute.pageCurrent"
+            :page-size="ControlConfig.CAttribute.pageSize"
+            layout="prev, pager, next, jumper"
+            :total="ControlConfig.CAttribute.pageTotal">
+          </el-pagination>
+          <!--完整功能-->
+          <el-pagination
+            v-if="ControlConfig.CAttribute.typeModel === 'pageComplete'"
+            :current-page="ControlConfig.CAttribute.pageCurrent"
+            :page-size="ControlConfig.CAttribute.pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="ControlConfig.CAttribute.pageTotal">
+          </el-pagination>
         </el-form-item>
       </el-form>
     </div>
@@ -45,7 +108,7 @@
   // 控件配置、表单配置、数据来源配置
   // props: ['ControlConfig', 'FormConfig', 'OriginDataConfig', 'value'],
   export default {
-    name: `CInput`,
+    name: `CPage`,
     props: {
       ControlConfig: {
         type: Object
@@ -75,28 +138,32 @@
       this.getChildrenLayoutValue()
       this.$emit('input', this.config)
     },
-    updated () {},
+    updated () {
+    },
     /* keep-alive 组件激活时调用。 */
-    activated () {},
+    activated () {
+    },
     /* keep-alive 组件停用时调用。 */
-    deactivated () {},
+    deactivated () {
+    },
     watch: {
       'config.CKey.default' (val, old) {
         // console.log(val)
       }
     },
-    beforeDestroy () {},
-    destroyed () {},
+    beforeDestroy () {
+    },
+    destroyed () {
+    },
+    computed: {
+      labelWidthCalc () {
+        if (this.config.labelWidth) {
+          return this.config.labelWidth + 'px'
+        }
+      }
+    },
     methods: {
       ControlClick () {
-        this.emitConfig()
-      },
-      // 获得焦点事件
-      focusAction () {
-        this.emitConfig()
-      },
-      // 失去焦点事件
-      blurAction () {
         this.emitConfig()
       },
       // 值变更事件
@@ -128,21 +195,14 @@
         }
       }
     },
-    computed: {
-      labelWidthCalc () {
-        if (this.config.labelWidth) {
-          return this.config.labelWidth + 'px'
-        }
-      }
-    },
     data () {
       return {
         initConfig: {
           ControlID: '', // 表单生成后的控件id
-          CBelong: 'form',
-          CTitleCN: '输入框', // 标题
-          CTitleEN: 'input Control', // 英文标题
-          CName: 'CInput', // 控件名称
+          CBelong: 'others',
+          CTitleCN: '分页控件',
+          CTitleEN: 'page Control', // 英文标题
+          CName: 'CPage', // 控件名称
           labelPositionModel: 'left',
           labelPositionValue: [
             {value: 'left', name: '文字左对齐'},
@@ -187,18 +247,35 @@
             }
           ],
           CAttribute: {
-            prepend: '', // input 前置头
-            append: '', // input 追尾说明
-            type: [{
-              value: 'input',
-              name: '文本框'
+            pageSmall: false, // 是否使用小型分页样式
+            pageSize: 5, // 分页页数
+            pageCurrent: 2, // 当前页数
+            pageTotal: 100, // 总条目数
+            pageSmallList: [{
+              name: '是',
+              value: true
             }, {
-              value: 'textarea',
-              name: '多行文本'
+              name: '否',
+              value: false
+            }],
+            type: [{
+              value: 'pageBasic',
+              name: '基础分页'
+            }, {
+              value: 'pageTotal',
+              name: '显示总数'
+            }, {
+              value: 'pageItem',
+              name: '调整每页显示条数'
+            }, {
+              value: 'pageDirect',
+              name: '直接前往'
+            }, {
+              value: 'pageComplete',
+              name: '完整功能'
             }], // input 类型 text number......and so on
-            typeModel: 'input',
+            typeModel: 'pageBasic',
             description: '', // 描述
-            placeholder: '请输入默认值或者为空', // 控件提示值
             height: '', // 高度
             vertical: ['top', 'middle', 'bottom'] // 对齐方式
           },
@@ -264,4 +341,13 @@
 
   .CDom
     color $font-danger
+
+  //    loading
+  .loading
+    width: 200px;
+    height: 200px;
+    background-color rgba(0, 0, 0, 0.8)
+
+  .el-pagination
+    padding-top 3px
 </style>

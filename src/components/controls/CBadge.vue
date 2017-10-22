@@ -4,38 +4,24 @@
       <div class="title">
         {{config.CTitleCN}}
       </div>
-      <extend-input
-        @focus="focusAction()"
-        @blur="blurAction()"
-        :type="config.CAttribute.typeModel"
-        :placeholder="config.CAttribute.placeholder"
-        v-model="config.CKey.default"
-        :icon="config.Icon.className"
-        :position="config.Icon.positionModel"
-      >
-        <template v-if="config.CAttribute.prepend!=''" slot="prepend"><span v-html="config.CAttribute.prepend"></span>
-        </template>
-        <template v-if="config.CAttribute.append!=''" slot="append"><span v-html="config.CAttribute.append"></span>
-        </template>
-      </extend-input>
+      <el-badge
+        :value="config.CAttribute.badgeValue.defaultValue"
+        :max="config.CAttribute.badgeValue.max"
+        :is-dot="config.CAttribute.isDot.dotStatus"
+        :hidden="config.CAttribute.badgeStatus.hidden">
+        <el-button size="small">查看</el-button>
+      </el-badge>
     </div>
     <div v-else>
       <el-form :label-position="ControlConfig.labelPositionModel" :label-width=labelWidthCalc>
         <el-form-item :label="ControlConfig.CTitleCN">
-          <extend-input
-            @focus="focusAction()"
-            @blur="blurAction()"
-            :type="ControlConfig.CAttribute.typeModel"
-            :placeholder="ControlConfig.CAttribute.placeholder"
-            v-model="ControlConfig.CKey.default"
-            :icon="ControlConfig.Icon.className"
-            :position="ControlConfig.Icon.positionModel"
-          >
-            <template v-if="ControlConfig.CAttribute.prepend!=''" slot="prepend"><span
-              v-html="ControlConfig.CAttribute.prepend"></span></template>
-            <template v-if="ControlConfig.CAttribute.append!=''" slot="append"><span
-              v-html="ControlConfig.CAttribute.append"></span></template>
-          </extend-input>
+          <el-badge
+            :value="ControlConfig.CAttribute.badgeValue.defaultValue"
+            :max="ControlConfig.CAttribute.badgeValue.max"
+            :is-dot="ControlConfig.CAttribute.isDot.dotStatus"
+            :hidden="ControlConfig.CAttribute.badgeStatus.hidden">
+            <el-button size="small">查看</el-button>
+          </el-badge>
         </el-form-item>
       </el-form>
     </div>
@@ -45,7 +31,7 @@
   // 控件配置、表单配置、数据来源配置
   // props: ['ControlConfig', 'FormConfig', 'OriginDataConfig', 'value'],
   export default {
-    name: `CInput`,
+    name: `CBadge`,
     props: {
       ControlConfig: {
         type: Object
@@ -75,18 +61,26 @@
       this.getChildrenLayoutValue()
       this.$emit('input', this.config)
     },
-    updated () {},
+    updated () {
+    },
     /* keep-alive 组件激活时调用。 */
-    activated () {},
+    activated () {
+    },
     /* keep-alive 组件停用时调用。 */
-    deactivated () {},
+    deactivated () {
+    },
     watch: {
-      'config.CKey.default' (val, old) {
-        // console.log(val)
+      'config.CAttribute.typeModel': {
+        handler () {
+          this.config.CAttribute.badgeValue.defaultValue = ''
+        },
+        deep: true
       }
     },
-    beforeDestroy () {},
-    destroyed () {},
+    beforeDestroy () {
+    },
+    destroyed () {
+    },
     methods: {
       ControlClick () {
         this.emitConfig()
@@ -140,9 +134,10 @@
         initConfig: {
           ControlID: '', // 表单生成后的控件id
           CBelong: 'form',
-          CTitleCN: '输入框', // 标题
-          CTitleEN: 'input Control', // 英文标题
-          CName: 'CInput', // 控件名称
+          CTitleCN: '标记', // 标题
+          CTitleEN: 'badge Control', // 英文标题
+          CName: 'CBadge', // 控件名称
+          /* layout setting start */
           labelPositionModel: 'left',
           labelPositionValue: [
             {value: 'left', name: '文字左对齐'},
@@ -152,6 +147,7 @@
           labelWidth: 80,
           layoutModel: 'flexLayout',
           currentLayout: null,
+          /* layout setting start */
           CLayout: [ // 布局
             { // flex 布局
               type: Number,
@@ -187,55 +183,45 @@
             }
           ],
           CAttribute: {
-            prepend: '', // input 前置头
-            append: '', // input 追尾说明
             type: [{
-              value: 'input',
-              name: '文本框'
+              value: 'string',
+              name: '字符串'
             }, {
-              value: 'textarea',
-              name: '多行文本'
-            }], // input 类型 text number......and so on
-            typeModel: 'input',
+              value: 'number',
+              name: '数字值'
+            }], // badge值类型 string、number、dot
+            typeModel: 'number', // badge当前类型
             description: '', // 描述
-            placeholder: '请输入默认值或者为空', // 控件提示值
-            height: '', // 高度
-            vertical: ['top', 'middle', 'bottom'] // 对齐方式
-          },
-          CKey: { // 控件值
-            default: '', // 默认值
-            type: '', // 控件值类型
-            keyMethods: '' // 计算控件值方法
-          },
-          Status: { // 状态
-            status: false, // 是否应用状态
-            rules: [
-              {
-                value: 'readonly',
-                name: '只读'
-              },
-              {
-                value: '',
-                name: '隐藏'
-              }
-            ], // 控件规则集合
-            ruleList: [] // 选择集合
-          },
-          Icon: {
-            status: false, // 是否启用icon
-            chooseStatus: false, // 是否启用CIcon控件去选择图标
-            position: [{ // 控件位置 (中文显示名称/英文属性名称)
-              name: '左侧',
-              value: 'left'
-            }, {
-              name: '右侧',
-              value: 'right'
-            }],
-            positionModel: '', // 绑定的图标位置
-            className: '', // 类名
-            content: '', // 图标content
-            title: '', // 图标标题
-            library: '' // 图标库
+            isDot: {
+              dotStatus: false,
+              dotAble: [
+                {
+                  value: false,
+                  name: '数值'
+                },
+                {
+                  value: true,
+                  name: '小圆点'
+                }
+              ]
+            },
+            badgeValue: {
+              defaultValue: '',
+              max: 99
+            },
+            badgeStatus: { // 状态
+              hidden: false, // 是否应用状态
+              hiddenAble: [
+                {
+                  value: false,
+                  name: '显示'
+                },
+                {
+                  value: true,
+                  name: '隐藏'
+                }
+              ]
+            }
           },
           CValidate: {
             status: false,

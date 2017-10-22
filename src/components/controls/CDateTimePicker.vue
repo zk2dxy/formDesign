@@ -1,51 +1,83 @@
 <template>
-  <div class="CInput" @click="ControlClick()">
+  <div class="CDateTimePicker" @click="ControlClick()">
     <div v-if="config && (!ControlID)" @click.stop>
       <div class="title">
         {{config.CTitleCN}}
       </div>
-      <extend-input
-        @focus="focusAction()"
-        @blur="blurAction()"
-        :type="config.CAttribute.typeModel"
-        :placeholder="config.CAttribute.placeholder"
-        v-model="config.CKey.default"
-        :icon="config.Icon.className"
-        :position="config.Icon.positionModel"
-      >
-        <template v-if="config.CAttribute.prepend!=''" slot="prepend"><span v-html="config.CAttribute.prepend"></span>
-        </template>
-        <template v-if="config.CAttribute.append!=''" slot="append"><span v-html="config.CAttribute.append"></span>
-        </template>
-      </extend-input>
     </div>
     <div v-else>
       <el-form :label-position="ControlConfig.labelPositionModel" :label-width=labelWidthCalc>
         <el-form-item :label="ControlConfig.CTitleCN">
-          <extend-input
-            @focus="focusAction()"
-            @blur="blurAction()"
-            :type="ControlConfig.CAttribute.typeModel"
-            :placeholder="ControlConfig.CAttribute.placeholder"
-            v-model="ControlConfig.CKey.default"
-            :icon="ControlConfig.Icon.className"
-            :position="ControlConfig.Icon.positionModel"
-          >
-            <template v-if="ControlConfig.CAttribute.prepend!=''" slot="prepend"><span
-              v-html="ControlConfig.CAttribute.prepend"></span></template>
-            <template v-if="ControlConfig.CAttribute.append!=''" slot="append"><span
-              v-html="ControlConfig.CAttribute.append"></span></template>
-          </extend-input>
+          <div v-if="ControlConfig.CAttribute.typeModel === 'time'">
+            <div v-if="ControlConfig.CAttribute.timeFixed">
+              <div v-if="!ControlConfig.CAttribute.isRangeSelect">
+                <el-time-select
+                  v-model="ControlConfig.CKey.default"
+                  :picker-options="{
+                start: ControlConfig.CAttribute.timeStart,
+                step: ControlConfig.CAttribute.timeStep,
+                end: ControlConfig.CAttribute.timeEnd
+              }"
+                  :editable="false"
+                  :clearable="ControlConfig.CAttribute.isShowClearable"
+                  :size="ControlConfig.CAttribute.sizeModel"
+                  :placeholder="ControlConfig.CAttribute.placeholder"></el-time-select>
+              </div>
+              <div v-else>
+            <span @click="startFixTime">
+              <el-time-select
+                v-model="defaultRangeFixedTime[0]"
+                :picker-options="{
+                  start: ControlConfig.CAttribute.timeStart,
+                  step: ControlConfig.CAttribute.timeStep,
+                  end: ControlConfig.CAttribute.timeEnd
+                }"
+                :editable="false"
+                :clearable="ControlConfig.CAttribute.isShowClearable"
+                :size="ControlConfig.CAttribute.sizeModel"
+                placeholder="开始时间"
+                @change="saveDefault"></el-time-select>
+            </span>
+                <span @click="endFixTime">
+              <el-time-select
+                v-model="defaultRangeFixedTime[1]"
+                :picker-options="{
+                  start: ControlConfig.CAttribute.timeStartend,
+                  step: ControlConfig.CAttribute.timeStepend,
+                  end: ControlConfig.CAttribute.timeEndend
+                }"
+                :editable="false"
+                :clearable="ControlConfig.CAttribute.isShowClearableend"
+                :size="ControlConfig.CAttribute.sizeModelend"
+                placeholder="结束时间"
+                @change="saveDefault"></el-time-select>
+            </span>
+              </div>
+            </div>
+            <div v-else>
+              <el-time-picker
+                @change="timePicker"
+                v-model="timeDate"
+                :is-range="ControlConfig.CAttribute.isRangeSelect"
+                :picker-options="{
+                selectableRange: ControlConfig.CAttribute.timeSelectableRange
+               }"
+                :editable="ControlConfig.CAttribute.timeEditable"
+                :clearable="ControlConfig.CAttribute.isShowClearable"
+                :size="ControlConfig.CAttribute.sizeModel"
+                :placeholder="ControlConfig.CAttribute.placeholder"></el-time-picker>
+            </div>
+          </div>
+          <div v-if="ControlConfig.CAttribute.typeModel === 'date'">
+          </div>
         </el-form-item>
       </el-form>
     </div>
   </div>
 </template>
 <script type="text/ecmascript-6">
-  // 控件配置、表单配置、数据来源配置
-  // props: ['ControlConfig', 'FormConfig', 'OriginDataConfig', 'value'],
   export default {
-    name: `CInput`,
+    name: `CDateTimePicker`,
     props: {
       ControlConfig: {
         type: Object
@@ -75,32 +107,15 @@
       this.getChildrenLayoutValue()
       this.$emit('input', this.config)
     },
-    updated () {},
-    /* keep-alive 组件激活时调用。 */
-    activated () {},
-    /* keep-alive 组件停用时调用。 */
-    deactivated () {},
-    watch: {
-      'config.CKey.default' (val, old) {
-        // console.log(val)
+    computed: {
+      labelWidthCalc () {
+        if (this.config.labelWidth) {
+          return this.config.labelWidth + 'px'
+        }
       }
     },
-    beforeDestroy () {},
-    destroyed () {},
     methods: {
       ControlClick () {
-        this.emitConfig()
-      },
-      // 获得焦点事件
-      focusAction () {
-        this.emitConfig()
-      },
-      // 失去焦点事件
-      blurAction () {
-        this.emitConfig()
-      },
-      // 值变更事件
-      changeAction () {
         this.emitConfig()
       },
       emitConfig () {
@@ -112,6 +127,18 @@
           this.config.ControlID = this.ControlID
         }
         this.$emit(`getValue`, this.config)
+      },
+      timePicker (value) {
+        this.config.CKey.default = value
+      },
+      saveDefault () {
+        this.config.CKey.default = this.defaultRangeFixedTime[0] + this.defaultRangeFixedTime[1]
+      },
+      startFixTime () {
+        this.config.CAttribute.rangeOfFixedEnd = false
+      },
+      endFixTime () {
+        this.config.CAttribute.rangeOfFixedEnd = true
       },
       getChildrenLayoutValue () {
         this.config.currentLayout = null
@@ -128,21 +155,16 @@
         }
       }
     },
-    computed: {
-      labelWidthCalc () {
-        if (this.config.labelWidth) {
-          return this.config.labelWidth + 'px'
-        }
-      }
-    },
     data () {
       return {
+        defaultRangeFixedTime: [], // 固定时间范围选择默认值
+        timeDate: new Date(),
         initConfig: {
           ControlID: '', // 表单生成后的控件id
           CBelong: 'form',
-          CTitleCN: '输入框', // 标题
-          CTitleEN: 'input Control', // 英文标题
-          CName: 'CInput', // 控件名称
+          CTitleCN: '日期时间选择器', // 标题
+          CTitleEN: 'dateTimePicker Control', // 英文标题
+          CName: 'CDateTimePicker', // 控件名称
           labelPositionModel: 'left',
           labelPositionValue: [
             {value: 'left', name: '文字左对齐'},
@@ -187,20 +209,46 @@
             }
           ],
           CAttribute: {
-            prepend: '', // input 前置头
-            append: '', // input 追尾说明
             type: [{
-              value: 'input',
-              name: '文本框'
+              value: 'time',
+              name: '时间选择器'
             }, {
-              value: 'textarea',
-              name: '多行文本'
-            }], // input 类型 text number......and so on
-            typeModel: 'input',
+              value: 'date',
+              name: '日期选择器'
+            }, {
+              value: 'dateTime',
+              name: '日期时间选择器'
+            }],
+            typeModel: 'time',
+            size: [{
+              value: 'large',
+              name: '大'
+            }, {
+              value: 'small',
+              name: '小'
+            }, {
+              value: 'mini',
+              name: 'mini'
+            }], // 输入尺寸
+            sizeModel: 'small',
+            sizeModelend: 'small',
             description: '', // 描述
+            timeFixed: false, // 是否是固定时间点
+            timeStart: '', // 起始时间
+            timeStep: '', // 时间间隔
+            timeEnd: '', // 结束时间
+            rangeOfFixedEnd: false,
+            timeStartend: '', // 起始时间
+            timeStepend: '', // 时间间隔
+            timeEndend: '', // 结束时间
+            timeEditable: true, // 文本框可输入
+            timeSelectableRange: '00:00:00 - 23:59:59', // 任意时间选择范围
+            isRangeSelect: false, // 是否是范围选择
+//            dateFormate: 'HH:mm:ss',
+            isShowClearable: true, // 是否显示清除按钮
+            isShowClearableend: true, // 是否显示清除按钮
             placeholder: '请输入默认值或者为空', // 控件提示值
-            height: '', // 高度
-            vertical: ['top', 'middle', 'bottom'] // 对齐方式
+            height: '' // 高度
           },
           CKey: { // 控件值
             default: '', // 默认值
@@ -256,12 +304,9 @@
   }
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-  @import "~assets/css/stylus/mixin"
   .title
     padding 8px 0px
     color $font-primary
     font-size $font-medium
 
-  .CDom
-    color $font-danger
 </style>

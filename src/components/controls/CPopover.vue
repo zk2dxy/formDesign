@@ -4,38 +4,34 @@
       <div class="title">
         {{config.CTitleCN}}
       </div>
-      <extend-input
-        @focus="focusAction()"
-        @blur="blurAction()"
-        :type="config.CAttribute.typeModel"
-        :placeholder="config.CAttribute.placeholder"
-        v-model="config.CKey.default"
-        :icon="config.Icon.className"
-        :position="config.Icon.positionModel"
-      >
-        <template v-if="config.CAttribute.prepend!=''" slot="prepend"><span v-html="config.CAttribute.prepend"></span>
-        </template>
-        <template v-if="config.CAttribute.append!=''" slot="append"><span v-html="config.CAttribute.append"></span>
-        </template>
-      </extend-input>
+      <el-popover
+        ref="popover1"
+        :placement="config.CAttribute.placement.placement"
+        :title="config.CAttribute.title"
+        :width="config.CAttribute.width"
+        :trigger="config.CAttribute.triggerModel"
+        :visible-arrowable="config.CAttribute.visibleArrow.visibleArrow"
+        :content="config.CAttribute.content"
+        :transition="config.CAttribute.transition"
+        :offset="config.CAttribute.offset">
+      </el-popover>
+      <el-button v-popover:popover1>激活</el-button>
     </div>
     <div v-else>
       <el-form :label-position="ControlConfig.labelPositionModel" :label-width=labelWidthCalc>
         <el-form-item :label="ControlConfig.CTitleCN">
-          <extend-input
-            @focus="focusAction()"
-            @blur="blurAction()"
-            :type="ControlConfig.CAttribute.typeModel"
-            :placeholder="ControlConfig.CAttribute.placeholder"
-            v-model="ControlConfig.CKey.default"
-            :icon="ControlConfig.Icon.className"
-            :position="ControlConfig.Icon.positionModel"
-          >
-            <template v-if="ControlConfig.CAttribute.prepend!=''" slot="prepend"><span
-              v-html="ControlConfig.CAttribute.prepend"></span></template>
-            <template v-if="ControlConfig.CAttribute.append!=''" slot="append"><span
-              v-html="ControlConfig.CAttribute.append"></span></template>
-          </extend-input>
+          <el-popover
+            ref="popover1"
+            :placement="ControlConfig.CAttribute.placement.placement"
+            :title="ControlConfig.CAttribute.title"
+            :width="ControlConfig.CAttribute.width"
+            :trigger="ControlConfig.CAttribute.triggerModel"
+            :visible-arrowable="ControlConfig.CAttribute.visibleArrow.visibleArrow"
+            :content="ControlConfig.CAttribute.content"
+            :transition="config.CAttribute.transition"
+            :offset="config.CAttribute.offset">
+          </el-popover>
+          <el-button v-popover:popover1>激活</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -45,7 +41,7 @@
   // 控件配置、表单配置、数据来源配置
   // props: ['ControlConfig', 'FormConfig', 'OriginDataConfig', 'value'],
   export default {
-    name: `CInput`,
+    name: `CPopover`,
     props: {
       ControlConfig: {
         type: Object
@@ -75,18 +71,30 @@
       this.getChildrenLayoutValue()
       this.$emit('input', this.config)
     },
-    updated () {},
+    updated () {
+    },
     /* keep-alive 组件激活时调用。 */
-    activated () {},
+    activated () {
+    },
     /* keep-alive 组件停用时调用。 */
-    deactivated () {},
+    deactivated () {
+    },
     watch: {
       'config.CKey.default' (val, old) {
         // console.log(val)
       }
     },
-    beforeDestroy () {},
-    destroyed () {},
+    beforeDestroy () {
+    },
+    destroyed () {
+    },
+    computed: {
+      labelWidthCalc () {
+        if (this.config.labelWidth) {
+          return this.config.labelWidth + 'px'
+        }
+      }
+    },
     methods: {
       ControlClick () {
         this.emitConfig()
@@ -128,21 +136,14 @@
         }
       }
     },
-    computed: {
-      labelWidthCalc () {
-        if (this.config.labelWidth) {
-          return this.config.labelWidth + 'px'
-        }
-      }
-    },
     data () {
       return {
         initConfig: {
           ControlID: '', // 表单生成后的控件id
           CBelong: 'form',
-          CTitleCN: '输入框', // 标题
-          CTitleEN: 'input Control', // 英文标题
-          CName: 'CInput', // 控件名称
+          CTitleCN: '弹出框', // 标题
+          CTitleEN: 'Popover Control', // 英文标题
+          CName: 'CPopover', // 控件名称
           labelPositionModel: 'left',
           labelPositionValue: [
             {value: 'left', name: '文字左对齐'},
@@ -187,28 +188,84 @@
             }
           ],
           CAttribute: {
-            prepend: '', // input 前置头
-            append: '', // input 追尾说明
-            type: [{
-              value: 'input',
-              name: '文本框'
+            trigger: [{
+              value: 'click',
+              name: '点击'
             }, {
-              value: 'textarea',
-              name: '多行文本'
-            }], // input 类型 text number......and so on
-            typeModel: 'input',
+              value: 'focus',
+              name: '聚焦'
+            }, {
+              value: 'hover',
+              name: '悬浮'
+            }, {
+              value: 'manual',
+              name: 'manual'
+            }], // Popover 触发方式 click/focus/hover/manual
+            triggerModel: 'click',
+            title: '提示',
+            width: '200', // 宽度
             description: '', // 描述
-            placeholder: '请输入默认值或者为空', // 控件提示值
-            height: '', // 高度
-            vertical: ['top', 'middle', 'bottom'] // 对齐方式
+            content: '这是一段内容,这是一段内容,这是一段内容,这是一段内容。',
+            offset: 0, // 出现位置的偏移量
+            placement: {
+              placement: 'top',
+              placementable: [
+                {
+                  value: 'top',
+                  name: '上'
+                }, {
+                  value: 'top-start',
+                  name: '上左'
+                }, {
+                  value: 'top-end',
+                  name: '上右'
+                }, {
+                  value: 'bottom',
+                  name: '下'
+                }, {
+                  value: 'bottom-start',
+                  name: '下左'
+                }, {
+                  value: 'bottom-end',
+                  name: '下右'
+                }, {
+                  value: 'left',
+                  name: '左'
+                }, {
+                  value: 'left-start',
+                  name: '左上'
+                }, {
+                  value: 'left-end',
+                  name: '左下'
+                }, {
+                  value: 'right',
+                  name: '右'
+                }, {
+                  value: 'right-start',
+                  name: '右上'
+                }, {
+                  value: 'right-end',
+                  name: '右下'
+                }
+              ]
+            },
+            transition: 'fade-in-linear',
+            visibleArrow: {
+              visibleArrow: true,
+              visibleArrowable: [
+                {
+                  value: true,
+                  name: '是'
+                },
+                {
+                  value: false,
+                  name: '否'
+                }
+              ]
+            } // 是否显示 Tooltip 箭头
           },
-          CKey: { // 控件值
-            default: '', // 默认值
-            type: '', // 控件值类型
-            keyMethods: '' // 计算控件值方法
-          },
-          Status: { // 状态
-            status: false, // 是否应用状态
+          Status: { // 状态是否可见
+            Status: false, // 是否应用状态
             rules: [
               {
                 value: 'readonly',
