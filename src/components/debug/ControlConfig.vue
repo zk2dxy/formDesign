@@ -1,6 +1,7 @@
 <template>
   <div class="ControlConfig">
     <div v-if="config">
+      {{config}}
       <div v-for="(item , index) in config">
         {{index}}
         <div v-if="index === 'CTitleCN'">
@@ -758,7 +759,6 @@
             </div> <!--Popover弹出框的content属性-->
             <div v-else-if="indexIn === 'visibleArrow'"> <!--Popover弹出框的visibleArrow属性-->
               <p>是否显示Tooltip 箭头</p>
-              {{config[index][indexIn].visibleArrow}}12345
               <el-radio-group v-model="config[index][indexIn].visibleArrow">
                 <el-radio :key="radio.value" v-for="radio in config[index][indexIn].visibleArrowAble"
                           :label="radio.value">
@@ -965,7 +965,7 @@
       }
     },
     mounted () {
-      alert(12345)
+      console.error(`TEST config`)
     },
     methods: {
       //      添加collapse条目
