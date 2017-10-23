@@ -317,7 +317,6 @@
     margin-bottom 20px
 
   .CCard
-    display inline-block
     width: 100%
 
   .cardImg, .card-category, .card-img-item
