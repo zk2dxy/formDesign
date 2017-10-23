@@ -9,96 +9,116 @@
     <div v-else>
       <el-form :label-position="ControlConfig.labelPositionModel" :label-width=labelWidthCalc>
         <el-form-item :label="ControlConfig.CTitleCN">
-          <!---->
-          <el-select
-            v-if="ControlConfig.CAttribute.typeModel === 'select' && ControlConfig.CAttribute.isSelectRemote"
-            v-model="ControlConfig.CKey.default"
-            :size="ControlConfig.CAttribute.sizeModel"
-            :multiple="ControlConfig.CAttribute.isMultiple"
-            :multiple-limit="ControlConfig.CAttribute.ableSelectedMax"
-            :clearable="ControlConfig.CAttribute.isSelectClearable"
-            :filterable="ControlConfig.CAttribute.isSelectFilterable"
-            :allow-create="ControlConfig.CAttribute.isSelectCreate"
-            remote
-            :remote-method="RemoteMethod"
-            :loading="loading"
-            :placeholder="ControlConfig.CAttribute.placeholder">
-            <el-option
-              v-for="item in options"
-              :key="item.label"
-              :value="item.showContent"
-              :disabled="item.isDisabled">
-              <div @click="SelectedChange(item.label)">{{item.showContent}}</div>
-            </el-option>
-          </el-select>
-          <el-select
-            v-else-if="ControlConfig.CAttribute.typeModel === 'select'"
-            v-model="ControlConfig.CKey.default"
-            :size="ControlConfig.CAttribute.sizeModel"
-            :multiple="ControlConfig.CAttribute.isMultiple"
-            :multiple-limit="ControlConfig.CAttribute.ableSelectedMax"
-            :clearable="ControlConfig.CAttribute.isSelectClearable"
-            :filterable="ControlConfig.CAttribute.isSelectFilterable"
-            :allow-create="ControlConfig.CAttribute.isSelectCreate"
-            :placeholder="ControlConfig.CAttribute.placeholder">
-            <el-option
-              v-for="item in ControlConfig.CAttribute.itemAttr"
-              :key="item.label"
-              :value="item.showContent"
-              :disabled="item.isDisabled">
-              <div @click="SelectedChange(item.label)">{{item.showContent}}</div>
-            </el-option>
-          </el-select>
-          <!---->
-          <el-select
-            v-else-if="ControlConfig.CAttribute.isSelectRemote"
-            v-model="ControlConfig.CKey.default"
-            :size="ControlConfig.CAttribute.sizeModel"
-            :multiple="ControlConfig.CAttribute.isMultiple"
-            :multiple-limit="ControlConfig.CAttribute.ableSelectedMax"
-            :clearable="ControlConfig.CAttribute.isSelectClearable"
-            :filterable="ControlConfig.CAttribute.isSelectFilterable"
-            :allow-create="ControlConfig.CAttribute.isSelectCreate"
-            remote
-            :remote-method="RemoteMethodGroup"
-            :loading="loading"
-            :placeholder="ControlConfig.CAttribute.placeholder">
-            <el-option-group
-              v-for="group in options"
-              :key="group.label"
-              :label="group.label">
-              <el-option
-                v-for="item in group.options"
-                :key="item.label"
-                :value="item.showContent"
-                :disabled="item.isDisabled">
-                <div @click="SelectedChange(item.label)">{{item.showContent}}</div>
-              </el-option>
-            </el-option-group>
-          </el-select>
-          <el-select
-            v-else
-            v-model="ControlConfig.CKey.default"
-            :size="ControlConfig.CAttribute.sizeModel"
-            :multiple="ControlConfig.CAttribute.isMultiple"
-            :multiple-limit="ControlConfig.CAttribute.ableSelectedMax"
-            :clearable="ControlConfig.CAttribute.isSelectClearable"
-            :filterable="ControlConfig.CAttribute.isSelectFilterable"
-            :allow-create="ControlConfig.CAttribute.isSelectCreate"
-            :placeholder="ControlConfig.CAttribute.placeholder">
-            <el-option-group
-              v-for="group in ControlConfig.CAttribute.itemAttrSelectGroup"
-              :key="group.label"
-              :label="group.label">
-              <el-option
-                v-for="item in group.options"
-                :key="item.label"
-                :value="item.showContent"
-                :disabled="item.isDisabled">
-                <div @click="SelectedChange(item.label)">{{item.showContent}}</div>
-              </el-option>
-            </el-option-group>
-          </el-select>
+          <div v-if="ControlConfig.CAttribute.typeModel === 'select'">
+            <div v-if="ControlConfig.CAttribute.isSelectRemote">
+              <el-select
+                v-model="ControlConfig.CAttribute.defaultSelected"
+                :size="ControlConfig.CAttribute.sizeModel"
+                :multiple="ControlConfig.CAttribute.isMultiple"
+                :multiple-limit="ControlConfig.CAttribute.ableSelectedMax"
+                :clearable="ControlConfig.CAttribute.isSelectClearable"
+                :filterable="ControlConfig.CAttribute.isSelectFilterable"
+                :allow-create="ControlConfig.CAttribute.isSelectCreate"
+                remote
+                :remote-method="RemoteMethod"
+                :loading="loading"
+                :loading-text="ControlConfig.CAttribute.loadingText"
+                :no-match-text="ControlConfig.CAttribute.noMatchText"
+                :no-data-text="ControlConfig.CAttribute.noDataText"
+                :placeholder="ControlConfig.CAttribute.placeholder">
+                <el-option
+                  v-for="item in options"
+                  :key="item.label"
+                  :value="item.label"
+                  :label="item.showContent"
+                  :disabled="item.isDisabled">
+                  <div @click="SelectedChange(item.label)">{{item.showContent}}</div>
+                </el-option>
+              </el-select>
+            </div>
+            <div v-else>
+              <el-select
+                v-model="ControlConfig.CAttribute.defaultSelected"
+                :size="ControlConfig.CAttribute.sizeModel"
+                :multiple="ControlConfig.CAttribute.isMultiple"
+                :multiple-limit="ControlConfig.CAttribute.ableSelectedMax"
+                :clearable="ControlConfig.CAttribute.isSelectClearable"
+                :filterable="ControlConfig.CAttribute.isSelectFilterable"
+                :allow-create="ControlConfig.CAttribute.isSelectCreate"
+                :no-match-text="ControlConfig.CAttribute.noMatchText"
+                :no-data-text="ControlConfig.CAttribute.noDataText"
+                :placeholder="ControlConfig.CAttribute.placeholder">
+                <el-option
+                  v-for="item in ControlConfig.CAttribute.itemAttr"
+                  :key="item.label"
+                  :value="item.label"
+                  :label="item.showContent"
+                  :disabled="item.isDisabled">
+                  <div @click="SelectedChange(item.label)">{{item.showContent}}</div>
+                </el-option>
+              </el-select>
+            </div>
+          </div>
+          <div v-else>
+            <div v-if="ControlConfig.CAttribute.isSelectRemote">
+              <el-select
+                v-model="ControlConfig.CAttribute.defaultSelected"
+                :size="ControlConfig.CAttribute.sizeModel"
+                :multiple="ControlConfig.CAttribute.isMultiple"
+                :multiple-limit="ControlConfig.CAttribute.ableSelectedMax"
+                :clearable="ControlConfig.CAttribute.isSelectClearable"
+                :filterable="ControlConfig.CAttribute.isSelectFilterable"
+                :allow-create="ControlConfig.CAttribute.isSelectCreate"
+                remote
+                :remote-method="RemoteMethodGroup"
+                :loading="loading"
+                :loading-text="ControlConfig.CAttribute.loadingText"
+                :no-match-text="ControlConfig.CAttribute.noMatchText"
+                :no-data-text="ControlConfig.CAttribute.noDataText"
+                :placeholder="ControlConfig.CAttribute.placeholder">
+                <el-option-group
+                  v-for="group in optionsGroup"
+                  :key="group.label"
+                  :label="group.label">
+                  <el-option
+                    v-for="item in group.options"
+                    :key="item.label"
+                    :value="item.label"
+                    :label="item.showContent"
+                    :disabled="item.isDisabled">
+                    <div @click="SelectedChange(item.label)">{{item.showContent}}</div>
+                  </el-option>
+                </el-option-group>
+              </el-select>
+            </div>
+            <div v-else>
+              <el-select
+                v-model="ControlConfig.CAttribute.defaultSelected"
+                :size="ControlConfig.CAttribute.sizeModel"
+                :multiple="ControlConfig.CAttribute.isMultiple"
+                :multiple-limit="ControlConfig.CAttribute.ableSelectedMax"
+                :clearable="ControlConfig.CAttribute.isSelectClearable"
+                :filterable="ControlConfig.CAttribute.isSelectFilterable"
+                :allow-create="ControlConfig.CAttribute.isSelectCreate"
+                :no-match-text="ControlConfig.CAttribute.noMatchText"
+                :no-data-text="ControlConfig.CAttribute.noDataText"
+                :placeholder="ControlConfig.CAttribute.placeholder">
+                <el-option-group
+                  v-for="group in ControlConfig.CAttribute.itemAttrSelectGroup"
+                  :key="group.label"
+                  :label="group.label">
+                  <el-option
+                    v-for="item in group.options"
+                    :key="item.label"
+                    :value="item.label"
+                    :label="item.showContent"
+                    :disabled="item.isDisabled">
+                    <div @click="SelectedChange(item.label)">{{item.showContent}}</div>
+                  </el-option>
+                </el-option-group>
+              </el-select>
+            </div>
+          </div>
         </el-form-item>
       </el-form>
     </div>
@@ -169,21 +189,22 @@
         }
       },
       RemoteMethodGroup (query) {
-        this.options = []
-//        console.log('query', query)
-//        if (query !== '') {
-//          this.loading = true
-//          var optio
-//          this.options = this.config.CAttribute.itemAttrSelectGroup.map(item => {
-//             optio = item.options.map(itemOptions => {
-//              if (itemOptions.showContent === query) {
-//                return item
-//              }
-//            })
-//            console.log('option', optio)
-//            return optio
-//          })
-//        }
+        if (query !== '') {
+          this.loading = true
+          setTimeout(() => {
+            this.loading = false
+            this.config.CAttribute.itemAttrSelectGroup.map(item => {
+              item.options.map(itemOptions => {
+                if (itemOptions.showContent === query) {
+                  this.optionsGroup[0] = item
+                  console.log('item', this.optionsGroup)
+                }
+              })
+            })
+          }, 20)
+        } else {
+          this.optionsGroup = []
+        }
       },
       RemoteMethod (query) {
         this.options = []
@@ -193,7 +214,7 @@
             this.loading = false
             this.options = this.config.CAttribute.itemAttr.filter(item => {
               return item.showContent.toLowerCase()
-                  .indexOf(query.toLowerCase()) > -1
+                .indexOf(query.toLowerCase()) > -1
             })
             console.log('oo', this.options)
           }, 20)
@@ -228,6 +249,7 @@
       return {
         loading: false,
         options: [],
+        optionsGroup: [],
         initConfig: {
           ControlID: '', // 表单生成后的控件id
           CBelong: 'form',
@@ -299,7 +321,7 @@
             }], // select尺寸
             sizeModel: 'small',
             itemAttr: [{
-              label: '0',
+              label: '',
               showContent: '请选择默认值',
               isDisabled: false // 是否禁用该选项
             }, {
@@ -333,11 +355,11 @@
             isSelectRemote: false, // 是否可远程搜索
             isSelectCreate: false // 是否可创建
           },
-          CKey: { // 控件值
-            default: '请选择值', // 默认值
-            type: '', // 控件值类型
-            keyMethods: '' // 计算控件值方法
-          },
+//          CKey: { // 控件值
+//            default: '请选择值', // 默认值
+//            type: '', // 控件值类型
+//            keyMethods: '' // 计算控件值方法
+//          },
           Status: { // 状态
             status: false, // 是否应用状态
             rules: [

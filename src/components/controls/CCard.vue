@@ -4,57 +4,97 @@
       <div class="title">
         {{config.CTitleCN}}
       </div>
-
+      <!--Card-->
+      <div
+        @click="cardItem(index)"
+        v-for="(item, index) in config.CAttribute.cardItemAttribute.cardItem"
+      >
+        <!-- 基础卡片 cardBasic -->
+        <div v-if="config.CAttribute.typeModel === 'cardBasic'">
+          <el-card class="box-card">
+            <div slot="header" class="clearfix">
+              <span>{{item.title}}</span>
+              <el-button style="float: right;" type="text">操作按钮</el-button>
+            </div>
+            <div v-for="(itemIn,indexIn) in item.contentItem" class="text item" @click="cardContentItem(indexIn)">
+              {{ itemIn.content }}
+            </div>
+          </el-card>
+        </div>
+        <!-- 简单卡片 card-->
+        <div v-else-if="config.CAttribute.typeModel === 'cardSimple'">
+          <el-card class="box-card">
+            <div v-for="(itemIn,indexIn) in item.contentItem" class="text item" @click="cardContentItem(indexIn)">
+              {{ itemIn.content }}
+            </div>
+          </el-card>
+        </div>
+      </div>
+      <!-- 带图片卡片 cardImg -->
+      <div class="card-img-item"
+           @click="cardItem(index)"
+           v-if="config.CAttribute.typeModel === 'cardImg'"
+           v-for="(item, index) in config.CAttribute.cardItemAttribute.cardItem"
+      >
+        <el-card :body-style="{ padding: '0px' }">
+          <img :src="item.imageUrl" class="image">
+          <div style="padding: 14px;">
+            <span>{{ item.title }}</span>
+            <div class="bottom clearfix">
+              <time class="time">{{ item.time }}</time>
+              <el-button type="text" class="button">操作按钮</el-button>
+            </div>
+          </div>
+        </el-card>
+      </div>
     </div>
     <div v-else>
-
-      <el-form :label-position="ControlConfig.labelPositionModel" :label-width=labelWidthCalc>
-        <el-form-item :label="ControlConfig.CTitleCN">
-          <div
-            @click="cardItem(index)"
-            v-for="(item, index) in ControlConfig.CAttribute.cardItemAttribute.cardItem"
-          >
-            <!-- 基础卡片 cardBasic -->
-            <div v-if="ControlConfig.CAttribute.typeModel === 'cardBasic'">
-              <el-card class="box-card">
-                <div slot="header" class="clearfix">
-                  <span>{{item.title}}</span>
-                  <el-button style="float: right;" type="text">操作按钮</el-button>
-                </div>
-                <div v-for="(itemIn,indexIn) in item.contentItem" class="text item" @click="cardContentItem(indexIn)">
-                  {{ itemIn.content }}
-                </div>
-              </el-card>
+      <div class="title">
+        {{ControlConfig.CTitleCN}}
+      </div>
+      <!--Card-->
+      <div
+        @click="cardItem(index)"
+        v-for="(item, index) in ControlConfig.CAttribute.cardItemAttribute.cardItem"
+      >
+        <!-- 基础卡片 cardBasic -->
+        <div v-if="ControlConfig.CAttribute.typeModel === 'cardBasic'">
+          <el-card class="box-card">
+            <div slot="header" class="clearfix">
+              <span>{{item.title}}</span>
+              <el-button style="float: right;" type="text">操作按钮</el-button>
             </div>
-            <!-- 简单卡片 card-->
-            <div v-else-if="ControlConfig.CAttribute.typeModel === 'cardSimple'">
-              <el-card class="box-card">
-                <div v-for="(itemIn,indexIn) in item.contentItem" class="text item" @click="cardContentItem(indexIn)">
-                  {{ itemIn.content }}
-                </div>
-              </el-card>
+            <div v-for="(itemIn,indexIn) in item.contentItem" class="text item" @click="cardContentItem(indexIn)">
+              {{ itemIn.content }}
+            </div>
+          </el-card>
+        </div>
+        <!-- 简单卡片 card-->
+        <div v-else-if="ControlConfig.CAttribute.typeModel === 'cardSimple'">
+          <el-card class="box-card">
+            <div v-for="(itemIn,indexIn) in item.contentItem" class="text item" @click="cardContentItem(indexIn)">
+              {{ itemIn.content }}
+            </div>
+          </el-card>
+        </div>
+      </div>
+      <!-- 带图片卡片 cardImg -->
+      <div class="card-img-item"
+           @click="cardItem(index)"
+           v-if="ControlConfig.CAttribute.typeModel === 'cardImg'"
+           v-for="(item, index) in ControlConfig.CAttribute.cardItemAttribute.cardItem"
+      >
+        <el-card :body-style="{ padding: '0px' }">
+          <img :src="item.imageUrl" class="image">
+          <div style="padding: 14px;">
+            <span>{{ item.title }}</span>
+            <div class="bottom clearfix">
+              <time class="time">{{ item.time }}</time>
+              <el-button type="text" class="button">操作按钮</el-button>
             </div>
           </div>
-
-          <!-- 带图片卡片 cardImg -->
-          <div class="card-img-item"
-               @click="cardItem(index)"
-               v-if="ControlConfig.CAttribute.typeModel === 'cardImg'"
-               v-for="(item, index) in ControlConfig.CAttribute.cardItemAttribute.cardItem"
-          >
-            <el-card :body-style="{ padding: '0px' }">
-              <img :src="item.imageUrl" class="image">
-              <div style="padding: 14px;">
-                <span>{{ item.title }}</span>
-                <div class="bottom clearfix">
-                  <time class="time">{{ item.time }}</time>
-                  <el-button type="text" class="button">操作按钮</el-button>
-                </div>
-              </div>
-            </el-card>
-          </div>
-        </el-form-item>
-      </el-form>
+        </el-card>
+      </div>
     </div>
   </div>
 </template>
@@ -89,22 +129,13 @@
       if (this.ControlID && (!this.config.ControlID)) {
         this.config.ControlID = this.ControlID
       }
-      this.getChildrenLayoutValue()
       this.$emit('input', this.config)
     },
-    updated () {
-    },
+    updated () {},
     /* keep-alive 组件激活时调用。 */
-    activated () {
-    },
+    activated () {},
     /* keep-alive 组件停用时调用。 */
-    deactivated () {
-    },
-    watch: {
-      'config.CKey.default' (val, old) {
-        // console.log(val)
-      }
-    },
+    deactivated () {},
     beforeDestroy () {
     },
     destroyed () {
@@ -216,8 +247,7 @@
                   contentItem: [
                     {
                       content: '卡片内容条目1-1'
-                    },
-                    {
+                    }, {
                       content: '卡片内容条目1-2'
                     }
                   ],
@@ -225,7 +255,7 @@
                   imageUrl: 'http://image.woshipm.com/wp-files/2017/10/zhibochanpin-1.png!/both/215x140' // 卡片图片
                 }
               ],
-              addCardItemFlag: false,
+              addCardItemFlag: false, // 添加条目
               cardContentCurrent: 0   // 点击当前卡片内容条目的当前值
             },
             cardCurrent: 0, // 点击当前卡片的值
@@ -307,30 +337,19 @@
   .CDom
     color $font-danger
 
-  //    卡片样式
+//    卡片样式
   .box-card
     float left
-    width 100%
+    width 45%
     margin-bottom 20px
-
+    margin-right 20px
   .item
     margin-bottom 20px
-
-  .CCard
-    display inline-block
-    width: 100%
-
   .cardImg, .card-category, .card-img-item
     display inline-block
-
-  .card-img-item
-    margin-right 20px
-    margin-bottom 20px
-    > div
-      .bottom
-        margin-top: 13px
-        line-height: 12px
-
+  .bottom
+    margin-top: 13px
+    line-height: 12px
   .button
     padding 0
     float right
