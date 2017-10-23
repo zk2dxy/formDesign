@@ -5,33 +5,34 @@
         {{config.CTitleCN}}
       </div>
       <el-popover
-        ref="popover1"
         :placement="config.CAttribute.placement.placement"
         :title="config.CAttribute.title"
         :width="config.CAttribute.width"
         :trigger="config.CAttribute.triggerModel"
-        :visible-arrowable="config.CAttribute.visibleArrow.visibleArrow"
+        :visible-arrow="config.CAttribute.visibleArrow.visibleArrow"
         :content="config.CAttribute.content"
         :transition="config.CAttribute.transition"
         :offset="config.CAttribute.offset">
       </el-popover>
-      <el-button v-popover:popover1>激活</el-button>
     </div>
     <div v-else>
       <el-form :label-position="ControlConfig.labelPositionModel" :label-width=labelWidthCalc>
         <el-form-item :label="ControlConfig.CTitleCN">
           <el-popover
-            ref="popover1"
+            v-if="keepAlive"
+            ref="popover2"
             :placement="ControlConfig.CAttribute.placement.placement"
             :title="ControlConfig.CAttribute.title"
             :width="ControlConfig.CAttribute.width"
             :trigger="ControlConfig.CAttribute.triggerModel"
-            :visible-arrowable="ControlConfig.CAttribute.visibleArrow.visibleArrow"
+            :visible-arrow="ControlConfig.CAttribute.visibleArrow.visibleArrow"
             :content="ControlConfig.CAttribute.content"
-            :transition="config.CAttribute.transition"
-            :offset="config.CAttribute.offset">
+            :transition="ControlConfig.CAttribute.transition"
+            :offset="ControlConfig.CAttribute.offset">
           </el-popover>
-          <el-button v-popover:popover1>激活</el-button>
+          <el-button v-if="keepAlive" v-popover:popover2>{{ this.ControlConfig.CAttribute.triggerModel
+            }} 激活 位置：{{ this.ControlConfig.CAttribute.placement.placement }} 箭头：{{ this.ControlConfig.CAttribute.visibleArrow.visibleArrow }}
+          </el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -82,6 +83,14 @@
     watch: {
       'config.CKey.default' (val, old) {
         // console.log(val)
+      },
+      'config.CAttribute.triggerModel' (val) {
+        if (this.ControlConfig) {
+          this.keepAlive = false
+          setTimeout(() => {
+            this.keepAlive = true
+          }, 20)
+        }
       }
     },
     beforeDestroy () {
@@ -138,6 +147,7 @@
     },
     data () {
       return {
+        keepAlive: true,
         initConfig: {
           ControlID: '', // 表单生成后的控件id
           CBelong: 'form',
@@ -197,11 +207,8 @@
             }, {
               value: 'hover',
               name: '悬浮'
-            }, {
-              value: 'manual',
-              name: 'manual'
             }], // Popover 触发方式 click/focus/hover/manual
-            triggerModel: 'click',
+            triggerModel: 'hover',
             title: '提示',
             width: '200', // 宽度
             description: '', // 描述
@@ -209,7 +216,7 @@
             offset: 0, // 出现位置的偏移量
             placement: {
               placement: 'top',
-              placementable: [
+              placementAble: [
                 {
                   value: 'top',
                   name: '上'
@@ -252,7 +259,7 @@
             transition: 'fade-in-linear',
             visibleArrow: {
               visibleArrow: true,
-              visibleArrowable: [
+              visibleArrowAble: [
                 {
                   value: true,
                   name: '是'
@@ -263,36 +270,6 @@
                 }
               ]
             } // 是否显示 Tooltip 箭头
-          },
-          Status: { // 状态是否可见
-            Status: false, // 是否应用状态
-            rules: [
-              {
-                value: 'readonly',
-                name: '只读'
-              },
-              {
-                value: '',
-                name: '隐藏'
-              }
-            ], // 控件规则集合
-            ruleList: [] // 选择集合
-          },
-          Icon: {
-            status: false, // 是否启用icon
-            chooseStatus: false, // 是否启用CIcon控件去选择图标
-            position: [{ // 控件位置 (中文显示名称/英文属性名称)
-              name: '左侧',
-              value: 'left'
-            }, {
-              name: '右侧',
-              value: 'right'
-            }],
-            positionModel: '', // 绑定的图标位置
-            className: '', // 类名
-            content: '', // 图标content
-            title: '', // 图标标题
-            library: '' // 图标库
           },
           CValidate: {
             status: false,

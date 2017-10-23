@@ -66,7 +66,8 @@
         v-if="Config.CConfig"
         :config="Config.CConfig"
         @changeConfig="changeView"
-      ></control-config>
+      >
+      </control-config>
     </div>
   </div>
 </template>
@@ -232,6 +233,13 @@
                 component: 'CPopover',
                 config: '' // 控件配置
               }, {
+                CNameCN: '弹框',
+                CNameEN: 'messageBox',
+                parent: 'form', // 父级对象
+                type: 'messageBox', // 类型
+                component: 'CMessageBox',
+                config: '' // 控件配置
+              }, {
                 CNameCN: '进度条',
                 CNameEN: 'progress',
                 parent: 'form', // 父级对象
@@ -270,20 +278,20 @@
         return calcLayoutClass(this.list)
       },
       computedFormClass () {
-        let flex = true
-        if (this.list.length > 0) {
-          let flexClass = 'flexLayout'
-          for (let key in this.list) {
-            console.error(this.list[key].config)
-            flex = (this.list[key].config.currentLayout.value === flexClass) && flex
-            if (!flex) {
-              break
-            }
-          }
-          return flex
-        } else {
-          return flex
-        }
+//        let flex = true
+//        if (this.list.length > 0) {
+//          let flexClass = 'flexLayout'
+//          for (let key in this.list) {
+//            // console.error(this.list[key].config)
+//            flex = (this.list[key].config.currentLayout.value === flexClass) && flex
+//            if (!flex) {
+//              break
+//            }
+//          }
+//          return flex
+//        } else {
+//          return flex
+//        }
       }
     }
   }
