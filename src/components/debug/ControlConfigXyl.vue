@@ -65,7 +65,6 @@
                       </div>
                     </el-dialog>
                   </div>
-
                 </div>
                 <div v-if="cardIndex === 'cardContentCurrent' && config.CAttribute.typeModel === 'cardImg'">
                   <div>
@@ -92,7 +91,7 @@
               </div>
             </div>
             <div v-else-if="indexIn === 'addCollapseStatus'">
-              <el-button type="primary" @click="addItem()"><i class="el-icon-plus"></i></el-button>
+              <el-button type="primary" @click="addItem()">添加面板条目<i class="el-icon-plus"></i></el-button>
               <el-dialog :visible.sync="config.CAttribute.addCollapseStatus" :show-close="false">
                 <h4 slot="title">添加：</h4>
                 <el-input v-model="config.CAttribute.collapseItem[config.CAttribute.collapseItem.length - 1].name" placeholder="唯一标识符"></el-input>
@@ -103,6 +102,79 @@
                   <el-button type="primary" @click="closeCollapseDialog(true)">确 定</el-button>
                 </div>
               </el-dialog>
+            </div>
+            <!--Loading加载-->
+            <div v-else-if="indexIn === 'loadingText'">
+              <p>加载文本</p>
+              <el-input type="text" @change="changeConfig()" placeholder="加载文本"
+                        v-model="config[index][indexIn]"></el-input>
+            </div>
+            <!--page分页-->
+            <div v-else-if="indexIn === 'pageSmall'">
+              <p>是否使用小型分页样式</p>
+              <el-radio-group v-model="config[index][indexIn]">
+                <el-radio :key="radio.value" v-for="radio in config[index].pageSmallList" :label="radio.value">
+                  {{radio.name}}
+                </el-radio>
+              </el-radio-group>
+            </div>
+            <div v-else-if="indexIn === 'pageSize'">
+              <div v-if="config[index].typeModel === 'pageBasic' ||
+                            config[index].typeModel === 'pageTotal' ||
+                            config[index].typeModel === 'pageDirect'">
+                <p>分页页数</p>
+                <el-input type="text" @change="changeConfig()" placeholder="分页页数"
+                          v-model.number="config[index][indexIn]"></el-input>
+              </div>
+
+            </div>
+            <div v-else-if="indexIn === 'pageCurrent'">
+              <p>当前页数</p>
+              <el-input type="text" @change="changeConfig()" placeholder="当前页数"
+                        v-model.number="config[index][indexIn]"></el-input>
+            </div>
+            <div v-else-if="indexIn === 'pageTotal'">
+              <p>总条目数</p>
+              <el-input type="text" @change="changeConfig()" placeholder="总条目数"
+                        v-model.number="config[index][indexIn]"></el-input>
+            </div>
+            <!--Cascader 级联-->
+            <div v-else-if="indexIn === 'showAllLevels'">
+              <p>是否显示完整路径</p>
+              <el-radio-group v-model="config[index].showAllLevelFlag">
+                <el-radio :key="radio.value" v-for="radio in config[index][indexIn]" :label="radio.value">
+                  {{radio.name}}
+                </el-radio>
+              </el-radio-group>
+            </div>
+            <div v-else-if="indexIn === 'filterableOption'">
+              <p>是否可搜索选项</p>
+              <el-radio-group v-model="config[index].filterable">
+                <el-radio :key="radio.value" v-for="radio in config[index][indexIn]" :label="radio.value">
+                  {{radio.name}}
+                </el-radio>
+              </el-radio-group>
+            </div>
+            <div v-else-if="indexIn === 'changeOnSelectOption'">
+              <p>是否允许选择任意一级的选项</p>
+              <el-radio-group v-model="config[index].changeOnSelect">
+                <el-radio :key="radio.value" v-for="radio in config[index][indexIn]" :label="radio.value">
+                  {{radio.name}}
+                </el-radio>
+              </el-radio-group>
+            </div>
+            <div v-else-if="indexIn === 'cascadeSizeOption'">
+              <p>尺寸</p>
+              <el-radio-group v-model="config[index].cascadeSize">
+                <el-radio :key="radio.value" v-for="radio in config[index][indexIn]" :label="radio.value">
+                  {{radio.name}}
+                </el-radio>
+              </el-radio-group>
+            </div>
+            <div v-else-if="indexIn === 'cascadePlaceholder'">
+              <p>控件提示语</p>
+              <el-input @change="changeConfig()" placeholder="控件描述(非必填)"
+                        v-model="config[index][indexIn]"></el-input>
             </div>
             <!-- End-->
             <div v-else-if="indexIn === 'type'">
@@ -214,6 +286,7 @@
         this.config.CAttribute.cardUploadFlag = true
         this.config.CAttribute.cardItemAttribute.cardItem[this.config.CAttribute.cardCurrent].imageUrl = this.cardImageUrl
       },
+
       setIcon (chooseRes) {
         if (chooseRes !== '') {
           window.iconOBJ.className = chooseRes.className

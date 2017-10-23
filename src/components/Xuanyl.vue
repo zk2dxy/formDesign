@@ -118,6 +118,27 @@
                 type: 'card', // 类型
                 component: 'CCard',
                 config: '' // 控件配置,
+              }, {
+                CNameCN: 'Loading加载',
+                CNameEN: 'load',
+                parent: 'form', // 父级对象
+                type: 'load', // 类型
+                component: 'CLoading',
+                config: '' // 控件配置,
+              }, {
+                CNameCN: 'Page分页',
+                CNameEN: 'page',
+                parent: 'form', // 父级对象
+                type: 'page', // 类型
+                component: 'CPage',
+                config: '' // 控件配置,
+              }, {
+                CNameCN: 'Cascader级联选择器',
+                CNameEN: 'cascader',
+                parent: 'form', // 父级对象
+                type: 'cascader', // 类型
+                component: 'CCascader',
+                config: '' // 控件配置,
               }
             ]
           }

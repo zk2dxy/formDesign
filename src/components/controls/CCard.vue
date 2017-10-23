@@ -247,8 +247,7 @@
                   contentItem: [
                     {
                       content: '卡片内容条目1-1'
-                    },
-                    {
+                    }, {
                       content: '卡片内容条目1-2'
                     }
                   ],
@@ -256,7 +255,7 @@
                   imageUrl: 'http://image.woshipm.com/wp-files/2017/10/zhibochanpin-1.png!/both/215x140' // 卡片图片
                 }
               ],
-              addCardItemFlag: false,
+              addCardItemFlag: false, // 添加条目
               cardContentCurrent: 0   // 点击当前卡片内容条目的当前值
             },
             cardCurrent: 0, // 点击当前卡片的值
