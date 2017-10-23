@@ -4,9 +4,9 @@
       <div class="title">
         {{config.CTitleCN}}
       </div>
-      <div v-if="config.CAttribute.typeModel==='tag'">
+      <div>
         <el-tag
-          :type="config.CAttribute.typeDefaultSelect"
+          :type="config.CAttribute.typeModel"
           :closable="config.CAttribute.closable.closableStatus"
           :close-transition="config.CAttribute.closable.transitionModel"
           :hit="config.CAttribute.hit.hitStatus"
@@ -19,7 +19,7 @@
       <el-form :label-position="ControlConfig.labelPositionModel" :label-width=labelWidthCalc>
         <el-form-item :label="ControlConfig.CTitleCN">
           <el-tag
-            :type="ControlConfig.CAttribute.typeDefaultSelect"
+            :type="ControlConfig.CAttribute.typeModel"
             :closable="ControlConfig.CAttribute.closable.closableStatus"
             :close-transition="ControlConfig.CAttribute.closable.transitionModel"
             :hit="ControlConfig.CAttribute.hit.hitStatus"
@@ -176,8 +176,7 @@
               value: 'success',
               name: '成功标签'
             }], // tag 类型： primary，gray，success，warning，danger 或者通过color属性自定义背景色
-            typeModel: 'tag',
-            typeDefaultSelect: '',
+            typeModel: '',
             description: '', // 描述
             closable: { // 状态
               closableStatus: false,  // 是否可关闭 (默认false）
@@ -207,14 +206,14 @@
               ]
             } // 是否有边框描边 (默认false）
           },
-          position: [{ // 控件位置 (中文显示名称/英文属性名称)
-            name: '左侧',
-            value: 'left'
-          }, {
-            name: '右侧',
-            value: 'right'
-          }],
-          positionModel: '', // 绑定的标签位置,
+//          position: [{ // 控件位置 (中文显示名称/英文属性名称)
+//            name: '左侧',
+//            value: 'left'
+//          }, {
+//            name: '右侧',
+//            value: 'right'
+//          }],
+//          positionModel: '', // 绑定的标签位置,
           methodDB: [{
             name: '提交', // 中文名称（Example）
             methodName: 'save', // 英文名称 (Example)

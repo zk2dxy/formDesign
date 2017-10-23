@@ -7,15 +7,15 @@
       <template>
         <el-button type="text" @click="openMessageBox">点击打开 Message Box</el-button>
       </template>
-
     </div>
     <div v-else>
-      <div class="title">
-        {{ControlConfig.CTitleCN}}
-      </div>
-      <template>
-        <el-button type="text" @click="openMessageBox">点击打开 Message Box</el-button>
-      </template>
+      <el-form :label-position="ControlConfig.labelPositionModel" :label-width=labelWidthCalc>
+        <el-form-item :label="ControlConfig.CTitleCN">
+          <template>
+            <el-button type="text" @click="openMessageBox">点击打开 Message Box</el-button>
+          </template>
+        </el-form-item>
+      </el-form>
     </div>
   </div>
 </template>
@@ -69,6 +69,13 @@
     },
     destroyed () {
     },
+    computed: {
+      labelWidthCalc () {
+        if (this.config.labelWidth) {
+          return this.config.labelWidth + 'px'
+        }
+      }
+    },
     methods: {
       ControlClick () {
         this.emitConfig()
@@ -108,10 +115,6 @@
           confirmButtonText: this.config.CAttribute.confirmButtonText,
           cancelButtonText: this.config.CAttribute.cancelButtonText,
           closeOnClickModal: this.config.MessageBoxStatus.closeOnClickModal.closeOnClickModal,
-          showInput: this.config.CAttribute.showInput.showInput,
-          inputValue: this.config.CAttribute.inputValue,
-          inputPattern: this.config.CAttribute.inputPattern,
-          inputErrorMessage: this.config.CAttribute.inputErrorMessage,
           beforeClose: (action, instance, done) => {
             if (action === 'confirm') {
               instance.confirmButtonLoading = true
@@ -143,28 +146,49 @@
           CTitleCN: '弹框', // 标题
           CTitleEN: 'MessageBox Control', // 英文标题
           CName: 'CMessageBox', // 控件名称
-          CLayout: { // 布局
-            percentLayout: { // 百分比布局
+          labelPositionModel: 'left',
+          labelPositionValue: [
+            {value: 'left', name: '文字左对齐'},
+            {value: 'right', name: '文字右对齐'},
+            {value: 'top', name: '文字居上对齐'}
+          ],
+          labelWidth: 80,
+          layoutModel: 'flexLayout',
+          currentLayout: null,
+          CLayout: [ // 布局
+            { // flex 布局
               type: Number,
-              default: 100,
-              status: true
-            },
-            pixelLayout: { // 像素布局
-              type: Number,
-              default: 100,
-              status: true
-            },
-            flexLayout: { // flex 布局
-              type: Number,
+              name: '自适应布局',
               default: 1,
-              status: false
+              value: 'flexLayout',
+              status: true,
+              max: 10
             },
-            columnLayout: { // 栅格布局
+            { // 百分比布局
               type: Number,
+              name: '百分比布局',
+              default: 100,
+              value: 'percentLayout',
+              status: false,
+              max: 100
+            },
+            { // 像素布局
+              type: Number,
+              name: '像素布局',
+              default: 100,
+              value: 'pixelLayout',
+              status: false,
+              max: null
+            },
+            { // 栅格布局
+              type: Number,
+              name: '栅格布局',
               default: 12,
-              status: false
+              value: 'columnLayout',
+              status: false,
+              max: 12
             }
-          },
+          ],
           CAttribute: {
             type: [{
               value: 'success',
@@ -183,23 +207,7 @@
             MessageBoxtitle: '提示',
             confirmButtonText: '确定',
             cancelButtonText: '取消',
-            description: '', // 描述
-            showInput: {
-              showInput: false,
-              showInputable: [
-                {
-                  value: false,
-                  name: '否'
-                },
-                {
-                  value: true,
-                  name: '是'
-                }
-              ]
-            }, // 是否显示输入框
-            inputValue: '', // 输入框的初始文本
-            inputPattern: '', // 输入框的校验表达式
-            inputErrorMessage: '' // 校验未通过时的提示文本
+            description: '' // 描述
           },
           MessageBoxStatus: { // 状态
             showConfirmButton: {
