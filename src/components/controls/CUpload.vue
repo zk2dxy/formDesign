@@ -13,8 +13,7 @@
           :show-file-list="config.CAttribute.uploadShowFileFlag"
           :multiple="config.CAttribute.uploadMultiple"
           :on-success="handleUploadSuccess"
-          :on-remove="handleUploadRemove"
-          :on-error="handleUploadSuccess">
+          :on-remove="handleUploadRemove">
           <el-button size="small" type="primary">点击上传</el-button>
           <div slot="tip" class="el-upload__tip">{{config.CAttribute.uploadFileDesc}}</div>
         </el-upload>
@@ -25,8 +24,7 @@
           class="avatar-uploader"
           :action="config.CAttribute.actionUrl"
           :show-file-list="config.CAttribute.uploadShowFileFlag"
-          :on-success="handleUploadSuccess"
-          :on-error="handleUploadSuccess">
+          :on-success="handleUploadSuccess">
           <img v-if="config.CAttribute.uploadFileList.length > 0 && config.CAttribute.uploadFileList[config.CAttribute.uploadFileList.length - 1].imageUrl"
                :src="config.CAttribute.uploadFileList[config.CAttribute.uploadFileList.length - 1].imageUrl"
                class="avatar">
@@ -41,8 +39,7 @@
           :multiple="config.CAttribute.uploadMultiple"
           list-type="picture-card"
           :on-success="handleUploadSuccess"
-          :on-remove="handleUploadRemove"
-          :on-error="handleUploadSuccess">
+          :on-remove="handleUploadRemove">
           <i class="el-icon-plus"></i>
         </el-upload>
       </div>
@@ -55,7 +52,6 @@
           :multiple="config.CAttribute.uploadMultiple"
           :on-success="handleUploadSuccess"
           :on-remove="handleUploadRemove"
-          :on-error="handleUploadSuccess"
           list-type="picture">
           <el-button size="small" type="primary">点击上传</el-button>
           <div slot="tip" class="el-upload__tip">{{config.CAttribute.uploadFileDesc}}</div>
@@ -100,8 +96,7 @@
           :show-file-list="ControlConfig.CAttribute.uploadShowFileFlag"
           :multiple="ControlConfig.CAttribute.uploadMultiple"
           :on-success="handleUploadSuccess"
-          :on-remove="handleUploadRemove"
-          :on-error="handleUploadSuccess">
+          :on-remove="handleUploadRemove">
           <el-button size="small" type="primary">点击上传</el-button>
           <div slot="tip" class="el-upload__tip">{{ControlConfig.CAttribute.uploadFileDesc}}</div>
         </el-upload>
@@ -112,8 +107,7 @@
           class="avatar-uploader"
           :action="ControlConfig.CAttribute.actionUrl"
           :show-file-list="ControlConfig.CAttribute.uploadShowFileFlag"
-          :on-success="handleUploadSuccess"
-          :on-error="handleUploadSuccess">
+          :on-success="handleUploadSuccess">
           <img v-if="ControlConfig.CAttribute.uploadFileList.length > 0 && ControlConfig.CAttribute.uploadFileList[ControlConfig.CAttribute.uploadFileList.length - 1].imageUrl"
                :src="ControlConfig.CAttribute.uploadFileList[ControlConfig.CAttribute.uploadFileList.length - 1].imageUrl"
                class="avatar">
@@ -128,8 +122,7 @@
           :multiple="ControlConfig.CAttribute.uploadMultiple"
           list-type="picture-card"
           :on-success="handleUploadSuccess"
-          :on-remove="handleUploadRemove"
-          :on-error="handleUploadSuccess">
+          :on-remove="handleUploadRemove">
           <i class="el-icon-plus"></i>
         </el-upload>
       </div>
@@ -142,7 +135,6 @@
           :multiple="ControlConfig.CAttribute.uploadMultiple"
           :on-success="handleUploadSuccess"
           :on-remove="handleUploadRemove"
-          :on-error="handleUploadSuccess"
           list-type="picture">
           <el-button size="small" type="primary">点击上传</el-button>
           <div slot="tip" class="el-upload__tip">{{ControlConfig.CAttribute.uploadFileDesc}}</div>
