@@ -17,8 +17,7 @@
             :change-on-select="ControlConfig.CAttribute.changeOnSelect"
             :size="ControlConfig.CAttribute.cascadeSize"
             :placeholder="ControlConfig.CAttribute.cascadePlaceholder"
-            v-model="ControlConfig.CAttribute.selectedOptions"
-            @change="handleChange">
+            v-model="ControlConfig.CAttribute.selectedOptions">
           </el-cascader>
         </el-form-item>
       </el-form>
@@ -101,10 +100,7 @@
         }
         this.$emit(`getValue`, this.config)
       },
-//      级联菜单
-      handleChange (value) {
-        this.config.CAttribute.cascadePropsTitle = value[value.length - 1]
-      },
+
       getChildrenLayoutValue () {
         this.config.currentLayout = null
         if (this.config.CLayout === '') {
