@@ -107,8 +107,8 @@
         this.$msgbox({
           title: this.config.CAttribute.MessageBoxtitle,
           message: h('p', null, [
-            h('span', null, '内容可以是 '),
-            h('i', {style: 'color: red'}, 'VNode')
+            h('span', null, this.config.CAttribute.MessageBoxmessage),
+            h('i', { style: 'color: teal' }, '')
           ]),
           showCancelButton: this.config.MessageBoxStatus.showCancelButton.showCancelButton,
           showConfirmButton: this.config.MessageBoxStatus.showConfirmButton.showConfirmButton,
@@ -207,6 +207,7 @@
             MessageBoxtitle: '提示',
             confirmButtonText: '确定',
             cancelButtonText: '取消',
+            MessageBoxmessage: '请输入',
             description: '' // 描述
           },
           MessageBoxStatus: { // 状态
@@ -249,22 +250,6 @@
                 }
               ]
             } // 是否可通过点击遮罩关闭 MessageBox
-          },
-          Icon: {
-            status: false, // 是否启用icon
-            chooseStatus: false, // 是否启用CIcon控件去选择图标
-            position: [{ // 控件位置 (中文显示名称/英文属性名称)
-              name: '左侧',
-              value: 'left'
-            }, {
-              name: '右侧',
-              value: 'right'
-            }],
-            positionModel: '', // 绑定的图标位置
-            className: '', // 类名
-            content: '', // 图标content
-            title: '', // 图标标题
-            library: '' // 图标库
           },
           CValidate: {
             status: false,

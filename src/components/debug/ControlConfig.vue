@@ -1,7 +1,6 @@
 <template>
   <div class="ControlConfig">
     <div v-if="config">
-      {{config}}
       <div v-for="(item , index) in config">
         {{index}}
         <div v-if="index === 'CTitleCN'">
@@ -732,6 +731,10 @@
               <p>控件标题</p>
               <el-input type="input" @change="changeConfig()" v-model="config[index][indexIn]"></el-input>
             </div> <!--弹框MessageBox的title属性-->
+            <div v-else-if="indexIn === 'MessageBoxmessage'">
+              <p>控件内容</p>
+              <el-input type="input" @change="changeConfig()" v-model="config[index][indexIn]"></el-input>
+            </div> <!--弹框MessageBox的控件内容-->
             <div v-else-if="indexIn === 'confirmButtonText'">
               <p>确定按钮文字</p>
               <el-input type="input" @change="changeConfig()" v-model="config[index][indexIn]"></el-input>
@@ -965,7 +968,6 @@
       }
     },
     mounted () {
-      console.error(`TEST config`)
     },
     methods: {
       //      添加collapse条目
