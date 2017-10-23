@@ -926,7 +926,7 @@
     },
     data () {
       return {
-        tartTime: '',
+        startTime: '',
         stepTime: '',
         endTime: '',
         formateItems: ['HH:mm:ss', 'HH-mm-ss', 'HH/mm/ss'],
