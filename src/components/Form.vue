@@ -39,17 +39,19 @@
     </div>
     <div class="container" ref="container">
       <div class="formDesignTitle">
-        表单设计器
+        表单标题
       </div>
       <div class="formContainer">
         <draggable
           v-model="list"
           :options="{name:'list',animation: 100,group:{name:'controls'},ghostClass: 'item-block-drag'}"
-          style="min-height: 200px;display:flex"
+          style="display:flex; padding-bottom:50px"
           :style="[
           computedFormClass === true ?{'display' : 'flex'} : {'display' : 'block'}
         ]"
-          :class=layoutClass
+          :class="[
+            computedFormClass ? '' : 'floatChildren'
+          ]"
         >
           <component
             v-if="list"
@@ -74,7 +76,11 @@
       </div>
     </div>
     <div class="rightFormSettings" ref="rightFormSettings">
-
+      <form-settings
+        :config="Config.CConfig"
+        :fConfig="Config.FConfig"
+        @changeConfig="changeView"
+      ></form-settings>
     </div>
   </div>
 </template>
@@ -82,18 +88,20 @@
   import draggable from 'vuedraggable'
   import uuid from 'node-uuid'
   import {calcLayoutClass} from '@/assets/js/common'
+  import FormSettings from '@/components/module/formDesign/FormSettings'
 
   export default {
     name: `formDesign`,
     components: {
-      draggable
+      draggable,
+      FormSettings
     },
     created () {
       this.loadAllControls()
     },
     mounted () {
-      console.info(uuid)
-      console.info(calcLayoutClass)
+      // console.info(uuid)
+      // console.info(calcLayoutClass)
     },
     updated () {
     },
@@ -307,7 +315,13 @@
         list: [],
         ControlList: null,
         Config: {
-          FConfig: '',
+          FConfig: {
+            title: '',
+            description: '',
+            classification: '',
+            listViews: [],
+            flowBindResult: []
+          },
           CConfig: ''
         }
       }
@@ -337,6 +351,7 @@
 
   .rightFormSettings
     position absolute
+    overflow auto
     width 18%
     top 1%
     bottom 1%
@@ -358,20 +373,20 @@
       &.active
         background-color rgb(102, 175, 233)
         color rgba(255, 255, 255, .9)
-      display: block
-      width: 33%
-      float: left
-      line-height: 1rem
-      padding: .5rem 0
-      text-align: center
+      display block
+      width 33%
+      float left
+      line-height 1rem
+      padding .5rem 0
+      text-align center
       overflow hidden
       text-overflow ellipsis
-      height: 1rem
-      border-bottom: 1px solid #e1e1e1
-      border-right: 1px solid #e1e1e1
+      height 1rem
+      border-bottom 1px solid #e1e1e1
+      border-right 1px solid #e1e1e1
       cursor pointer
       &:last-child
-        border-right: none
+        border-right none
 
   .singleControl
     display inline-block
@@ -379,11 +394,26 @@
     margin .2rem 1.5%
     > .el-button
       display block
-      width: 100%
+      width 100%
+      padding-left 0
+      padding-right 0
+      text-align left
+      text-indent .2rem
 
   .formDesignTitle
     font-size $font-huge
     color $font-primary
     padding 11px 15px
 
+  .floatChildren
+    clear both
+    &:after
+      content: "."
+      display: block
+      height: 0
+      clear: both
+      visibility: hidden
+    .item
+      float left
+      margin-bottom 10px
 </style>

@@ -349,7 +349,7 @@
 
   .item
     margin-bottom 20px
-    
+
   .CCard
     width: 100%
 

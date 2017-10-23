@@ -2,6 +2,9 @@
   <div
     class="CLayout"
     @click="commitLayoutConfig()"
+    :class="[
+      noneChild ? 'noneChild' : ''
+    ]"
   >
     <div
       @click="clickStop($event)"
@@ -22,7 +25,7 @@
       >
         <component
           :style="[
-            controlItem.config.layoutModel === 'percentLayout'  && controlItem.config.currentLayout !== null ? {'width' : controlItem.config.currentLayout.default+`%`} : null,
+            controlItem.config.layoutModel === 'percentLayout'  && controlItem.config.currentLayout !== null ? {'width' : controlItem.config.currentLayout.default-2+`%`} : null,
             controlItem.config.layoutModel === 'pixelLayout'  && controlItem.config.currentLayout !== null ? {'width' : controlItem.config.currentLayout.default+`px`} : null,
             controlItem.config.layoutModel === 'flexLayout'  && controlItem.config.currentLayout !== null ? {'flex' : controlItem.config.currentLayout.default} : null
           ]"
@@ -107,6 +110,7 @@
         this.$emit('getValue', this.config)
       },
       destroyDom () {
+        console.error(`destroyDom`)
       },
       showAttribute (data, item) {
         this.$emit('getValue', data)
@@ -137,6 +141,19 @@
       }
     },
     computed: {
+      noneChild () {
+        let _none = false
+        if (this.children) {
+          if (this.children[0].length === 0) {
+            _none = true
+          } else {
+            _none = false
+          }
+          return _none
+        } else {
+          return _none
+        }
+      },
       getLayoutValue () {
         if (this.config.CLayout === '') {
           return null
@@ -248,19 +265,20 @@
       margin-bottom 10px
 
   .CLayout
+    margin 11px 0
     extend-click()
-    padding 5px
-    min-height 200px
-    box-shadow inset 0 1px 1px rgba(0,0,0,.075), 0 0 1px rgba(102, 175, 233, .6)
-    overflow:auto
+    padding -1%
+    box-shadow inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 1px rgba(102, 175, 233, .6)
+    overflow: auto
     overflow-x hidden
     overflow-y hidden
 
-  .layout
-    min-height 200px
-
   .dragBLOCK
-    min-height 200px
     padding 10px
+
+  .noneChild
+    min-height 100px
+    > .layout, .dragBLOCK
+      min-height 100px
 
 </style>
