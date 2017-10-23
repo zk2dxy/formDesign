@@ -12,6 +12,7 @@ import CButton from '@/components/controls/CButton'
 import CBadge from '@/components/controls/CBadge'
 import CCard from '@/components/controls/CCard'
 import CCascader from '@/components/controls/CCascader'
+import CUpload from '@/components/controls/CUpload'
 import CDateTimePicker from '@/components/controls/CDateTimePicker'
 import CDialog from '@/components/controls/CDialog'
 import CLoading from '@/components/controls/CLoading'
@@ -38,6 +39,7 @@ const components = [
   CLayout,
   CCollapse,
   CCard,
+  CUpload,
   CValidate,
   CInput,
   CRadio,

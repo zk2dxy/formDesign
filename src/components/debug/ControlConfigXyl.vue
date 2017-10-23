@@ -176,6 +176,41 @@
               <el-input @change="changeConfig()" placeholder="控件描述(非必填)"
                         v-model="config[index][indexIn]"></el-input>
             </div>
+            <!--upload上传-->
+            <div v-else-if="indexIn === 'uploadCurrent'">
+              <div>
+                <p>上传说明</p>
+                <el-input type="text" @change="changeConfig()" placeholder="上传说明"
+                          v-model="config[index].uploadFileDesc"></el-input>
+              </div>
+              <div v-if="config[index].typeModel === 'uploadClick' ||
+                         config[index].typeModel === 'uploadAvatar' ||
+                         config[index].typeModel === 'uploadDrag' ||
+                         config[index].typeModel === 'uploadManual'">
+                <p>是否显示已上传文件列表</p>
+                <el-radio-group v-model="config[index].uploadShowFileFlag">
+                  <el-radio :key="radio.optionFlag" v-for="radio in config[index].uploadShowFileList[itemIn].option" :label="radio.optionFlag">
+                    {{radio.label}}
+                  </el-radio>
+                </el-radio-group>
+              </div>
+              <!--<div>-->
+              <!--<p>是否启用拖拽上传</p>-->
+              <!--<el-radio-group v-model="config[index].uploadDrag">-->
+              <!--<el-radio :key="radio.dragFlag" v-for="radio in config[index].uploadDragList[itemIn].drag" :label="radio.dragFlag">-->
+              <!--{{radio.label}}-->
+              <!--</el-radio>-->
+              <!--</el-radio-group>-->
+              <!--</div>-->
+              <div v-if="config[index].typeModel !== 'uploadAvatar'">
+                <p>是否支持多选文件</p>
+                <el-radio-group v-model="config[index].uploadMultiple">
+                  <el-radio :key="radio.multipleFlag" v-for="radio in config[index].uploadMultipleList[itemIn].multiple" :label="radio.multipleFlag">
+                    {{radio.label}}
+                  </el-radio>
+                </el-radio-group>
+              </div>
+            </div>
             <!-- End-->
             <div v-else-if="indexIn === 'type'">
               <p>控件类型</p>

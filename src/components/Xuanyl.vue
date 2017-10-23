@@ -139,6 +139,13 @@
                 type: 'cascader', // 类型
                 component: 'CCascader',
                 config: '' // 控件配置,
+              }, {
+                CNameCN: 'Upload上传',
+                CNameEN: 'upload',
+                parent: 'form', // 父级对象
+                type: 'upload', // 类型
+                component: 'CUpload',
+                config: '' // 控件配置,
               }
             ]
           }
