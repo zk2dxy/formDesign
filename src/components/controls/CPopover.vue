@@ -31,7 +31,7 @@
             :offset="ControlConfig.CAttribute.offset">
           </el-popover>
           <el-button v-if="keepAlive" v-popover:popover2>{{ this.ControlConfig.CAttribute.triggerModel
-            }} 激活 位置：{{ this.ControlConfig.CAttribute.placement.placement }} 箭头：{{ this.ControlConfig.CAttribute.visibleArrow.visibleArrow }}
+            }} 激活
           </el-button>
         </el-form-item>
       </el-form>
@@ -85,6 +85,22 @@
         // console.log(val)
       },
       'config.CAttribute.triggerModel' (val) {
+        if (this.ControlConfig) {
+          this.keepAlive = false
+          setTimeout(() => {
+            this.keepAlive = true
+          }, 20)
+        }
+      },
+      'config.CAttribute.placement.placement' (val) {
+        if (this.ControlConfig) {
+          this.keepAlive = false
+          setTimeout(() => {
+            this.keepAlive = true
+          }, 20)
+        }
+      },
+      'config.CAttribute.visibleArrow.visibleArrow' (val) {
         if (this.ControlConfig) {
           this.keepAlive = false
           setTimeout(() => {
