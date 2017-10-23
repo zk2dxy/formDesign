@@ -129,19 +129,6 @@
       if (this.ControlID && (!this.config.ControlID)) {
         this.config.ControlID = this.ControlID
       }
-<<<<<<< HEAD
-      this.getChildrenLayoutValue()
-      this.$emit('input', this.config)
-    },
-    updated () {
-    },
-    /* keep-alive 组件激活时调用。 */
-    activated () {
-    },
-    /* keep-alive 组件停用时调用。 */
-    deactivated () {
-    },
-=======
       this.$emit('input', this.config)
     },
     updated () {},
@@ -149,13 +136,6 @@
     activated () {},
     /* keep-alive 组件停用时调用。 */
     deactivated () {},
->>>>>>> card卡片
-    watch: {
-      'config.CKey.default' (val, old) {
-        // console.log(val)
-      }
-    },
-<<<<<<< HEAD
     beforeDestroy () {
     },
     destroyed () {
@@ -167,10 +147,6 @@
         }
       }
     },
-=======
-    beforeDestroy () {},
-    destroyed () {},
->>>>>>> card卡片
     methods: {
       ControlClick () {
         this.emitConfig()
@@ -197,7 +173,6 @@
       cardContentItem (currentIndex) {
         this.config.CAttribute.cardItemAttribute.cardContentCurrent = currentIndex
       },
-<<<<<<< HEAD
       getChildrenLayoutValue () {
         this.config.currentLayout = null
         if (this.config.CLayout === '') {
@@ -211,10 +186,6 @@
             break
           }
         }
-=======
-      imagesUrl () {
-        alert('sss')
->>>>>>> card卡片
       }
     },
     data () {
@@ -225,7 +196,6 @@
           CTitleCN: 'Card卡片', // 标题
           CTitleEN: 'card Control', // 英文标题
           CName: 'CCard', // 控件名称
-<<<<<<< HEAD
           labelPositionModel: 'left',
           labelPositionValue: [
             {value: 'left', name: '文字左对齐'},
@@ -269,30 +239,6 @@
               max: 12
             }
           ],
-=======
-          CLayout: { // 布局
-            percentLayout: { // 百分比布局
-              type: Number,
-              default: 100,
-              status: true
-            },
-            pixelLayout: { // 像素布局
-              type: Number,
-              default: 100,
-              status: true
-            },
-            flexLayout: { // flex 布局
-              type: Number,
-              default: 1,
-              status: false
-            },
-            columnLayout: { // 栅格布局
-              type: Number,
-              default: 12,
-              status: false
-            }
-          },
->>>>>>> card卡片
           CAttribute: {
             cardItemAttribute: {
               cardItem: [
@@ -307,11 +253,7 @@
                     }
                   ],
                   time: '2017-10-18', // 卡片时间
-<<<<<<< HEAD
                   imageUrl: 'http://image.woshipm.com/wp-files/2017/10/zhibochanpin-1.png!/both/215x140' // 卡片图片
-=======
-                  imageUrl: 'http://element.eleme.io/2.0/static/hamburger.50e4091.png' // 卡片图片
->>>>>>> card卡片
                 }
               ],
               addCardItemFlag: false,
@@ -395,25 +337,7 @@
 
   .CDom
     color $font-danger
-<<<<<<< HEAD
 
-  //    卡片样式
-  .box-card
-    float left
-    width 100%
-    margin-bottom 20px
-
-  .item
-    margin-bottom 20px
-
-  .CCard
-    display inline-block
-    width: 100%
-
-  .cardImg, .card-category, .card-img-item
-    display inline-block
-
-=======
 //    卡片样式
   .box-card
     float left
@@ -422,26 +346,11 @@
     margin-right 20px
   .item
     margin-bottom 20px
-  .CCard
-    display inline-block
-    width:100%
   .cardImg, .card-category, .card-img-item
     display inline-block
->>>>>>> card卡片
-  .card-img-item
-    margin-right 20px
-    margin-bottom 20px
-    > div
-<<<<<<< HEAD
-      .bottom
-        margin-top: 13px
-        line-height: 12px
-
-=======
-        .bottom
-          margin-top: 13px
-          line-height: 12px
->>>>>>> card卡片
+  .bottom
+    margin-top: 13px
+    line-height: 12px
   .button
     padding 0
     float right

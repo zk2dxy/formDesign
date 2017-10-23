@@ -159,7 +159,6 @@
             }
           },
           CAttribute: {
-            typeModel: 'collapse',
             collapseItem: [
               {
                 name: '0', // 面板的唯一标识符
