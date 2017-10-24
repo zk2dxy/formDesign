@@ -62,11 +62,11 @@
       {{list}}
     </div>
     <div class="rightControlArea">
-      <control-config
+      <control-config-pyy
         v-if="Config.CConfig"
         :config="Config.CConfig"
         @changeConfig="changeView"
-      ></control-config>
+      ></control-config-pyy>
     </div>
   </div>
 </template>

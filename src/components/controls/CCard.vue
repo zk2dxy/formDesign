@@ -49,52 +49,54 @@
       </div>
     </div>
     <div v-else>
-      <div class="title">
-        {{ControlConfig.CTitleCN}}
-      </div>
-      <!--Card-->
-      <div
-        @click="cardItem(index)"
-        v-for="(item, index) in ControlConfig.CAttribute.cardItemAttribute.cardItem"
-      >
-        <!-- 基础卡片 cardBasic -->
-        <div v-if="ControlConfig.CAttribute.typeModel === 'cardBasic'">
-          <el-card class="box-card">
-            <div slot="header" class="clearfix">
-              <span>{{item.title}}</span>
-              <el-button style="float: right;" type="text">操作按钮</el-button>
+      <el-form :label-position="ControlConfig.labelPositionModel" :label-width=labelWidthCalc>
+        <el-form-item :label="ControlConfig.CTitleCN">
+
+          <!--Card-->
+          <div
+            @click="cardItem(index)"
+            v-for="(item, index) in ControlConfig.CAttribute.cardItemAttribute.cardItem"
+          >
+            <!-- 基础卡片 cardBasic -->
+            <div v-if="ControlConfig.CAttribute.typeModel === 'cardBasic'">
+              <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                  <span>{{item.title}}</span>
+                  <el-button style="float: right;" type="text">操作按钮</el-button>
+                </div>
+                <div v-for="(itemIn,indexIn) in item.contentItem" class="text item" @click="cardContentItem(indexIn)">
+                  {{ itemIn.content }}
+                </div>
+              </el-card>
             </div>
-            <div v-for="(itemIn,indexIn) in item.contentItem" class="text item" @click="cardContentItem(indexIn)">
-              {{ itemIn.content }}
-            </div>
-          </el-card>
-        </div>
-        <!-- 简单卡片 card-->
-        <div v-else-if="ControlConfig.CAttribute.typeModel === 'cardSimple'">
-          <el-card class="box-card">
-            <div v-for="(itemIn,indexIn) in item.contentItem" class="text item" @click="cardContentItem(indexIn)">
-              {{ itemIn.content }}
-            </div>
-          </el-card>
-        </div>
-      </div>
-      <!-- 带图片卡片 cardImg -->
-      <div class="card-img-item"
-           @click="cardItem(index)"
-           v-if="ControlConfig.CAttribute.typeModel === 'cardImg'"
-           v-for="(item, index) in ControlConfig.CAttribute.cardItemAttribute.cardItem"
-      >
-        <el-card :body-style="{ padding: '0px' }">
-          <img :src="item.imageUrl" class="image">
-          <div style="padding: 14px;">
-            <span>{{ item.title }}</span>
-            <div class="bottom clearfix">
-              <time class="time">{{ item.time }}</time>
-              <el-button type="text" class="button">操作按钮</el-button>
+            <!-- 简单卡片 card-->
+            <div v-else-if="ControlConfig.CAttribute.typeModel === 'cardSimple'">
+              <el-card class="box-card">
+                <div v-for="(itemIn,indexIn) in item.contentItem" class="text item" @click="cardContentItem(indexIn)">
+                  {{ itemIn.content }}
+                </div>
+              </el-card>
             </div>
           </div>
-        </el-card>
-      </div>
+          <!-- 带图片卡片 cardImg -->
+          <div class="card-img-item"
+               @click="cardItem(index)"
+               v-if="ControlConfig.CAttribute.typeModel === 'cardImg'"
+               v-for="(item, index) in ControlConfig.CAttribute.cardItemAttribute.cardItem"
+          >
+            <el-card :body-style="{ padding: '0px' }">
+              <img :src="item.imageUrl" class="image">
+              <div style="padding: 14px;">
+                <span>{{ item.title }}</span>
+                <div class="bottom clearfix">
+                  <time class="time">{{ item.time }}</time>
+                  <el-button type="text" class="button">操作按钮</el-button>
+                </div>
+              </div>
+            </el-card>
+          </div>
+        </el-form-item>
+      </el-form>
     </div>
   </div>
 </template>
@@ -129,6 +131,7 @@
       if (this.ControlID && (!this.config.ControlID)) {
         this.config.ControlID = this.ControlID
       }
+      this.getChildrenLayoutValue()
       this.$emit('input', this.config)
     },
     updated () {
@@ -201,9 +204,9 @@
           CName: 'CCard', // 控件名称
           labelPositionModel: 'left',
           labelPositionValue: [
-            {value: 'left', name: '文字左对齐'},
-            {value: 'right', name: '文字右对齐'},
-            {value: 'top', name: '文字居上对齐'}
+            {value: 'left', name: '左对齐'},
+            {value: 'right', name: '右对齐'},
+            {value: 'top', name: '居上对齐'}
           ],
           labelWidth: 80,
           layoutModel: 'flexLayout',

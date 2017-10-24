@@ -1,6 +1,7 @@
 <template>
   <div class="ControlConfig">
     <div v-if="config">
+      555
       <div v-for="(item , index) in config">
         {{index}}
         <div v-if="index === 'CTitleCN'">
@@ -33,15 +34,18 @@
           <el-button type="primary" @click="AddItem()"><i class="el-icon-plus"></i></el-button>
           <el-dialog
             :visible.sync="config.CAttribute.addStatus"
-            :show-close="false">
+            :show-close="false"
+            :close-on-click-modal="false"
+            :close-on-press-escape="false">
             <h4 slot="title">输入单选项属性：</h4>
             <el-form
               :model="config.CAttribute.itemAttr[config.CAttribute.itemAttr.length-1]"
               :rules="rulesAdd"
               v-if="item === 'CRadio'">
               <el-form-item prop="label">
-                <el-input v-model="config.CAttribute.itemAttr[config.CAttribute.itemAttr.length-1].label"
-                          placeholder="选项值" class="input__inner"></el-input>
+                <el-input
+                  v-model="config.CAttribute.itemAttr[config.CAttribute.itemAttr.length-1].label"
+                  placeholder="选项值" class="input__inner"></el-input>
               </el-form-item>
             </el-form>
             <div v-if="config.CAttribute.typeModel !== 'selectGroup'">
@@ -317,7 +321,8 @@
             </div>
             <!--by pyy-->
             <!--radio,checkbox按钮样式尺寸-->
-            <div v-else-if="indexIn === 'size' && (config.CAttribute.typeModel==='button' || config.CName === 'CSelect' || config.CName === 'CDateTimePicker')">
+            <div
+              v-else-if="indexIn === 'size' && (config.CAttribute.typeModel==='button' || config.CName === 'CSelect' || config.CName === 'CDateTimePicker')">
               <p>控件尺寸</p>
               <div v-if="config.CName === 'CDateTimePicker' && config.CAttribute.rangeOfFixedEnd">
                 <el-radio-group v-model="config[index].sizeModelend">
@@ -370,7 +375,8 @@
               <p>可选最小值</p>
               <el-input-number v-model="config[index].ableSelectedMin" :min="0"></el-input-number>
             </div>
-            <div v-else-if="indexIn === 'ableSelectedMax' && (config.CName !== 'CSelect' || config[index].isMultiple === true)">
+            <div
+              v-else-if="indexIn === 'ableSelectedMax' && (config.CName !== 'CSelect' || config[index].isMultiple === true)">
               <p>可选最大值</p>
               <el-input-number v-model="config[index].ableSelectedMax" :min="0"></el-input-number>
             </div>
@@ -383,11 +389,14 @@
                 @focus="focusSelect"
                 @change="selectValueChange"></el-input>
               <p>控件选项显示内容</p>
-              <el-input v-model="config[index].itemAttrSelectGroup[itemIn[0]].options[itemIn[1]].showContent"></el-input>
+              <el-input
+                v-model="config[index].itemAttrSelectGroup[itemIn[0]].options[itemIn[1]].showContent"></el-input>
               <p>删除该选项</p>
-              <el-button type="primary" @click="DeleteItemSelectGroup(itemIn)"><i class="el-icon-delete"></i></el-button>
+              <el-button type="primary" @click="DeleteItemSelectGroup(itemIn)"><i class="el-icon-delete"></i>
+              </el-button>
               <p>禁用该选项</p>
-              <el-checkbox v-model="config[index].itemAttrSelectGroup[itemIn[0]].options[itemIn[1]].isDisabled" label="禁用"></el-checkbox>
+              <el-checkbox v-model="config[index].itemAttrSelectGroup[itemIn[0]].options[itemIn[1]].isDisabled"
+                           label="禁用"></el-checkbox>
             </div>
             <div v-else-if="indexIn === 'isMultiple'">
               <p>多选</p>
@@ -424,7 +433,7 @@
             <!--设置switch属性-->
             <div v-else-if="indexIn === 'switchStatus'">
               <p>设置开关值</p>
-              <el-checkbox v-model="addSwitchValue"  label="设置"></el-checkbox>
+              <el-checkbox v-model="addSwitchValue" label="设置"></el-checkbox>
               <div v-if="itemIn">
                 <div v-if="addSwitchValue">
                   <p>打开时的值</p>
@@ -486,7 +495,7 @@
               <el-checkbox v-model="config[index].sliderShowTooltip" label="显示"></el-checkbox>
             </div>
             <!--设置datePicker-->
-            <div v-else-if="indexIn === 'typeModel' && itemIn === 'time'" >
+            <div v-else-if="indexIn === 'typeModel' && itemIn === 'time'">
               <p>控件为固定时间点</p>
               <el-checkbox v-model="config[index].timeFixed" label="是"></el-checkbox>
               <div v-if="config[index].timeFixed">
@@ -525,7 +534,7 @@
                 <el-checkbox v-model="config[index].isRangeSelect" label="是"></el-checkbox>
               </div>
             </div>
-            <div v-else-if="indexIn === 'typeModel' && itemIn === 'date'" >
+            <div v-else-if="indexIn === 'typeModel' && itemIn === 'date'">
               <div v-if="config[index].dateTypeModel === 'date' ||
               config[index].dateTypeModel === 'daterange' ||
               config[index].dateTypeModel === 'datetimerange'">
@@ -540,7 +549,8 @@
               </el-radio-group>
               <p>格式化</p>
               <el-input v-model="config[index].formatDate" placeholder="年yyyy月MM日dd小时HH分mm秒ss"></el-input>
-              <div v-if="config[index].dateTypeModel === 'daterange' || config[index].dateTypeModel ===  'datetimerange'">
+              <div
+                v-if="config[index].dateTypeModel === 'daterange' || config[index].dateTypeModel ===  'datetimerange'">
                 <p>选择范围时的分隔符</p>
                 <el-input v-model="config[index].rangeSeparator"></el-input>
               </div>
@@ -574,7 +584,8 @@
               <p>默认值</p>
               <el-input v-model.number="config[index].defaultSliderValue"></el-input>
             </div>
-            <div v-else-if="indexIn === 'defaultRangeFixedTime' && config[index].timeFixed && config[index].isRangeSelect">
+            <div
+              v-else-if="indexIn === 'defaultRangeFixedTime' && config[index].timeFixed && config[index].isRangeSelect">
               <p>默认值</p>
               {{itemIn}}
             </div>
@@ -937,10 +948,10 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import {layoutJudge} from '@/assets/js/common'
+  import { layoutJudge } from '@/assets/js/common'
 
   export default {
-    name: 'ControlConfig',
+    name: 'ControlConfigPyy',
     props: ['config'],
     destroy () {
       console.info(`destroy`)
@@ -960,7 +971,7 @@
         rules: {
 //          radio和checkbox label值校验
           label: [
-            { required: true, message: '请输入选项值' },
+            {required: true, message: '请输入选项值'},
             {
               validator: (rules, value, callback) => {
                 this.config.CAttribute.itemAttr.forEach((item, index) => {
@@ -977,7 +988,7 @@
         rulesSlider: {
           //          sliderStep值校验
           sliderStep: [
-            { required: true, message: '请输入步长' },
+            {required: true, message: '请输入步长'},
             {
               validator: (rules, value, callback) => {
                 if (!/^\d+(\.\d+)?$/.test(value)) { // 只能是数字
@@ -989,7 +1000,7 @@
             }
           ],
           height: [
-            { required: true, message: '请输入高度' },
+            {required: true, message: '请输入高度'},
             {
               validator: (rules, value, callback) => {
                 if (!/^\d+(\.\d+)?$/.test(value)) { // 只能是数字
@@ -1149,7 +1160,10 @@
               }, 20)
               break
             } else if (i === this.config.CAttribute.itemAttrSelectGroup.length - 1) {
-              this.config.CAttribute.itemAttrSelectGroup.push({label: this.selectedGroup.label, options: [this.selectedGroup.options]})
+              this.config.CAttribute.itemAttrSelectGroup.push({
+                label: this.selectedGroup.label,
+                options: [this.selectedGroup.options]
+              })
               setTimeout(() => {
                 this.selectedGroup = {
                   label: '',

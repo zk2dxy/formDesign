@@ -89,7 +89,7 @@
   import draggable from 'vuedraggable'
   import uuid from 'node-uuid'
   import {calcLayoutClass} from '@/assets/js/common'
-  import FormSettings from '@/components/module/formDesign/FormSettings'
+  import FormSettings from '@/components/module/formDesign/FormSettings.vue'
 
   export default {
     name: `formDesign`,
