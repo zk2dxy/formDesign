@@ -170,14 +170,12 @@
     },
     watch: {
       'config.CAttribute.isHasShortcut' () {
-        console.log('rr33')
         this.isAlive = false
         setTimeout(() => {
           this.isAlive = true
         }, 20)
       },
       'config.CAttribute.dateTypeModel' () {
-        console.log('rr')
         if (this.config.CAttribute.dateTypeModel === 'date') {
           this.config.CAttribute.datePickerShortcuts = {
             shortcuts: [{
