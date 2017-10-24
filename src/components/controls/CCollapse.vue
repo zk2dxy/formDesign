@@ -17,20 +17,25 @@
       </extend-collapse>
     </div>
     <div v-else>
-      <extend-collapse>
-        <template v-for="(item, index) in ControlConfig.CAttribute.collapseItem">
-          <extend-collapse-item
-            :title="item.title"
-            :icon="ControlConfig.Icon.className"
-            :name="item.name"
-            @click="collapseItem(index)">
-            <template slot="title">
-              {{item.title}}
+
+      <el-form :label-position="ControlConfig.labelPositionModel" :label-width=labelWidthCalc>
+        <el-form-item :label="ControlConfig.CTitleCN">
+          <extend-collapse>
+            <template v-for="(item, index) in ControlConfig.CAttribute.collapseItem">
+              <extend-collapse-item
+                :title="item.title"
+                :icon="ControlConfig.Icon.className"
+                :name="item.name"
+                @click="collapseItem(index)">
+                <template slot="title">
+                  {{item.title}}
+                </template>
+                <div>{{item.content}}</div>
+              </extend-collapse-item>
             </template>
-            <div>{{item.content}}</div>
-          </extend-collapse-item>
-        </template>
-      </extend-collapse>
+          </extend-collapse>
+        </el-form-item>
+      </el-form>
     </div>
   </div>
 </template>
