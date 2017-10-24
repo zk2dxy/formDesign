@@ -240,7 +240,7 @@
                 }
               ]
             }, // 显示关闭按钮
-            closeDialog: { // 关闭方式,未完成
+            closeDialog: { // 关闭方式,未完成A
               closeDialog: []
             }
           },
