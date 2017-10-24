@@ -108,6 +108,426 @@
               </el-form-item>
             </el-form>
           </div><!--控件 标题宽度 ended-->
+          <!--增加选项 start-->
+          <div v-else-if="index === 'CName'&& (item === 'CRadio' || item === 'CCheckbox' || item === 'CSelect')">
+            <el-form label-position="left" label-width="70px">
+              <el-form-item
+                class="lineRow"
+                label="增加选项"
+              >
+                <el-button type="primary" @click="AddItem()"><i class="el-icon-plus"></i></el-button>
+              </el-form-item>
+              <el-dialog
+                :visible.sync="config.CAttribute.addStatus"
+                :show-close="false">
+                <h4 slot="title">输入单选项属性：</h4>
+                <el-form
+                  :model="config.CAttribute.itemAttr[config.CAttribute.itemAttr.length-1]"
+                  :rules="rulesAdd"
+                  v-if="item === 'CRadio'">
+                  <el-form-item prop="label">
+                    <el-input v-model="config.CAttribute.itemAttr[config.CAttribute.itemAttr.length-1].label"
+                              placeholder="选项值" class="input__inner"></el-input>
+                  </el-form-item>
+                </el-form>
+                <div v-if="config.CAttribute.typeModel !== 'selectGroup'">
+                  <el-input
+                    v-model="config.CAttribute.itemAttr[config.CAttribute.itemAttr.length-1].label" placeholder="选项值"
+                    class="input__inner"
+                    v-if="item !== 'CRadio'"
+                  ></el-input>
+                  <div class="DivForLine"></div>
+                  <el-input
+                    v-model="config.CAttribute.itemAttr[config.CAttribute.itemAttr.length-1].showContent"
+                    placeholder="选项显示内容"
+                  ></el-input>
+                </div>
+                <div v-if="config.CAttribute.typeModel === 'selectGroup'">
+                  <el-select
+                    v-model="selectedGroup.label"
+                    filterable
+                    allow-create
+                    placeholder="请选择或新建分组">
+                    <el-option
+                      v-for="item in config.CAttribute.itemAttrSelectGroup"
+                      :key="item.label"
+                      :label="item.label"
+                      :value="item.label"></el-option>
+                  </el-select>
+                  <el-input
+                    v-model="selectedGroup.options.label"
+                    placeholder="选项值"></el-input>
+                  <el-input
+                    v-model="selectedGroup.options.showContent"
+                    placeholder="选项显示内容"></el-input>
+                </div>
+                <span slot="footer" class="dialog-footer">
+                    <el-button @click="HandleClose('')">取 消</el-button>
+                    <el-button type="primary" @click="HandleClose('true')">确 定</el-button>
+                  </span>
+              </el-dialog>
+            </el-form>
+          </div><!--增加选项 ended-->
+          <!--基本属性 start-->
+          <div v-else-if="index === 'CAttribute'">
+            <div v-for="(itemIn, indexIn) in item">
+              <!--折叠面板标题 start-->
+              <div v-if="indexIn === 'currentValue' && config.CAttribute.typeModel === 'collapse'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="面板标题"
+                  >
+                    <el-input
+                      @change="changeConfig()"
+                      v-model="config[index].collapseItem[itemIn].title"
+                      placeholder="请输入标题"
+                    ></el-input>
+                  </el-form-item>
+                  <el-form-item
+                    class="lineRow"
+                    label="面板内容"
+                  >
+                    <el-input
+                      @change="changeConfig()"
+                      v-model="config[index].collapseItem[itemIn].content"
+                      placeholder="请输入内容"
+                    ></el-input>
+                  </el-form-item>
+                </el-form>
+              </div> <!--折叠面板标题 ended-->
+              <!--Card卡片 start-->
+              <div v-else-if="index === 'cardCurrent'">
+                <!--卡片标题 start-->
+                <div v-if="config.CAttribute.typeModel === 'cardBasic' || config.CAttribute.typeModel === 'cardImg'">
+                  <el-form label-position="right" label-width="70px">
+                    <el-form-item
+                      class="lineRow"
+                      label="卡片标题"
+                    >
+                      <el-input
+                        type="text"
+                        @change="changeConfig()"
+                        v-model="config[index].cardItemAttribute.cardItem[itemIn].title"
+                        placeholder="卡片标题"
+                      ></el-input>
+                    </el-form-item>
+                  </el-form>
+                </div> <!--卡片标题 ended-->
+                <!--card 内容条目修改-->
+                <div v-for="(cardItem, cardIndex) in item.cardItemAttribute">
+                  <div v-if="cardIndex === 'cardContentCurrent' && config.CAttribute.typeModel !== 'cardImg'">
+                    <el-form label-position="right" label-width="70px">
+                      <el-form-item
+                        class="lineRow"
+                        label="控件内容"
+                      >
+                        <el-input type="text"
+                                  @change="changeConfig()"
+                                  placeholder="控件内容"
+                                  v-model="config[index].cardItemAttribute.cardItem[itemIn].contentItem[cardItem].content"
+                        >
+                        </el-input>
+                      </el-form-item>
+                    </el-form>
+                    <!--添加当前卡片内容条目-->
+                    <div>
+                      <el-button type="primary" size="medium" @click="addCardItem">添加卡片内容<i class="el-icon-plus"></i>
+                      </el-button>
+                      <el-dialog :visible.sync="config[index].cardItemAttribute.addCardItemFlag" :show-close="false">
+                        <h4 slot="title">添加：</h4>
+                        <el-input
+                          placeholder="卡片内容"
+                          v-model.trim="item.cardItemAttribute.cardItem[itemIn].contentItem[item.cardItemAttribute.cardItem[itemIn].contentItem.length - 1].content"></el-input>
+                        <div slot="footer" class="dialog-footer">
+                          <el-button @click="closeCardDialog(false)">取 消</el-button>
+                          <el-button type="primary" @click="closeCardDialog(true)">确 定</el-button>
+                        </div>
+                      </el-dialog>
+                    </div>
+                  </div>
+                  <div v-if="cardIndex === 'cardContentCurrent' && config.CAttribute.typeModel === 'cardImg'">
+                    <el-form label-position="right" label-width="70px">
+                      <el-form-item
+                        class="lineRow"
+                        label="控件时间"
+                      >
+                        <el-input type="text"
+                                  @change="changeConfig()"
+                                  placeholder="控件时间"
+                                  v-model="config[index].cardItemAttribute.cardItem[itemIn].time"
+                        >
+                        </el-input>
+                      </el-form-item>
+                    </el-form>
+                    <div>
+                      <div class="card-modify-img">
+                        <el-upload class="avatar-uploader"
+                                   :action="cardUploadImgUrl"
+                                   :show-file-list="false"
+                                   :on-success="handleAvatarSuccess">
+                          <img :src="cardImageUrl" class="avatar" style="display: none;">
+                          <el-button type="primary" size="medium">修改当前卡片图片<i class="el-icon-edit"></i></el-button>
+                        </el-upload>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div><!--Card卡片 ended-->
+              <!--addCollapseStatus start-->
+              <div v-else-if="indexIn === 'addCollapseStatus'">
+                <el-button type="primary" @click="addItem()"><i class="el-icon-plus"></i></el-button>
+                <el-dialog :visible.sync="config.CAttribute.addCollapseStatus" :show-close="false">
+                  <h4 slot="title">添加：</h4>
+                  <el-input v-model="config.CAttribute.collapseItem[config.CAttribute.collapseItem.length - 1].name"
+                            placeholder="唯一标识符"></el-input>
+                  <el-input v-model="config.CAttribute.collapseItem[config.CAttribute.collapseItem.length - 1].title"
+                            placeholder="面板标题"></el-input>
+                  <el-input v-model="config.CAttribute.collapseItem[config.CAttribute.collapseItem.length - 1].content"
+                            placeholder="面板内容"></el-input>
+                  <div slot="footer" class="dialog-footer">
+                    <el-button @click="closeCollapseDialog(false)">取 消</el-button>
+                    <el-button type="primary" @click="closeCollapseDialog(true)">确 定</el-button>
+                  </div>
+                </el-dialog>
+              </div> <!--addCollapseStatus ended-->
+              <!--Loading加载  start-->
+              <div v-else-if="indexIn === 'loadingText'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="加载文本"
+                  >
+                    <el-input type="text" @change="changeConfig()" placeholder="加载文本"
+                              v-model="config[index][indexIn]"></el-input>
+                  </el-form-item>
+                </el-form>
+              </div> <!--Loading加载  ended-->
+              <!--page分页  start-->
+              <div v-else-if="indexIn === 'pageSmall'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="是否使用小型分页样式"
+                  >
+                    <el-radio-group v-model="config[index][indexIn]">
+                      <el-radio :key="radio.value" v-for="radio in config[index].pageSmallList" :label="radio.value">
+                        {{radio.name}}
+                      </el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'pageSize'">
+                <div v-if="config[index].typeModel === 'pageBasic' ||
+                            config[index].typeModel === 'pageTotal' ||
+                            config[index].typeModel === 'pageDirect'">
+                  <el-form label-position="right" label-width="70px">
+                    <el-form-item
+                      class="lineRow"
+                      label="分页页数"
+                    >
+                      <el-input type="text" @change="changeConfig()" placeholder="分页页数"
+                                v-model.number="config[index][indexIn]"></el-input>
+                    </el-form-item>
+                  </el-form>
+                </div>
+              </div>
+              <div v-else-if="indexIn === 'pageCurrent'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="当前页数"
+                  >
+                    <el-input type="text" @change="changeConfig()" placeholder="当前页数"
+                              v-model.number="config[index][indexIn]"></el-input>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'pageTotal'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="总条目数"
+                  >
+                    <el-input type="text" @change="changeConfig()" placeholder="总条目数"
+                              v-model.number="config[index][indexIn]"></el-input>
+                  </el-form-item>
+                </el-form>
+              </div> <!--page分页  ended-->
+              <!--Cascader 级联  start-->
+              <div v-else-if="indexIn === 'showAllLevels'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="是否显示完整路径"
+                  >
+                    <el-radio-group v-model="config[index].showAllLevelFlag">
+                      <el-radio :key="radio.value" v-for="radio in config[index][indexIn]" :label="radio.value">
+                        {{radio.name}}
+                      </el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'filterableOption'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="是否可搜索选项"
+                  >
+                    <el-radio-group v-model="config[index].filterable">
+                      <el-radio :key="radio.value" v-for="radio in config[index][indexIn]" :label="radio.value">
+                        {{radio.name}}
+                      </el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'changeOnSelectOption'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="是否允许选择任意一级的选项"
+                  >
+                    <el-radio-group v-model="config[index].changeOnSelect">
+                      <el-radio :key="radio.value" v-for="radio in config[index][indexIn]" :label="radio.value">
+                        {{radio.name}}
+                      </el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'cascadeSizeOption'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="尺寸"
+                  >
+                    <el-radio-group v-model="config[index].cascadeSize">
+                      <el-radio :key="radio.value" v-for="radio in config[index][indexIn]" :label="radio.value">
+                        {{radio.name}}
+                      </el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'cascadePropsTitle'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="标题"
+                  >
+                    <el-input @change="changeConfig()" placeholder="级联标题"
+                              v-model="config[index][indexIn]"></el-input>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'cascadePlaceholder'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="控件提示语"
+                  >
+                    <el-input @change="changeConfig()" placeholder="控件描述(非必填)"
+                              v-model="config[index][indexIn]"></el-input>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <!--Cascader 级联 ended-->
+              <!--type属性  start-->
+              <div v-if="indexIn === 'type'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="控件类型"
+                  >
+                    <el-radio-group v-model="config[index].typeModel">
+                      <el-radio :key="radio.value" v-for="radio in config[index][indexIn]" :label="radio.value">
+                        {{radio.name}}
+                      </el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-form>
+              </div> <!--type属性  ended-->
+              <div v-else-if="indexIn === 'description'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="控件描述"
+                  >
+                    <el-input type="textarea" @change="changeConfig()" placeholder="控件描述(非必填)"
+                              v-model="config[index][indexIn]"></el-input>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'placeholder'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="控件提示语"
+                  >
+                    <el-input @change="changeConfig()" placeholder="控件描述(非必填)"
+                              v-model="config[index][indexIn]"></el-input>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'prepend' && config.CAttribute.typeModel==='input'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="输入框前置追加"
+                  >
+                    <el-input @change="changeConfig()" placeholder="输入框前置追加头(非必填)"
+                              v-model="config[index][indexIn]"></el-input>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'append' && config.CAttribute.typeModel==='input'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="输入框尾部增加"
+                  >
+                    <el-input @change="changeConfig()" placeholder="输入框尾部增加(非必填)"
+                              v-model="config[index][indexIn]"></el-input>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'closable'">
+                <el-form label-position="right" label-width="100px">
+                  <el-form-item
+                    class="lineRow"
+                    label="可关闭状态"
+                  >
+                    <el-checkbox v-model="config[index][indexIn].closableStatus"></el-checkbox>
+                  </el-form-item>
+                </el-form>
+                <div v-if="config[index][indexIn].closableStatus">
+                  <el-form label-position="right" label-width="100px">
+                    <el-form-item
+                      class="lineRow"
+                      label="是否应用渐变动画"
+                    >
+                      <el-radio-group v-model="config[index][indexIn].transitionModel">
+                        <el-radio :key="radio.value" v-for="radio in config[index][indexIn].closeTransition"
+                                  :label="radio.value">
+                          {{radio.name}}
+                        </el-radio>
+                      </el-radio-group>
+                    </el-form-item>
+                  </el-form>
+                </div>
+              </div>
+
+
+
+            </div>
+          </div><!--基本属性 ended-->
+
+
+
+
           <!--Demo start-->
           <div v-else-if="index === ''">
             <el-form label-position="right" label-width="70px">
@@ -550,5 +970,11 @@
   .lineRow
     padding-bottom .3rem
     border-bottom: 1px dashed rgba(102, 175, 233, .5)
+
+  .DivForLine
+    height: 0
+    margin .3rem 0
+    border-bottom 1px solid #e1e1e1
+    opacity .3
 
 </style>
