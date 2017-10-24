@@ -1,6 +1,7 @@
 <template>
   <div class="ControlConfig">
     <div v-if="config">
+      555
       <div v-for="(item , index) in config">
         {{index}}
         <div v-if="index === 'CTitleCN'">
@@ -33,7 +34,9 @@
           <el-button type="primary" @click="AddItem()"><i class="el-icon-plus"></i></el-button>
           <el-dialog
             :visible.sync="config.CAttribute.addStatus"
-            :show-close="false">
+            :show-close="false"
+            :close-on-click-modal="false"
+            :close-on-press-escape="false">
             <h4 slot="title">输入单选项属性：</h4>
             <el-form
               :model="config.CAttribute.itemAttr[config.CAttribute.itemAttr.length-1]"
@@ -940,7 +943,7 @@
   import {layoutJudge} from '@/assets/js/common'
 
   export default {
-    name: 'ControlConfig',
+    name: 'ControlConfigPyy',
     props: ['config'],
     destroy () {
       console.info(`destroy`)

@@ -170,14 +170,14 @@
     },
     watch: {
       'config.CAttribute.isHasShortcut' () {
-        console.log('rr33')
+//        console.log('rr33')
         this.isAlive = false
         setTimeout(() => {
           this.isAlive = true
         }, 20)
       },
       'config.CAttribute.dateTypeModel' () {
-        console.log('rr')
+//        console.log('rr')
         if (this.config.CAttribute.dateTypeModel === 'date') {
           this.config.CAttribute.datePickerShortcuts = {
             shortcuts: [{
@@ -320,7 +320,6 @@
             timeEditable: true, // 文本框可输入
             timeSelectableRange: '00:00:00 - 23:59:59', // 任意时间选择范围
             isRangeSelect: false, // 是否是范围选择
-//            dateFormate: 'HH:mm:ss',
             isHasShortcut: false, // 是否带快捷选项
             formatDate: '', // 格式化
             dateType: [{
@@ -369,8 +368,7 @@
             }]},
             isShowClearable: true, // 是否显示清除按钮
             isShowClearableend: true, // 是否显示清除按钮
-            placeholder: '请输入默认值或者为空', // 控件提示值
-            height: '' // 高度
+            placeholder: '请输入默认值或者为空' // 控件提示值
           },
           Status: { // 状态
             status: false, // 是否应用状态
