@@ -507,7 +507,7 @@
                 <el-time-picker
                   is-range
                   v-model="timeSelectableRange"
-                  @change="formateSelectableRange"
+                  @change="formatSelectableRange"
                   placeholder="选择时间范围">
                 </el-time-picker>
               </div>
