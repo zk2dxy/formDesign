@@ -43,8 +43,9 @@
               :rules="rulesAdd"
               v-if="item === 'CRadio'">
               <el-form-item prop="label">
-                <el-input v-model="config.CAttribute.itemAttr[config.CAttribute.itemAttr.length-1].label"
-                          placeholder="选项值" class="input__inner"></el-input>
+                <el-input
+                  v-model="config.CAttribute.itemAttr[config.CAttribute.itemAttr.length-1].label"
+                  placeholder="选项值" class="input__inner"></el-input>
               </el-form-item>
             </el-form>
             <div v-if="config.CAttribute.typeModel !== 'selectGroup'">
@@ -320,7 +321,8 @@
             </div>
             <!--by pyy-->
             <!--radio,checkbox按钮样式尺寸-->
-            <div v-else-if="indexIn === 'size' && (config.CAttribute.typeModel==='button' || config.CName === 'CSelect' || config.CName === 'CDateTimePicker')">
+            <div
+              v-else-if="indexIn === 'size' && (config.CAttribute.typeModel==='button' || config.CName === 'CSelect' || config.CName === 'CDateTimePicker')">
               <p>控件尺寸</p>
               <div v-if="config.CName === 'CDateTimePicker' && config.CAttribute.rangeOfFixedEnd">
                 <el-radio-group v-model="config[index].sizeModelend">
@@ -373,7 +375,8 @@
               <p>可选最小值</p>
               <el-input-number v-model="config[index].ableSelectedMin" :min="0"></el-input-number>
             </div>
-            <div v-else-if="indexIn === 'ableSelectedMax' && (config.CName !== 'CSelect' || config[index].isMultiple === true)">
+            <div
+              v-else-if="indexIn === 'ableSelectedMax' && (config.CName !== 'CSelect' || config[index].isMultiple === true)">
               <p>可选最大值</p>
               <el-input-number v-model="config[index].ableSelectedMax" :min="0"></el-input-number>
             </div>
@@ -386,11 +389,14 @@
                 @focus="focusSelect"
                 @change="selectValueChange"></el-input>
               <p>控件选项显示内容</p>
-              <el-input v-model="config[index].itemAttrSelectGroup[itemIn[0]].options[itemIn[1]].showContent"></el-input>
+              <el-input
+                v-model="config[index].itemAttrSelectGroup[itemIn[0]].options[itemIn[1]].showContent"></el-input>
               <p>删除该选项</p>
-              <el-button type="primary" @click="DeleteItemSelectGroup(itemIn)"><i class="el-icon-delete"></i></el-button>
+              <el-button type="primary" @click="DeleteItemSelectGroup(itemIn)"><i class="el-icon-delete"></i>
+              </el-button>
               <p>禁用该选项</p>
-              <el-checkbox v-model="config[index].itemAttrSelectGroup[itemIn[0]].options[itemIn[1]].isDisabled" label="禁用"></el-checkbox>
+              <el-checkbox v-model="config[index].itemAttrSelectGroup[itemIn[0]].options[itemIn[1]].isDisabled"
+                           label="禁用"></el-checkbox>
             </div>
             <div v-else-if="indexIn === 'isMultiple'">
               <p>多选</p>
@@ -427,7 +433,7 @@
             <!--设置switch属性-->
             <div v-else-if="indexIn === 'switchStatus'">
               <p>设置开关值</p>
-              <el-checkbox v-model="addSwitchValue"  label="设置"></el-checkbox>
+              <el-checkbox v-model="addSwitchValue" label="设置"></el-checkbox>
               <div v-if="itemIn">
                 <div v-if="addSwitchValue">
                   <p>打开时的值</p>
@@ -489,7 +495,7 @@
               <el-checkbox v-model="config[index].sliderShowTooltip" label="显示"></el-checkbox>
             </div>
             <!--设置datePicker-->
-            <div v-else-if="indexIn === 'typeModel' && itemIn === 'time'" >
+            <div v-else-if="indexIn === 'typeModel' && itemIn === 'time'">
               <p>控件为固定时间点</p>
               <el-checkbox v-model="config[index].timeFixed" label="是"></el-checkbox>
               <div v-if="config[index].timeFixed">
@@ -528,7 +534,7 @@
                 <el-checkbox v-model="config[index].isRangeSelect" label="是"></el-checkbox>
               </div>
             </div>
-            <div v-else-if="indexIn === 'typeModel' && itemIn === 'date'" >
+            <div v-else-if="indexIn === 'typeModel' && itemIn === 'date'">
               <div v-if="config[index].dateTypeModel === 'date' ||
               config[index].dateTypeModel === 'daterange' ||
               config[index].dateTypeModel === 'datetimerange'">
@@ -543,7 +549,8 @@
               </el-radio-group>
               <p>格式化</p>
               <el-input v-model="config[index].formatDate" placeholder="年yyyy月MM日dd小时HH分mm秒ss"></el-input>
-              <div v-if="config[index].dateTypeModel === 'daterange' || config[index].dateTypeModel ===  'datetimerange'">
+              <div
+                v-if="config[index].dateTypeModel === 'daterange' || config[index].dateTypeModel ===  'datetimerange'">
                 <p>选择范围时的分隔符</p>
                 <el-input v-model="config[index].rangeSeparator"></el-input>
               </div>
@@ -577,7 +584,8 @@
               <p>默认值</p>
               <el-input v-model.number="config[index].defaultSliderValue"></el-input>
             </div>
-            <div v-else-if="indexIn === 'defaultRangeFixedTime' && config[index].timeFixed && config[index].isRangeSelect">
+            <div
+              v-else-if="indexIn === 'defaultRangeFixedTime' && config[index].timeFixed && config[index].isRangeSelect">
               <p>默认值</p>
               {{itemIn}}
             </div>
@@ -945,10 +953,10 @@
   export default {
     name: 'ControlConfigPyy',
     props: ['config'],
-    destroy () {
+    destroy() {
       console.info(`destroy`)
     },
-    data () {
+    data() {
       return {
         startTime: '',
         stepTime: '',
@@ -963,7 +971,7 @@
         rules: {
 //          radio和checkbox label值校验
           label: [
-            { required: true, message: '请输入选项值' },
+            {required: true, message: '请输入选项值'},
             {
               validator: (rules, value, callback) => {
                 this.config.CAttribute.itemAttr.forEach((item, index) => {
@@ -980,7 +988,7 @@
         rulesSlider: {
           //          sliderStep值校验
           sliderStep: [
-            { required: true, message: '请输入步长' },
+            {required: true, message: '请输入步长'},
             {
               validator: (rules, value, callback) => {
                 if (!/^\d+(\.\d+)?$/.test(value)) { // 只能是数字
@@ -992,7 +1000,7 @@
             }
           ],
           height: [
-            { required: true, message: '请输入高度' },
+            {required: true, message: '请输入高度'},
             {
               validator: (rules, value, callback) => {
                 if (!/^\d+(\.\d+)?$/.test(value)) { // 只能是数字
@@ -1007,30 +1015,30 @@
         rulesAdd: {}
       }
     },
-    mounted () {
+    mounted() {
     },
     methods: {
       //      添加collapse条目
-      addItem () {
+      addItem() {
         this.config.CAttribute.addCollapseStatus = !this.config.CAttribute.addCollapseStatus
         this.config.CAttribute.collapseItem.push({name: '', title: '', content: ''})
       },
 //      关闭collapse对话框
-      closeCollapseDialog ($flag) {
+      closeCollapseDialog($flag) {
         if ($flag === false) {
           this.config.CAttribute.collapseItem.pop()
         }
         this.config.CAttribute.addCollapseStatus = !this.config.CAttribute.addCollapseStatus
       },
 //      添加card内容条目
-      addCardItem () {
+      addCardItem() {
         let parentAttribute = this.config.CAttribute
         let currentVal = parentAttribute.cardCurrent
         parentAttribute.cardItemAttribute.addCardItemFlag = !parentAttribute.cardItemAttribute.addCardItemFlag
         parentAttribute.cardItemAttribute.cardItem[currentVal].contentItem.push({content: ''})
       },
 //      关闭card对话框
-      closeCardDialog ($flag) {
+      closeCardDialog($flag) {
         let parentAttribute = this.config.CAttribute
         let currentVal = parentAttribute.cardCurrent
         if ($flag === false) {
@@ -1039,12 +1047,12 @@
         parentAttribute.cardItemAttribute.addCardItemFlag = !parentAttribute.cardItemAttribute.addCardItemFlag
       },
 //      修改card图片
-      handleAvatarSuccess (res, file) {
+      handleAvatarSuccess(res, file) {
         this.cardImageUrl = URL.createObjectURL(file.raw)
         this.config.CAttribute.cardUploadFlag = true
         this.config.CAttribute.cardItemAttribute.cardItem[this.config.CAttribute.cardCurrent].imageUrl = this.cardImageUrl
       },
-      validateLayout (layoutItem, layoutType) {
+      validateLayout(layoutItem, layoutType) {
         console.error(`validateLayout`)
         let returnValue = layoutJudge(layoutItem, layoutType)
         if (!returnValue) {
@@ -1059,7 +1067,7 @@
         }
         // this.$emit('changeConfig', this.config)
       },
-      reverseLayoutValue (item) {
+      reverseLayoutValue(item) {
         for (let key in this.config.CLayout) {
           if (this.config.CLayout[key].value === item.type) {
             this.config.CLayout[key].default = item.value
@@ -1069,7 +1077,7 @@
           }
         }
       },
-      getLayoutItem () {
+      getLayoutItem() {
         for (let key in this.config.CLayout) {
           if (this.config.CLayout[key].value === this.config.layoutModel) {
             this.config.CLayout[key].status = true
@@ -1079,14 +1087,14 @@
           }
         }
       },
-      changeConfig () {
+      changeConfig() {
         this.$emit('changeConfig', this.config)
       },
-      chooseIcon (item) {
+      chooseIcon(item) {
         item.chooseStatus = !item.chooseStatus
         window.iconOBJ = item
       },
-      setIcon (chooseRes) {
+      setIcon(chooseRes) {
         if (chooseRes !== '') {
           window.iconOBJ.className = chooseRes.className
           window.iconOBJ.content = chooseRes.content
@@ -1100,7 +1108,7 @@
         }
         window.iconOBJ.chooseStatus = false
       },
-      iconStatusChange (item) {
+      iconStatusChange(item) {
         if (!item.status) {
           item.className = ''
           item.content = ''
@@ -1109,30 +1117,30 @@
           this.config.CAttribute.positionModel = ''
         }
       },
-      chooseValidate (item) {
+      chooseValidate(item) {
         item.chooseStatus = !item.chooseStatus
         window.validateOBJ = item
       },
-      setValidate (chooseRes) {
+      setValidate(chooseRes) {
         // console.error(chooseRes)
         if (chooseRes !== '') {
           window.validateOBJ.validateModel = chooseRes
         }
         window.validateOBJ.chooseStatus = false
       },
-      validateStatusChange (item) {
+      validateStatusChange(item) {
         if (!item.status) {
           this.config.CValidate.validateModel = ''
         }
       },
       // by pyy
-      AddItem () {
+      AddItem() {
         this.config.CAttribute.addStatus = !this.config.CAttribute.addStatus
         if (this.config.CAttribute.typeModel !== 'selectGroup') {
           this.config.CAttribute.itemAttr.push({label: '', showContent: '', isDisabled: false})
         }
       },
-      HandleClose (value) {
+      HandleClose(value) {
         if (value === '') {
           if (this.config.CAttribute.typeModel !== 'selectGroup') {
             this.config.CAttribute.itemAttr.pop()
@@ -1152,7 +1160,10 @@
               }, 20)
               break
             } else if (i === this.config.CAttribute.itemAttrSelectGroup.length - 1) {
-              this.config.CAttribute.itemAttrSelectGroup.push({label: this.selectedGroup.label, options: [this.selectedGroup.options]})
+              this.config.CAttribute.itemAttrSelectGroup.push({
+                label: this.selectedGroup.label,
+                options: [this.selectedGroup.options]
+              })
               setTimeout(() => {
                 this.selectedGroup = {
                   label: '',
@@ -1165,13 +1176,13 @@
         }
         this.config.CAttribute.addStatus = false
       },
-      DeleteItem (index) {
+      DeleteItem(index) {
         this.config.CAttribute.itemAttr.splice(index, 1)
         this.config.CAttribute.currentSelected = 0
         this.config.CAttribute.defaultSelected = ''
       },
       // checkbox聚焦
-      focusCheckbox () {
+      focusCheckbox() {
         if (this.config.CName === 'CCheckbox') {
           this.config.CAttribute.defaultCheckboxSelected.forEach((item, index) => {
             if (item === this.config.CAttribute.itemAttr[this.config.CAttribute.currentSelected].label) {
@@ -1181,7 +1192,7 @@
         }
       },
       // radio,checkbox,select值与绑定值的同步
-      valueChange (value) {
+      valueChange(value) {
         if (this.config.CName === 'CRadio') {
           this.config.CKey.default = value
         } else if (this.config.CName === 'CSelect') {
@@ -1191,29 +1202,29 @@
         }
       },
       // select事件
-      DeleteItemSelectGroup (arr) {
+      DeleteItemSelectGroup(arr) {
         this.config.CAttribute.itemAttrSelectGroup[arr[0]].options.splice(arr[1], 1)
         this.config.CAttribute.currentSelectedGroup = [0, 0]
         this.config.CAttribute.defaultSelected = ''
       },
-      doSelectMultiple () {
+      doSelectMultiple() {
         if (this.config.CAttribute.isMultiple === true) {
           this.config.CAttribute.defaultSelected = []
         } else {
           this.config.CAttribute.defaultSelected = ''
         }
       },
-      doSelectCreate () {
+      doSelectCreate() {
         if (this.config.CAttribute.isSelectCreate === true) {
           this.config.CAttribute.isSelectFilterable = true
         }
       },
-      doSelectRemote () {
+      doSelectRemote() {
         if (this.config.CAttribute.isSelectRemote === true) {
           this.config.CAttribute.isSelectFilterable = true
         }
       },
-      focusSelect () {
+      focusSelect() {
         if (this.config.CAttribute.isMultiple) {
           let currentLabel = this.config.CAttribute.itemAttrSelectGroup[this.config.CAttribute.currentSelectedGroup[0]]
             .options[this.config.CAttribute.currentSelectedGroup[1]].label
@@ -1225,7 +1236,7 @@
         }
       },
       // selectGroup值改变
-      selectValueChange (value) {
+      selectValueChange(value) {
         if (!this.config.CAttribute.isMultiple) {
           this.config.CAttribute.defaultSelected = value
         } else {
@@ -1233,12 +1244,12 @@
         }
       },
       // switch事件
-      switchValue (value) {
+      switchValue(value) {
         if (value !== '') {
           this.config.CAttribute.defaultSwitchStatus = value
         }
       },
-      setSwitchIcon () {
+      setSwitchIcon() {
         if (this.config.CAttribute.switchStatus) {
           this.config.CAttribute.onSwitchIcon = 'el-icon-' + this.config.Icon.className
         } else {
@@ -1246,34 +1257,34 @@
         }
       },
       // slider
-      rangeChange () {
+      rangeChange() {
         if (this.config.CAttribute.sliderRange) {
           this.config.CAttribute.sliderShowInput = false
         }
       },
       // datepicker
-      formatStartTime (value) {
+      formatStartTime(value) {
         if (this.config.CAttribute.rangeOfFixedEnd) {
           this.config.CAttribute.timeStartend = value
         } else {
           this.config.CAttribute.timeStart = value
         }
       },
-      formatStepTime (value) {
+      formatStepTime(value) {
         if (this.config.CAttribute.rangeOfFixedEnd) {
           this.config.CAttribute.timeStepend = value
         } else {
           this.config.CAttribute.timeStep = value
         }
       },
-      formatEndTime (value) {
+      formatEndTime(value) {
         if (this.config.CAttribute.rangeOfFixedEnd) {
           this.config.CAttribute.timeEndend = value
         } else {
           this.config.CAttribute.timeEnd = value
         }
       },
-      formatSelectableRange (value) {
+      formatSelectableRange(value) {
         this.config.CAttribute.timeSelectableRange = value
       }
     }
