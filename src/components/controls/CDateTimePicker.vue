@@ -70,7 +70,6 @@
               (ControlConfig.CAttribute.dateTypeModel === 'date' ||
               ControlConfig.CAttribute.dateTypeModel === 'daterange' ||
               ControlConfig.CAttribute.dateTypeModel === 'datetimerange')">
-              ss
               <el-date-picker
                 v-model="ControlConfig.CAttribute.timeDefault"
                 :size="ControlConfig.CAttribute.sizeModel"
