@@ -14,7 +14,8 @@
               <el-radio
                 :label="item.label"
                 :disabled="item.isDisabled">
-                {{item.showContent}}</el-radio>
+                {{item.showContent}}
+              </el-radio>
             </span>
         </el-radio-group>
       </div>
@@ -31,7 +32,8 @@
             <el-radio-button
               :label="item.label"
               :disabled="item.isDisabled">
-              {{item.showContent}}</el-radio-button>
+              {{item.showContent}}
+            </el-radio-button>
           </span>
         </el-radio-group>
       </div>
@@ -51,7 +53,8 @@
                 :label="item.label"
                 :disabled="item.isDisabled"
                 @click="SelectedChange(item.label)">
-                {{item.showContent}}</el-radio>
+                {{item.showContent}}
+              </el-radio>
             </span>
           </el-radio-group>
           <el-radio-group
@@ -69,7 +72,8 @@
                 :label="item.label"
                 :disabled="item.isDisabled"
                 @click="SelectedChange(item.label)">
-                {{item.showContent}}</el-radio-button>
+                {{item.showContent}}
+              </el-radio-button>
             </span>
           </el-radio-group>
         </el-form-item>
@@ -161,9 +165,9 @@
           CTitleEN: 'radio Control', // 英文标题
           labelPositionModel: 'left',
           labelPositionValue: [
-            {value: 'left', name: '文字左对齐'},
-            {value: 'right', name: '文字右对齐'},
-            {value: 'top', name: '文字居上对齐'}
+            {value: 'left', name: '左对齐'},
+            {value: 'right', name: '右对齐'},
+            {value: 'top', name: '居上对齐'}
           ],
           labelWidth: 80,
           CName: 'CRadio', // 控件名称

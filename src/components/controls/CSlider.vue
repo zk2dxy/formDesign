@@ -9,6 +9,7 @@
       <el-form :label-position="ControlConfig.labelPositionModel" :label-width=labelWidthCalc>
         <el-form-item :label="ControlConfig.CTitleCN">
           <el-slider
+            v-model="ControlConfig.CAttribute.defaultSliderValue"
             :vertical="ControlConfig.CAttribute.typeModel === 'vertical'"
             :height="ControlConfig.CAttribute.height + 'px'"
             :min="ControlConfig.CAttribute.ableSelectedMin"
@@ -154,6 +155,7 @@
             }],
             typeModel: 'horizontal',
             description: '', // 描述
+            defaultSliderValue: 0, // 默认值
             ableSelectedMin: 0, // 可选最小值
             ableSelectedMax: 10, // 可选最大值
             sliderStep: 1, // slider步长
