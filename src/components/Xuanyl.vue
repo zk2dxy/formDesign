@@ -111,6 +111,41 @@
                 type: 'collapse', // 类型
                 component: 'CCollapse',
                 config: '' // 控件配置,
+              }, {
+                CNameCN: 'Card卡片',
+                CNameEN: 'card',
+                parent: 'form', // 父级对象
+                type: 'card', // 类型
+                component: 'CCard',
+                config: '' // 控件配置,
+              }, {
+                CNameCN: 'Loading加载',
+                CNameEN: 'load',
+                parent: 'form', // 父级对象
+                type: 'load', // 类型
+                component: 'CLoading',
+                config: '' // 控件配置,
+              }, {
+                CNameCN: 'Page分页',
+                CNameEN: 'page',
+                parent: 'form', // 父级对象
+                type: 'page', // 类型
+                component: 'CPage',
+                config: '' // 控件配置,
+              }, {
+                CNameCN: 'Cascader级联选择器',
+                CNameEN: 'cascader',
+                parent: 'form', // 父级对象
+                type: 'cascader', // 类型
+                component: 'CCascader',
+                config: '' // 控件配置,
+              }, {
+                CNameCN: 'Upload上传',
+                CNameEN: 'upload',
+                parent: 'form', // 父级对象
+                type: 'upload', // 类型
+                component: 'CUpload',
+                config: '' // 控件配置,
               }
             ]
           }
