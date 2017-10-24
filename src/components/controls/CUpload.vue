@@ -25,9 +25,10 @@
           :action="config.CAttribute.actionUrl"
           :show-file-list="config.CAttribute.uploadShowFileFlag"
           :on-success="handleUploadSuccess">
-          <img v-if="config.CAttribute.uploadFileList.length > 0 && config.CAttribute.uploadFileList[config.CAttribute.uploadFileList.length - 1].imageUrl"
-               :src="config.CAttribute.uploadFileList[config.CAttribute.uploadFileList.length - 1].imageUrl"
-               class="avatar">
+          <img
+            v-if="config.CAttribute.uploadFileList.length > 0 && config.CAttribute.uploadFileList[config.CAttribute.uploadFileList.length - 1].imageUrl"
+            :src="config.CAttribute.uploadFileList[config.CAttribute.uploadFileList.length - 1].imageUrl"
+            class="avatar">
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
       </div>
@@ -108,9 +109,10 @@
           :action="ControlConfig.CAttribute.actionUrl"
           :show-file-list="ControlConfig.CAttribute.uploadShowFileFlag"
           :on-success="handleUploadSuccess">
-          <img v-if="ControlConfig.CAttribute.uploadFileList.length > 0 && ControlConfig.CAttribute.uploadFileList[ControlConfig.CAttribute.uploadFileList.length - 1].imageUrl"
-               :src="ControlConfig.CAttribute.uploadFileList[ControlConfig.CAttribute.uploadFileList.length - 1].imageUrl"
-               class="avatar">
+          <img
+            v-if="ControlConfig.CAttribute.uploadFileList.length > 0 && ControlConfig.CAttribute.uploadFileList[ControlConfig.CAttribute.uploadFileList.length - 1].imageUrl"
+            :src="ControlConfig.CAttribute.uploadFileList[ControlConfig.CAttribute.uploadFileList.length - 1].imageUrl"
+            class="avatar">
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
       </div>
@@ -156,10 +158,10 @@
       <!--手动上传-->
       <div v-if="ControlConfig.CAttribute.typeModel === 'uploadManual'">
         <el-upload class="upload-demo" ref="upload"
-          :action="ControlConfig.CAttribute.actionUrl"
-          :show-file-list="ControlConfig.CAttribute.uploadShowFileFlag"
-          :multiple="ControlConfig.CAttribute.uploadMultiple"
-          :auto-upload="false">
+                   :action="ControlConfig.CAttribute.actionUrl"
+                   :show-file-list="ControlConfig.CAttribute.uploadShowFileFlag"
+                   :multiple="ControlConfig.CAttribute.uploadMultiple"
+                   :auto-upload="false">
           <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
           <el-button style="margin-left: 10px;" size="small" type="success">上传到服务器</el-button>
           <div slot="tip" class="el-upload__tip">{{ControlConfig.CAttribute.uploadFileDesc}}</div>
@@ -201,18 +203,23 @@
       }
       this.$emit('input', this.config)
     },
-    updated () {},
+    updated () {
+    },
     /* keep-alive 组件激活时调用。 */
-    activated () {},
+    activated () {
+    },
     /* keep-alive 组件停用时调用。 */
-    deactivated () {},
+    deactivated () {
+    },
     watch: {
       'config.CKey.default' (val, old) {
         // console.log(val)
       }
     },
-    beforeDestroy () {},
-    destroyed () {},
+    beforeDestroy () {
+    },
+    destroyed () {
+    },
     methods: {
       ControlClick () {
         this.emitConfig()
@@ -396,7 +403,8 @@
 
   .CDom
     color $font-danger
-//    upload样式
+
+  //    upload样式
   .avatar-uploader-icon
     border 1px dashed #d9d9d9
     font-size 28px
@@ -405,6 +413,7 @@
     height 150px
     line-height 150px
     text-align center
+
   .avatar-uploader .avatar
     width 150px
     height 150px

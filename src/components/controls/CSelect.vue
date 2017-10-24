@@ -257,9 +257,9 @@
           CTitleEN: 'select Control', // 英文标题
           labelPositionModel: 'left',
           labelPositionValue: [
-            {value: 'left', name: '文字左对齐'},
-            {value: 'right', name: '文字右对齐'},
-            {value: 'top', name: '文字居上对齐'}
+            {value: 'left', name: '左对齐'},
+            {value: 'right', name: '右对齐'},
+            {value: 'top', name: '居上对齐'}
           ],
           labelWidth: 80,
           CName: 'CSelect', // 控件名称
