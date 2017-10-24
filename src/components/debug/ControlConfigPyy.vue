@@ -948,15 +948,15 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import {layoutJudge} from '@/assets/js/common'
+  import { layoutJudge } from '@/assets/js/common'
 
   export default {
     name: 'ControlConfigPyy',
     props: ['config'],
-    destroy() {
+    destroy () {
       console.info(`destroy`)
     },
-    data() {
+    data () {
       return {
         startTime: '',
         stepTime: '',
@@ -1015,30 +1015,30 @@
         rulesAdd: {}
       }
     },
-    mounted() {
+    mounted () {
     },
     methods: {
       //      添加collapse条目
-      addItem() {
+      addItem () {
         this.config.CAttribute.addCollapseStatus = !this.config.CAttribute.addCollapseStatus
         this.config.CAttribute.collapseItem.push({name: '', title: '', content: ''})
       },
 //      关闭collapse对话框
-      closeCollapseDialog($flag) {
+      closeCollapseDialog ($flag) {
         if ($flag === false) {
           this.config.CAttribute.collapseItem.pop()
         }
         this.config.CAttribute.addCollapseStatus = !this.config.CAttribute.addCollapseStatus
       },
 //      添加card内容条目
-      addCardItem() {
+      addCardItem () {
         let parentAttribute = this.config.CAttribute
         let currentVal = parentAttribute.cardCurrent
         parentAttribute.cardItemAttribute.addCardItemFlag = !parentAttribute.cardItemAttribute.addCardItemFlag
         parentAttribute.cardItemAttribute.cardItem[currentVal].contentItem.push({content: ''})
       },
 //      关闭card对话框
-      closeCardDialog($flag) {
+      closeCardDialog ($flag) {
         let parentAttribute = this.config.CAttribute
         let currentVal = parentAttribute.cardCurrent
         if ($flag === false) {
@@ -1047,12 +1047,12 @@
         parentAttribute.cardItemAttribute.addCardItemFlag = !parentAttribute.cardItemAttribute.addCardItemFlag
       },
 //      修改card图片
-      handleAvatarSuccess(res, file) {
+      handleAvatarSuccess (res, file) {
         this.cardImageUrl = URL.createObjectURL(file.raw)
         this.config.CAttribute.cardUploadFlag = true
         this.config.CAttribute.cardItemAttribute.cardItem[this.config.CAttribute.cardCurrent].imageUrl = this.cardImageUrl
       },
-      validateLayout(layoutItem, layoutType) {
+      validateLayout (layoutItem, layoutType) {
         console.error(`validateLayout`)
         let returnValue = layoutJudge(layoutItem, layoutType)
         if (!returnValue) {
@@ -1067,7 +1067,7 @@
         }
         // this.$emit('changeConfig', this.config)
       },
-      reverseLayoutValue(item) {
+      reverseLayoutValue (item) {
         for (let key in this.config.CLayout) {
           if (this.config.CLayout[key].value === item.type) {
             this.config.CLayout[key].default = item.value
@@ -1077,7 +1077,7 @@
           }
         }
       },
-      getLayoutItem() {
+      getLayoutItem () {
         for (let key in this.config.CLayout) {
           if (this.config.CLayout[key].value === this.config.layoutModel) {
             this.config.CLayout[key].status = true
@@ -1087,14 +1087,14 @@
           }
         }
       },
-      changeConfig() {
+      changeConfig () {
         this.$emit('changeConfig', this.config)
       },
-      chooseIcon(item) {
+      chooseIcon (item) {
         item.chooseStatus = !item.chooseStatus
         window.iconOBJ = item
       },
-      setIcon(chooseRes) {
+      setIcon (chooseRes) {
         if (chooseRes !== '') {
           window.iconOBJ.className = chooseRes.className
           window.iconOBJ.content = chooseRes.content
@@ -1108,7 +1108,7 @@
         }
         window.iconOBJ.chooseStatus = false
       },
-      iconStatusChange(item) {
+      iconStatusChange (item) {
         if (!item.status) {
           item.className = ''
           item.content = ''
@@ -1117,30 +1117,30 @@
           this.config.CAttribute.positionModel = ''
         }
       },
-      chooseValidate(item) {
+      chooseValidate (item) {
         item.chooseStatus = !item.chooseStatus
         window.validateOBJ = item
       },
-      setValidate(chooseRes) {
+      setValidate (chooseRes) {
         // console.error(chooseRes)
         if (chooseRes !== '') {
           window.validateOBJ.validateModel = chooseRes
         }
         window.validateOBJ.chooseStatus = false
       },
-      validateStatusChange(item) {
+      validateStatusChange (item) {
         if (!item.status) {
           this.config.CValidate.validateModel = ''
         }
       },
       // by pyy
-      AddItem() {
+      AddItem () {
         this.config.CAttribute.addStatus = !this.config.CAttribute.addStatus
         if (this.config.CAttribute.typeModel !== 'selectGroup') {
           this.config.CAttribute.itemAttr.push({label: '', showContent: '', isDisabled: false})
         }
       },
-      HandleClose(value) {
+      HandleClose (value) {
         if (value === '') {
           if (this.config.CAttribute.typeModel !== 'selectGroup') {
             this.config.CAttribute.itemAttr.pop()
@@ -1176,13 +1176,13 @@
         }
         this.config.CAttribute.addStatus = false
       },
-      DeleteItem(index) {
+      DeleteItem (index) {
         this.config.CAttribute.itemAttr.splice(index, 1)
         this.config.CAttribute.currentSelected = 0
         this.config.CAttribute.defaultSelected = ''
       },
       // checkbox聚焦
-      focusCheckbox() {
+      focusCheckbox () {
         if (this.config.CName === 'CCheckbox') {
           this.config.CAttribute.defaultCheckboxSelected.forEach((item, index) => {
             if (item === this.config.CAttribute.itemAttr[this.config.CAttribute.currentSelected].label) {
@@ -1192,7 +1192,7 @@
         }
       },
       // radio,checkbox,select值与绑定值的同步
-      valueChange(value) {
+      valueChange (value) {
         if (this.config.CName === 'CRadio') {
           this.config.CKey.default = value
         } else if (this.config.CName === 'CSelect') {
@@ -1202,29 +1202,29 @@
         }
       },
       // select事件
-      DeleteItemSelectGroup(arr) {
+      DeleteItemSelectGroup (arr) {
         this.config.CAttribute.itemAttrSelectGroup[arr[0]].options.splice(arr[1], 1)
         this.config.CAttribute.currentSelectedGroup = [0, 0]
         this.config.CAttribute.defaultSelected = ''
       },
-      doSelectMultiple() {
+      doSelectMultiple () {
         if (this.config.CAttribute.isMultiple === true) {
           this.config.CAttribute.defaultSelected = []
         } else {
           this.config.CAttribute.defaultSelected = ''
         }
       },
-      doSelectCreate() {
+      doSelectCreate () {
         if (this.config.CAttribute.isSelectCreate === true) {
           this.config.CAttribute.isSelectFilterable = true
         }
       },
-      doSelectRemote() {
+      doSelectRemote () {
         if (this.config.CAttribute.isSelectRemote === true) {
           this.config.CAttribute.isSelectFilterable = true
         }
       },
-      focusSelect() {
+      focusSelect () {
         if (this.config.CAttribute.isMultiple) {
           let currentLabel = this.config.CAttribute.itemAttrSelectGroup[this.config.CAttribute.currentSelectedGroup[0]]
             .options[this.config.CAttribute.currentSelectedGroup[1]].label
@@ -1236,7 +1236,7 @@
         }
       },
       // selectGroup值改变
-      selectValueChange(value) {
+      selectValueChange (value) {
         if (!this.config.CAttribute.isMultiple) {
           this.config.CAttribute.defaultSelected = value
         } else {
@@ -1244,12 +1244,12 @@
         }
       },
       // switch事件
-      switchValue(value) {
+      switchValue (value) {
         if (value !== '') {
           this.config.CAttribute.defaultSwitchStatus = value
         }
       },
-      setSwitchIcon() {
+      setSwitchIcon () {
         if (this.config.CAttribute.switchStatus) {
           this.config.CAttribute.onSwitchIcon = 'el-icon-' + this.config.Icon.className
         } else {
@@ -1257,34 +1257,34 @@
         }
       },
       // slider
-      rangeChange() {
+      rangeChange () {
         if (this.config.CAttribute.sliderRange) {
           this.config.CAttribute.sliderShowInput = false
         }
       },
       // datepicker
-      formatStartTime(value) {
+      formatStartTime (value) {
         if (this.config.CAttribute.rangeOfFixedEnd) {
           this.config.CAttribute.timeStartend = value
         } else {
           this.config.CAttribute.timeStart = value
         }
       },
-      formatStepTime(value) {
+      formatStepTime (value) {
         if (this.config.CAttribute.rangeOfFixedEnd) {
           this.config.CAttribute.timeStepend = value
         } else {
           this.config.CAttribute.timeStep = value
         }
       },
-      formatEndTime(value) {
+      formatEndTime (value) {
         if (this.config.CAttribute.rangeOfFixedEnd) {
           this.config.CAttribute.timeEndend = value
         } else {
           this.config.CAttribute.timeEnd = value
         }
       },
-      formatSelectableRange(value) {
+      formatSelectableRange (value) {
         this.config.CAttribute.timeSelectableRange = value
       }
     }
