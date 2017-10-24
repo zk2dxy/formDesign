@@ -350,7 +350,7 @@
                 <el-form-item prop="label">
                   <p>控件选项值</p>
                   <el-input v-model="config[index].itemAttr[itemIn].label"
-                            @focus="focuseCheckbox"
+                            @focus="focusCheckbox"
                             @change="valueChange"></el-input>
                 </el-form-item>
               </el-form>
@@ -524,16 +524,25 @@
                 <el-checkbox v-model="config[index].isRangeSelect" label="是"></el-checkbox>
               </div>
             </div>
-            <div v-else-if="indexIn === 'dateFormate'">
-              <p>日期格式化</p>
-              <el-select
-                v-model="config[index].timeFormate"
-                clearable
-                filterable
-                allow-create
-                placeholder="日期格式化">
-                <el-option v-for="item in formateItems" :key="item" :value="item">{{item}}</el-option>
-              </el-select>
+            <div v-else-if="indexIn === 'typeModel' && itemIn === 'date'" >
+              <div v-if="config[index].dateTypeModel === 'date' ||
+              config[index].dateTypeModel === 'daterange' ||
+              config[index].dateTypeModel === 'datetimerange'">
+                <p>是否带快捷选项</p>
+                <el-checkbox v-model="config[index].isHasShortcut" label="是"></el-checkbox>
+              </div>
+              <p>选择类型</p>
+              <el-radio-group v-model="config[index].dateTypeModel">
+                <el-radio :key="radio.value" v-for="radio in config[index].dateType" :label="radio.value">
+                  {{radio.name}}
+                </el-radio>
+              </el-radio-group>
+              <p>格式化</p>
+              <el-input v-model="config[index].formatDate" placeholder="年yyyy月MM日dd小时HH分mm秒ss"></el-input>
+              <div v-if="config[index].dateTypeModel === 'daterange' || config[index].dateTypeModel ===  'datetimerange'">
+                <p>选择范围时的分隔符</p>
+                <el-input v-model="config[index].rangeSeparator"></el-input>
+              </div>
             </div>
             <div v-else-if="indexIn === 'timeEditable' && !config[index].timeFixed">
               <p>文本框是否可输入</p>
@@ -912,7 +921,6 @@
         startTime: '',
         stepTime: '',
         endTime: '',
-        formateItems: ['HH:mm:ss', 'HH-mm-ss', 'HH/mm/ss'],
         timeSelectableRange: new Date(),
         addSwitchValue: false, // 是否增加switch值
         currentIndex: 0, // 当前选中项在默认值的index(多选)
@@ -1056,7 +1064,7 @@
         }
         // 设置switch的icon by pyy
         if (this.config.CName === 'CSwitch') {
-          this.setSwitchicon()
+          this.setSwitchIcon()
         }
         window.iconOBJ.chooseStatus = false
       },
@@ -1131,7 +1139,7 @@
         this.config.CAttribute.defaultSelected = ''
       },
       // checkbox聚焦
-      focuseCheckbox () {
+      focusCheckbox () {
         if (this.config.CName === 'CCheckbox') {
           this.config.CAttribute.defaultCheckboxSelected.forEach((item, index) => {
             if (item === this.config.CAttribute.itemAttr[this.config.CAttribute.currentSelected].label) {
@@ -1198,7 +1206,7 @@
           this.config.CAttribute.defaultSwitchStatus = value
         }
       },
-      setSwitchicon () {
+      setSwitchIcon () {
         if (this.config.CAttribute.switchStatus) {
           this.config.CAttribute.onSwitchIcon = 'el-icon-' + this.config.Icon.className
         } else {
@@ -1233,7 +1241,7 @@
           this.config.CAttribute.timeEnd = value
         }
       },
-      formateSelectableRange (value) {
+      formatSelectableRange (value) {
         this.config.CAttribute.timeSelectableRange = value
       }
     }
