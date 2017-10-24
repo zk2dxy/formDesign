@@ -10,6 +10,7 @@
           :closable="config.CAttribute.closable.closableStatus"
           :close-transition="config.CAttribute.closable.transitionModel"
           :hit="config.CAttribute.hit.hitStatus"
+          :color="config.CAttribute.colorTag"
           @close="handleClose">
           {{config.CAttribute.defaultTagName}}
         </el-tag>
@@ -23,6 +24,7 @@
             :closable="ControlConfig.CAttribute.closable.closableStatus"
             :close-transition="ControlConfig.CAttribute.closable.transitionModel"
             :hit="ControlConfig.CAttribute.hit.hitStatus"
+            :color="ControlConfig.CAttribute.colorTag"
             @close="handleClose">
             {{ControlConfig.CAttribute.defaultTagName}}
           </el-tag>
@@ -106,6 +108,7 @@
     },
     data () {
       return {
+        color1: null,
         initConfig: {
           ControlID: '', // 表单生成后的控件id
           CBelong: 'form',
@@ -177,6 +180,7 @@
               name: '成功标签'
             }], // tag 类型： primary，gray，success，warning，danger 或者通过color属性自定义背景色
             typeModel: '',
+            colorTag: this.color1,
             description: '', // 描述
             closable: { // 状态
               closableStatus: false,  // 是否可关闭 (默认false）

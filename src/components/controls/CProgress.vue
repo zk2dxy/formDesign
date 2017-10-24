@@ -15,11 +15,11 @@
       ></el-progress>
     </div>
     <div v-else>
-      <el-form :label-position="ControlConfig.labelPositionModel" :label-width=labelWidthCalc>
+      <el-form :label-position="ControlConfig.labelPositionModel">
         <el-form-item :label="ControlConfig.CTitleCN">
           <el-progress
             :type="ControlConfig.CAttribute.typeModel"
-            :percentage="ControlConfig.CKey.default"
+            :percentage="ControlConfig.CKey.default.number"
             :status="ControlConfig.progressStatus.progressStatusCurrent"
             :show-text="ControlConfig.CAttribute.showText.showTextStatus"
             :text-inside="ControlConfig.CAttribute.showText.textInsideStatus"
@@ -182,7 +182,6 @@
             {value: 'right', name: '文字右对齐'},
             {value: 'top', name: '文字居上对齐'}
           ],
-          labelWidth: 80,
           layoutModel: 'flexLayout',
           currentLayout: null,
           CLayout: [ // 布局

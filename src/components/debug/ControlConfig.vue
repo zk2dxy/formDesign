@@ -593,6 +593,13 @@
               </el-radio-group>
             </div> <!--tag标签的基础属性-->
 
+            <div v-else-if="indexIn === 'colorTag'">
+              <div class="block">
+                <span class="demonstration">无默认值</span>
+                <el-color-picker v-model="config[index][indexIn]"></el-color-picker>
+              </div>
+            </div> <!--tag标签的基础属性-->
+
             <div v-else-if="indexIn === 'showText'"> <!--进度条的基础属性-->
               <p>是否显示文字</p>
               <el-checkbox v-model="config[index][indexIn].showTextStatus"></el-checkbox>
