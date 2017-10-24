@@ -39,7 +39,7 @@
     </div>
     <div class="container" ref="container">
       <div class="formDesignTitle">
-        表单标题
+        {{Config.FConfig.title}}
       </div>
       <div class="formContainer">
         <draggable
@@ -80,6 +80,7 @@
         :config="Config.CConfig"
         :fConfig="Config.FConfig"
         @changeConfig="changeView"
+        @changeFConfig="changeViewForm"
       ></form-settings>
     </div>
   </div>
@@ -306,6 +307,9 @@
         this.Config.CConfig = data
       },
       changeView (config) {
+      },
+      changeViewForm (fConfig) {
+        this.Config.FConfig = fConfig
       }
     },
     data () {
@@ -316,8 +320,8 @@
         ControlList: null,
         Config: {
           FConfig: {
-            title: '',
-            description: '',
+            title: '表单标题',
+            description: '表单描述',
             classification: '',
             listViews: [],
             flowBindResult: []

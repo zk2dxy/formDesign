@@ -6,12 +6,27 @@
           <p>控件标题</p>
           <el-input @change="changeConfig()" v-model="config[index]"></el-input>
         </div>
-
+        <div v-else-if="index === 'labelPositionModel'">
+          <p>标题位置</p>
+          <el-radio-group v-model="config[index]">
+            <el-radio
+              v-if="config.labelPositionValue.length > 0"
+              :key="radio.value"
+              v-for="radio in config.labelPositionValue"
+              :label="radio.value"
+            >
+              {{radio.name}}
+            </el-radio>
+          </el-radio-group>
+        </div>
         <div v-if="index === 'labelWidth' && config.labelPositionModel !== 'top'">
           <p>控件标题宽度</p>
           <el-input @change="changeConfig()" v-model="config[index]"></el-input>
         </div>
-
+        <div v-else-if="index === 'CTitleEN'">
+          <p>英文名</p>
+          <el-input @change="changeConfig()" v-model="config[index]"></el-input>
+        </div>
         <div v-else-if="index === 'CName'&& (item === 'CRadio' || item === 'CCheckbox' || item === 'CSelect')">
           <p>增加选项</p>
           <el-button type="primary" @click="AddItem()"><i class="el-icon-plus"></i></el-button>
