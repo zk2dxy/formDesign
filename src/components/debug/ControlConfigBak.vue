@@ -6,20 +6,33 @@
           <p>控件标题</p>
           <el-input @change="changeConfig()" v-model="config[index]"></el-input>
         </div>
-
+        <div v-else-if="index === 'labelPositionModel'">
+          <p>标题位置</p>
+          <el-radio-group v-model="config[index]">
+            <el-radio
+              v-if="config.labelPositionValue.length > 0"
+              :key="radio.value"
+              v-for="radio in config.labelPositionValue"
+              :label="radio.value"
+            >
+              {{radio.name}}
+            </el-radio>
+          </el-radio-group>
+        </div>
         <div v-if="index === 'labelWidth' && config.labelPositionModel !== 'top'">
           <p>控件标题宽度</p>
           <el-input @change="changeConfig()" v-model="config[index]"></el-input>
         </div>
-
+        <div v-else-if="index === 'CTitleEN'">
+          <p>英文名</p>
+          <el-input @change="changeConfig()" v-model="config[index]"></el-input>
+        </div>
         <div v-else-if="index === 'CName'&& (item === 'CRadio' || item === 'CCheckbox' || item === 'CSelect')">
           <p>增加选项</p>
           <el-button type="primary" @click="AddItem()"><i class="el-icon-plus"></i></el-button>
           <el-dialog
             :visible.sync="config.CAttribute.addStatus"
-            :show-close="false"
-            :close-on-click-modal="false"
-            :close-on-press-escape="false">
+            :show-close="false">
             <h4 slot="title">输入单选项属性：</h4>
             <el-form
               :model="config.CAttribute.itemAttr[config.CAttribute.itemAttr.length-1]"
@@ -67,7 +80,7 @@
         </div>
         <div v-else-if="index === 'CAttribute'">
           <!--{{item}}-->
-          <div v-for="(itemIn,indexIn) in item">
+          <div v-for="(itemIn, indexIn) in item">
             <!-- create by Arlene start-->
             <!--Collapse折叠面板-->
             <div v-if="indexIn === 'currentValue' && config.CAttribute.typeModel === 'collapse'">
@@ -276,7 +289,6 @@
               <el-input @change="changeConfig()" placeholder="输入框尾部增加(非必填)"
                         v-model="config[index][indexIn]"></el-input>
             </div>
-
             <!--mtw-->
             <div v-else-if="indexIn === 'closable'">
               <!--{{item}}-->
@@ -594,12 +606,6 @@
                 </el-radio>
               </el-radio-group>
             </div> <!--tag标签的基础属性-->
-            <div v-else-if="indexIn === 'colorTag'">
-              <div class="block">
-                <span class="demonstration">无默认值</span>
-                <el-color-picker v-model="config[index][indexIn]"></el-color-picker>
-              </div>
-            </div> <!--tag标签的基础属性-->
 
             <div v-else-if="indexIn === 'showText'"> <!--进度条的基础属性-->
               <p>是否显示文字</p>
@@ -739,26 +745,10 @@
               <p>控件标题</p>
               <el-input type="input" @change="changeConfig()" v-model="config[index][indexIn]"></el-input>
             </div> <!--弹框MessageBox的title属性-->
-            <div v-else-if="indexIn === 'inputValue'">
-              <p>输入框的初始文本</p>
+            <div v-else-if="indexIn === 'MessageBoxmessage'">
+              <p>控件内容</p>
               <el-input type="input" @change="changeConfig()" v-model="config[index][indexIn]"></el-input>
-            </div> <!--弹框MessageBox的inputValue属性-->
-            <div v-else-if="indexIn === 'inputPattern'">
-              <p>输入框的校验表达式</p>
-              <el-input type="input" @change="changeConfig()" v-model="config[index][indexIn]"></el-input>
-            </div> <!--弹框MessageBox的inputPattern属性-->
-            <div v-else-if="indexIn === 'inputErrorMessage'">
-              <p>校验未通过时的提示文本</p>
-              <el-input type="input" @change="changeConfig()" v-model="config[index][indexIn]"></el-input>
-            </div> <!--弹框MessageBox的inputPattern属性-->
-            <div v-else-if="indexIn === 'showInput'">
-              <p>是否显示输入框</p>
-              <el-radio-group v-model="config[index][indexIn].showInput">
-                <el-radio :key="radio.value" v-for="radio in config[index][indexIn].showInputable" :label="radio.value">
-                  {{radio.name}}
-                </el-radio>
-              </el-radio-group>
-            </div> <!--弹框MessageBox的showInput属性-->
+            </div> <!--弹框MessageBox的控件内容-->
             <div v-else-if="indexIn === 'confirmButtonText'">
               <p>确定按钮文字</p>
               <el-input type="input" @change="changeConfig()" v-model="config[index][indexIn]"></el-input>
@@ -778,7 +768,7 @@
             </div> <!--Popover弹出框的trigger属性-->
             <div v-else-if="indexIn === 'width'"> <!--Popover弹出框的width属性-->
               <p>控件宽度</p>
-              <el-input type="input" @change="changeConfig()" v-model="config[index][indexIn]"></el-input>
+              <el-input type="input" @change="changeConfig()" v-model.number="config[index][indexIn]"></el-input>
             </div> <!--Popover弹出框的width属性-->
             <div v-else-if="indexIn === 'content'">
               <p>控件内容</p>
@@ -787,7 +777,7 @@
             <div v-else-if="indexIn === 'visibleArrow'"> <!--Popover弹出框的visibleArrow属性-->
               <p>是否显示Tooltip 箭头</p>
               <el-radio-group v-model="config[index][indexIn].visibleArrow">
-                <el-radio :key="radio.value" v-for="radio in config[index][indexIn].visibleArrowable"
+                <el-radio :key="radio.value" v-for="radio in config[index][indexIn].visibleArrowAble"
                           :label="radio.value">
                   {{radio.name}}
                 </el-radio>
@@ -800,7 +790,7 @@
             <div v-else-if="indexIn === 'placement'"> <!--Popover弹出框的位置属性-->
               <p>控件位置</p>
               <el-radio-group v-model="config[index][indexIn].placement">
-                <el-radio :key="radio.name" v-for="radio in config[index][indexIn].placementable" :label="radio.name">
+                <el-radio :key="radio.value" v-for="radio in config[index][indexIn].placementAble" :label="radio.value">
                   {{radio.name}}
                 </el-radio>
               </el-radio-group>

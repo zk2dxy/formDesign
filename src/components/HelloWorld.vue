@@ -278,20 +278,20 @@
         return calcLayoutClass(this.list)
       },
       computedFormClass () {
-//        let flex = true
-//        if (this.list.length > 0) {
-//          let flexClass = 'flexLayout'
-//          for (let key in this.list) {
-//            // console.error(this.list[key].config)
-//            flex = (this.list[key].config.currentLayout.value === flexClass) && flex
-//            if (!flex) {
-//              break
-//            }
-//          }
-//          return flex
-//        } else {
-//          return flex
-//        }
+        let flex = true
+        if (this.list.length > 0) {
+          let flexClass = 'flexLayout'
+          for (let key in this.list) {
+            // console.error(this.list[key].config)
+            flex = (this.list[key].config.currentLayout.value === flexClass) && flex
+            if (!flex) {
+              break
+            }
+          }
+          return flex
+        } else {
+          return flex
+        }
       }
     }
   }

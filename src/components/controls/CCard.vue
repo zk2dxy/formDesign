@@ -131,11 +131,14 @@
       }
       this.$emit('input', this.config)
     },
-    updated () {},
+    updated () {
+    },
     /* keep-alive 组件激活时调用。 */
-    activated () {},
+    activated () {
+    },
     /* keep-alive 组件停用时调用。 */
-    deactivated () {},
+    deactivated () {
+    },
     beforeDestroy () {
     },
     destroyed () {
@@ -198,9 +201,9 @@
           CName: 'CCard', // 控件名称
           labelPositionModel: 'left',
           labelPositionValue: [
-            {value: 'left', name: '文字左对齐'},
-            {value: 'right', name: '文字右对齐'},
-            {value: 'top', name: '文字居上对齐'}
+            {value: 'left', name: '左对齐'},
+            {value: 'right', name: '右对齐'},
+            {value: 'top', name: '居上对齐'}
           ],
           labelWidth: 80,
           layoutModel: 'flexLayout',
@@ -337,19 +340,26 @@
   .CDom
     color $font-danger
 
-//    卡片样式
+  //    卡片样式
   .box-card
     float left
     width 45%
     margin-bottom 20px
     margin-right 20px
+
   .item
     margin-bottom 20px
+
+  .CCard
+    width: 100%
+
   .cardImg, .card-category, .card-img-item
     display inline-block
+
   .bottom
     margin-top: 13px
     line-height: 12px
+
   .button
     padding 0
     float right
