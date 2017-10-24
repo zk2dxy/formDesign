@@ -136,28 +136,49 @@
           CTitleCN: '折叠面板', // 标题
           CTitleEN: 'collapse Control', // 英文标题
           CName: 'CCollapse', // 控件名称
-          CLayout: { // 布局
-            percentLayout: { // 百分比布局
+          labelPositionModel: 'left',
+          labelPositionValue: [
+            {value: 'left', name: '左对齐'},
+            {value: 'right', name: '右对齐'},
+            {value: 'top', name: '居上对齐'}
+          ],
+          labelWidth: 80,
+          layoutModel: 'flexLayout',
+          currentLayout: null,
+          CLayout: [ // 布局
+            { // flex 布局
               type: Number,
-              default: 100,
-              status: true
-            },
-            pixelLayout: { // 像素布局
-              type: Number,
-              default: 100,
-              status: true
-            },
-            flexLayout: { // flex 布局
-              type: Number,
+              name: '自适应布局',
               default: 1,
-              status: false
+              value: 'flexLayout',
+              status: true,
+              max: 10
             },
-            columnLayout: { // 栅格布局
+            { // 百分比布局
               type: Number,
+              name: '百分比布局',
+              default: 100,
+              value: 'percentLayout',
+              status: false,
+              max: 100
+            },
+            { // 像素布局
+              type: Number,
+              name: '像素布局',
+              default: 100,
+              value: 'pixelLayout',
+              status: false,
+              max: null
+            },
+            { // 栅格布局
+              type: Number,
+              name: '栅格布局',
               default: 12,
-              status: false
+              value: 'columnLayout',
+              status: false,
+              max: 12
             }
-          },
+          ],
           CAttribute: {
             collapseItem: [
               {
