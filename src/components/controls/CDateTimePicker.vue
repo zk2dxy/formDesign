@@ -12,12 +12,12 @@
             <div v-if="ControlConfig.CAttribute.timeFixed">
               <div v-if="!ControlConfig.CAttribute.isRangeSelect">
                 <el-time-select
-                  v-model="ControlConfig.CKey.default"
+                  v-model="ControlConfig.CAttribute.timeDefault"
                   :picker-options="{
-                start: ControlConfig.CAttribute.timeStart,
-                step: ControlConfig.CAttribute.timeStep,
-                end: ControlConfig.CAttribute.timeEnd
-              }"
+                    start: ControlConfig.CAttribute.timeStart,
+                    step: ControlConfig.CAttribute.timeStep,
+                    end: ControlConfig.CAttribute.timeEnd
+                  }"
                   :editable="false"
                   :clearable="ControlConfig.CAttribute.isShowClearable"
                   :size="ControlConfig.CAttribute.sizeModel"
@@ -26,7 +26,7 @@
               <div v-else>
             <span @click="startFixTime">
               <el-time-select
-                v-model="defaultRangeFixedTime[0]"
+                v-model="ControlConfig.CAttribute.defaultRangeFixedTime[0]"
                 :picker-options="{
                   start: ControlConfig.CAttribute.timeStart,
                   step: ControlConfig.CAttribute.timeStep,
@@ -35,12 +35,11 @@
                 :editable="false"
                 :clearable="ControlConfig.CAttribute.isShowClearable"
                 :size="ControlConfig.CAttribute.sizeModel"
-                placeholder="开始时间"
-                @change="saveDefault"></el-time-select>
+                placeholder="开始时间"></el-time-select>
             </span>
                 <span @click="endFixTime">
               <el-time-select
-                v-model="defaultRangeFixedTime[1]"
+                v-model="ControlConfig.CAttribute.defaultRangeFixedTime[1]"
                 :picker-options="{
                   start: ControlConfig.CAttribute.timeStartend,
                   step: ControlConfig.CAttribute.timeStepend,
@@ -49,15 +48,13 @@
                 :editable="false"
                 :clearable="ControlConfig.CAttribute.isShowClearableend"
                 :size="ControlConfig.CAttribute.sizeModelend"
-                placeholder="结束时间"
-                @change="saveDefault"></el-time-select>
+                placeholder="结束时间"></el-time-select>
             </span>
               </div>
             </div>
             <div v-else>
               <el-time-picker
-                @change="timePicker"
-                v-model="timeDate"
+                v-model="ControlConfig.CAttribute.timeDefault"
                 :is-range="ControlConfig.CAttribute.isRangeSelect"
                 :picker-options="{
                 selectableRange: ControlConfig.CAttribute.timeSelectableRange
@@ -68,7 +65,30 @@
                 :placeholder="ControlConfig.CAttribute.placeholder"></el-time-picker>
             </div>
           </div>
-          <div v-if="ControlConfig.CAttribute.typeModel === 'date'">
+          <div v-if="ControlConfig.CAttribute.typeModel === 'date' && isAlive">
+            <div v-if="ControlConfig.CAttribute.isHasShortcut &&
+              (ControlConfig.CAttribute.dateTypeModel === 'date' ||
+              ControlConfig.CAttribute.dateTypeModel === 'daterange' ||
+              ControlConfig.CAttribute.dateTypeModel === 'datetimerange')">
+              ss
+              <el-date-picker
+                v-model="ControlConfig.CAttribute.timeDefault"
+                :size="ControlConfig.CAttribute.sizeModel"
+                :type="ControlConfig.CAttribute.dateTypeModel"
+                :picker-options="ControlConfig.CAttribute.datePickerShortcuts"
+                :range-separator="ControlConfig.CAttribute.rangeSeparator"
+                :format="ControlConfig.CAttribute.formatDate"
+                :placeholder="ControlConfig.CAttribute.placeholder"></el-date-picker>
+            </div>
+            <div v-else>
+              <el-date-picker
+                v-model="ControlConfig.CAttribute.timeDefault"
+                :size="ControlConfig.CAttribute.sizeModel"
+                :type="ControlConfig.CAttribute.dateTypeModel"
+                :range-separator="ControlConfig.CAttribute.rangeSeparator"
+                :format="ControlConfig.CAttribute.formatDate"
+                :placeholder="ControlConfig.CAttribute.placeholder"></el-date-picker>
+            </div>
           </div>
         </el-form-item>
       </el-form>
@@ -128,12 +148,6 @@
         }
         this.$emit(`getValue`, this.config)
       },
-      timePicker (value) {
-        this.config.CKey.default = value
-      },
-      saveDefault () {
-        this.config.CKey.default = this.defaultRangeFixedTime[0] + this.defaultRangeFixedTime[1]
-      },
       startFixTime () {
         this.config.CAttribute.rangeOfFixedEnd = false
       },
@@ -155,10 +169,74 @@
         }
       }
     },
+    watch: {
+      'config.CAttribute.isHasShortcut' () {
+        console.log('rr33')
+        this.isAlive = false
+        setTimeout(() => {
+          this.isAlive = true
+        }, 20)
+      },
+      'config.CAttribute.dateTypeModel' () {
+        console.log('rr')
+        if (this.config.CAttribute.dateTypeModel === 'date') {
+          this.config.CAttribute.datePickerShortcuts = {
+            shortcuts: [{
+              text: '今天',
+              onClick (picker) {
+                picker.$emit('pick', new Date())
+              }
+            }, {
+              text: '昨天',
+              onClick (picker) {
+                const date = new Date()
+                date.setTime(date.getTime() - 3600 * 1000 * 24)
+                picker.$emit('pick', date)
+              }
+            }, {
+              text: '一周前',
+              onClick (picker) {
+                const date = new Date()
+                date.setTime(date.getTime() - 3600 * 1000 * 24 * 7)
+                picker.$emit('pick', date)
+              }
+            }]
+          }
+        } else if (this.config.CAttribute.dateTypeModel === 'daterange' ||
+          this.config.CAttribute.dateTypeModel === 'datetimerange') {
+          this.config.CAttribute.datePickerShortcuts = {
+            shortcuts: [{
+              text: '最近一周',
+              onClick (picker) {
+                const end = new Date()
+                const start = new Date()
+                start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+                picker.$emit('pick', [start, end])
+              }
+            }, {
+              text: '最近一个月',
+              onClick (picker) {
+                const end = new Date()
+                const start = new Date()
+                start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+                picker.$emit('pick', [start, end])
+              }
+            }, {
+              text: '最近三个月',
+              onClick (picker) {
+                const end = new Date()
+                const start = new Date()
+                start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+                picker.$emit('pick', [start, end])
+              }
+            }]
+          }
+        }
+      }
+    },
     data () {
       return {
-        defaultRangeFixedTime: [], // 固定时间范围选择默认值
-        timeDate: new Date(),
+        isAlive: true,
         initConfig: {
           ControlID: '', // 表单生成后的控件id
           CBelong: 'form',
@@ -215,9 +293,6 @@
             }, {
               value: 'date',
               name: '日期选择器'
-            }, {
-              value: 'dateTime',
-              name: '日期时间选择器'
             }],
             typeModel: 'time',
             size: [{
@@ -233,6 +308,7 @@
             sizeModel: 'small',
             sizeModelend: 'small',
             description: '', // 描述
+            timeDefault: '', // 默认值
             timeFixed: false, // 是否是固定时间点
             timeStart: '', // 起始时间
             timeStep: '', // 时间间隔
@@ -241,19 +317,61 @@
             timeStartend: '', // 起始时间
             timeStepend: '', // 时间间隔
             timeEndend: '', // 结束时间
+            defaultRangeFixedTime: [], // 固定时间范围选择默认值
             timeEditable: true, // 文本框可输入
             timeSelectableRange: '00:00:00 - 23:59:59', // 任意时间选择范围
             isRangeSelect: false, // 是否是范围选择
 //            dateFormate: 'HH:mm:ss',
+            isHasShortcut: false, // 是否带快捷选项
+            formatDate: '', // 格式化
+            dateType: [{
+              value: 'date',
+              name: '日期'
+            }, {
+              value: 'year',
+              name: '年'
+            }, {
+              value: 'month',
+              name: '月'
+            }, {
+              value: 'week',
+              name: '周'
+            }, {
+              value: 'daterange',
+              name: '日期范围'
+            }, {
+              value: 'datetime',
+              name: '日期时间'
+            }, {
+              value: 'datetimerange',
+              name: '日期时间范围'
+            }], // 日期选择器类型
+            dateTypeModel: 'date', // 日期选择器类型
+            rangeSeparator: '-', // 选择范围时的分隔符
+            datePickerShortcuts: {shortcuts: [{
+              text: '今天',
+              onClick (picker) {
+                picker.$emit('pick', new Date())
+              }
+            }, {
+              text: '昨天',
+              onClick (picker) {
+                const date = new Date()
+                date.setTime(date.getTime() - 3600 * 1000 * 24)
+                picker.$emit('pick', date)
+              }
+            }, {
+              text: '一周前',
+              onClick (picker) {
+                const date = new Date()
+                date.setTime(date.getTime() - 3600 * 1000 * 24 * 7)
+                picker.$emit('pick', date)
+              }
+            }]},
             isShowClearable: true, // 是否显示清除按钮
             isShowClearableend: true, // 是否显示清除按钮
             placeholder: '请输入默认值或者为空', // 控件提示值
             height: '' // 高度
-          },
-          CKey: { // 控件值
-            default: '', // 默认值
-            type: '', // 控件值类型
-            keyMethods: '' // 计算控件值方法
           },
           Status: { // 状态
             status: false, // 是否应用状态
