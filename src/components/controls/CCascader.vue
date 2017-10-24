@@ -4,7 +4,20 @@
       <div class="title">
         {{config.CTitleCN}}
       </div>
-
+      <el-form :label-position="config.labelPositionModel" :label-width=labelWidthCalc>
+        <el-form-item :label="config.CTitleCN">
+          <el-cascader
+            :options="config.CAttribute.cascadeList"
+            :props="config.CAttribute.cascadeProps"
+            :show-all-levels="config.CAttribute.showAllLevelFlag"
+            :filterable="config.CAttribute.filterable"
+            :change-on-select="config.CAttribute.changeOnSelect"
+            :size="config.CAttribute.cascadeSize"
+            :placeholder="config.CAttribute.cascadePlaceholder"
+            v-model="config.CAttribute.selectedOptions">
+          </el-cascader>
+        </el-form-item>
+      </el-form>
     </div>
     <div v-else>
       <el-form :label-position="ControlConfig.labelPositionModel" :label-width=labelWidthCalc>
