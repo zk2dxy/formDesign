@@ -105,6 +105,13 @@
             }, // 容器配置
             controls: [
               {
+                CNameCN: 'step步骤条',
+                CNameEN: 'step',
+                parent: 'form', // 父级对象
+                type: 'step', // 类型
+                component: 'CStep',
+                config: '' // 控件配置,
+              }, {
                 CNameCN: '折叠面板',
                 CNameEN: 'collapse',
                 parent: 'form', // 父级对象

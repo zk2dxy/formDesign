@@ -2,7 +2,7 @@
   import ExtendTabBar from './tab-bar'
   import { addResizeListener, removeResizeListener } from '@/components/extend/resize-event'
 
-  function noop() {}
+  function noop () {}
 
   export default {
     name: 'ExtendTabNav',
@@ -23,7 +23,7 @@
       },
       type: String
     },
-    data() {
+    data () {
       return {
         scrollable: false,
         navStyle: {
@@ -68,8 +68,8 @@
         }
         this.setOffset(Math.max(newOffset, 0))
       },
-      getCurrentScrollOffset() {
-        const { navStyle } = this
+      getCurrentScrollOffset () {
+        const {navStyle} = this
         return navStyle.transform ? Number(navStyle.transform.match(/translateX\(-(\d+(\.\d+)*)px\)/)[1]) : 0
       },
       setOffset (value) {
@@ -96,7 +96,7 @@
       }
     },
     updated () {
-      this.update ()
+      this.update()
     },
     render (h) {
       const {
@@ -111,9 +111,9 @@
         scrollPrev
       } = this
       const scrollBtn = scrollable
-      ? [
-        `<span class={['el-tabs__nav-prev', scrollable.prev ? '' : 'is-disabled']} on-click={scrollPrev}><i class="el-icon-arrow-left"></i></span>`, `<span class={['el-tabs__nav-next', scrollable.next ? '' : 'is-disabled']} on-click={scrollNext}><i class="el-icon-arrow-right"></i></span>`
-      ] : null
+        ? [
+          `<span class={['el-tabs__nav-prev', scrollable.prev ? '' : 'is-disabled']} on-click={scrollPrev}><i class="el-icon-arrow-left"></i></span>`, `<span class={['el-tabs__nav-next', scrollable.next ? '' : 'is-disabled']} on-click={scrollNext}><i class="el-icon-arrow-right"></i></span>`
+        ] : null
       const tabs = this._l(panes, (pane, index) => {
         let tabName = pane.name || pane.index || index
         const closable = pane.isClosable || editable
@@ -122,40 +122,70 @@
 
         const tabLabelContent = pane.$slots.label || pane.label
         return (
-          <div
-            class={{
-              'el-tabs__item': true,
-              'is-active': pane.active,
-              'is-disabled': pane.disabled,
-              'is-closable': closable
-            }}
-            ref="tabs"
-            refInFor
-            on-click={(ev) => { onTabClick(pane, tabName, ev) }}
-          >
-            {tabLabelContent}
-            {btnClose}
-          </div>
-        )
+          < div
+      class
+        = {
+        {
+          'el-tabs__item'
+        :
+          true,
+            'is-active'
+        :
+          pane.active,
+            'is-disabled'
+        :
+          pane.disabled,
+            'is-closable'
+        :
+          closable
+        }
+      }
+        ref = 'tabs'
+        refInFor
+        on - click = {(ev)
+      =>
+        { onTabClick(pane, tabName, ev) }
+      }
+      >
+        {tabLabelContent}
+        {btnClose}
+      <
+        /div>
+      )
       })
       return (
-        <div class={['el-tabs__nav-wrap', scrollable ? 'is-scrollable' : '']}>
-          {scrollBtn}
-          <div class={['el-tabs__nav-scroll']} ref="navScroll">
-            <div class="el-tabs__nav" ref="nav" style={navStyle}>
-              {!type ? `<tab-bar tabs={panes}></tab-bar>` : null}
-              {tabs}
-            </div>
-          </div>
-        </div>
-      )
+        < div
+    class
+      = {['el-tabs__nav-wrap', scrollable ? 'is-scrollable' : ''
+    ]
+    }>
+      {scrollBtn}
+    <
+      div
+    class
+      = {['el-tabs__nav-scroll']}
+      ref = 'navScroll' >
+        < div
+    class
+      = 'el-tabs__nav'
+      ref = 'nav'
+      style = {navStyle} >
+        {
+      !type ? `<tab-bar tabs={panes}></tab-bar>` : null
+    }
+      {tabs}
+    <
+      /div>
+      < /div>
+      < /div>
+    )
     },
 
-    mounted() {
+    mounted () {
       addResizeListener(this.$el, this.update)
     },
 
-    beforeDestroy() {
+    beforeDestroy () {
       if (this.$el && this.update) removeResizeListener(this.$el, this.update)
     }
   }

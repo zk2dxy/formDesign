@@ -26,8 +26,8 @@
                 <el-input @change="changeConfig()" v-model="config[index].collapseItem[itemIn].content"></el-input>
               </div>
               <!--<div>-->
-                <!--<p>唯一标识符</p>-->
-                <!--<el-input @change="changeConfig()" v-model="config[index].collapseItem[itemIn].name"></el-input>-->
+              <!--<p>唯一标识符</p>-->
+              <!--<el-input @change="changeConfig()" v-model="config[index].collapseItem[itemIn].name"></el-input>-->
               <!--</div>-->
             </div>
             <!--Card卡片-->
@@ -53,7 +53,8 @@
                   </el-input>
                   <!--添加当前卡片内容条目-->
                   <div>
-                    <el-button type="primary" size="medium" @click="addCardItem">添加卡片内容<i class="el-icon-plus"></i></el-button>
+                    <el-button type="primary" size="medium" @click="addCardItem">添加卡片内容<i class="el-icon-plus"></i>
+                    </el-button>
                     <el-dialog :visible.sync="config[index].cardItemAttribute.addCardItemFlag" :show-close="false">
                       <h4 slot="title">添加：</h4>
                       <el-input
@@ -94,9 +95,12 @@
               <el-button type="primary" @click="addItem()">添加面板条目<i class="el-icon-plus"></i></el-button>
               <el-dialog :visible.sync="config.CAttribute.addCollapseStatus" :show-close="false">
                 <h4 slot="title">添加：</h4>
-                <el-input v-model="config.CAttribute.collapseItem[config.CAttribute.collapseItem.length - 1].name" placeholder="唯一标识符"></el-input>
-                <el-input v-model="config.CAttribute.collapseItem[config.CAttribute.collapseItem.length - 1].title" placeholder="面板标题"></el-input>
-                <el-input v-model="config.CAttribute.collapseItem[config.CAttribute.collapseItem.length - 1].content" placeholder="面板内容"></el-input>
+                <el-input v-model="config.CAttribute.collapseItem[config.CAttribute.collapseItem.length - 1].name"
+                          placeholder="唯一标识符"></el-input>
+                <el-input v-model="config.CAttribute.collapseItem[config.CAttribute.collapseItem.length - 1].title"
+                          placeholder="面板标题"></el-input>
+                <el-input v-model="config.CAttribute.collapseItem[config.CAttribute.collapseItem.length - 1].content"
+                          placeholder="面板内容"></el-input>
                 <div slot="footer" class="dialog-footer">
                   <el-button @click="closeCollapseDialog(false)">取 消</el-button>
                   <el-button type="primary" @click="closeCollapseDialog(true)">确 定</el-button>
@@ -137,6 +141,14 @@
               <p>总条目数</p>
               <el-input type="text" @change="changeConfig()" placeholder="总条目数"
                         v-model.number="config[index][indexIn]"></el-input>
+            </div>
+            <div v-else-if="indexIn === 'pageAlign'">
+              <p>对齐方式</p>
+              <el-radio-group v-model="config[index][indexIn]">
+                <el-radio :key="radio.value" v-for="radio in config[index].pageAlignOption" :label="radio.value">
+                  {{radio.name}}
+                </el-radio>
+              </el-radio-group>
             </div>
             <!--Cascader 级联-->
             <div v-else-if="indexIn === 'showAllLevels'">
@@ -189,7 +201,8 @@
                          config[index].typeModel === 'uploadManual'">
                 <p>是否显示已上传文件列表</p>
                 <el-radio-group v-model="config[index].uploadShowFileFlag">
-                  <el-radio :key="radio.optionFlag" v-for="radio in config[index].uploadShowFileList[itemIn].option" :label="radio.optionFlag">
+                  <el-radio :key="radio.optionFlag" v-for="radio in config[index].uploadShowFileList[itemIn].option"
+                            :label="radio.optionFlag">
                     {{radio.label}}
                   </el-radio>
                 </el-radio-group>
@@ -205,11 +218,63 @@
               <div v-if="config[index].typeModel !== 'uploadAvatar'">
                 <p>是否支持多选文件</p>
                 <el-radio-group v-model="config[index].uploadMultiple">
-                  <el-radio :key="radio.multipleFlag" v-for="radio in config[index].uploadMultipleList[itemIn].multiple" :label="radio.multipleFlag">
+                  <el-radio :key="radio.multipleFlag" v-for="radio in config[index].uploadMultipleList[itemIn].multiple"
+                            :label="radio.multipleFlag">
                     {{radio.label}}
                   </el-radio>
                 </el-radio-group>
               </div>
+            </div>
+            <!--steps步骤条-->
+            <div v-else-if="indexIn === 'stepCurrentValue'">
+              <div>
+                <p>设置各步骤标题</p>
+                <el-input type="text" @change="changeConfig()" placeholder="步骤标题"
+                          v-model="config[index].stepList[config[index].stepCurrentValue].title"></el-input>
+              </div>
+              <div>
+                <p>设置各步骤描述</p>
+                <el-input type="textarea" @change="changeConfig()" placeholder="步骤描述(非必填)"
+                          v-model="config[index].stepList[config[index].stepCurrentValue].description"></el-input>
+              </div>
+              <div>
+                <p>是否使用图标</p>
+                <el-checkbox v-model="config[index].stepIcon" label="是否使用图标"></el-checkbox>
+                <div v-if="config[index].stepIcon">
+                  <el-button @click="chooseStepIcon(config[index])" type="primary" size="small" icon="edit">选择图标</el-button>
+                  <c-icon @postIcon="setStepIcon" v-if="config[index].stepIconStatus"></c-icon>
+                </div>
+              </div>
+            </div>
+            <div v-if="indexIn === 'stepActive'">
+              <p>设置当前激活步骤</p>
+              <el-input type="text" @change="changeConfig()" placeholder="设置当前激活步骤"
+                        v-model.number="config[index].stepActive"></el-input>
+            </div>
+            <div v-if="indexIn === 'showSingleStatus'">
+              <p>只显示当前状态</p>
+              <el-checkbox v-model="config[index].showSingleStatus" label="只显示当前状态"></el-checkbox>
+            </div>
+            <div v-if="indexIn === 'stepSpace'">
+              <p>设置每个步骤的间距</p>
+              <el-input type="text" @change="changeConfig()" placeholder="不填写表示自适应"
+                        v-model.number="config[index].stepSpace"></el-input>
+            </div>
+            <div v-if="indexIn === 'stepDirection'">
+              <p>显示方向</p>
+              <el-radio-group v-model="config[index].stepDirection">
+                <el-radio :key="radio.value" v-for="radio in config[index].stepDirectionOption" :label="radio.value">
+                  {{radio.name}}
+                </el-radio>
+              </el-radio-group>
+            </div>
+            <div v-if="indexIn === 'stepAlignCenter' && config[index].stepDirection === 'horizontal'">
+              <p>标题描述居中对齐</p>
+              <el-checkbox v-model="config[index].stepAlignCenter" label="标题描述居中对齐"></el-checkbox>
+            </div>
+            <div v-if="indexIn === 'StepCenter' && config[index].stepDirection === 'horizontal'">
+              <p>组件居中显示</p>
+              <el-checkbox v-model="config[index].StepCenter" label="组件居中显示"></el-checkbox>
             </div>
             <!-- End-->
             <div v-else-if="indexIn === 'type'">
@@ -279,6 +344,11 @@
         cardUploadImgUrl: 'https://jsonplaceholder.typicode.com/posts/'
       }
     },
+    watch: {
+      'config.CAttribute.showSingleStatus' (val) {
+        this.$emit('changeConfig', this.config)
+      }
+    },
     methods: {
       changeConfig () {
         this.$emit('changeConfig', this.config)
@@ -321,7 +391,18 @@
         this.config.CAttribute.cardUploadFlag = true
         this.config.CAttribute.cardItemAttribute.cardItem[this.config.CAttribute.cardCurrent].imageUrl = this.cardImageUrl
       },
+//      steps进度条
+      chooseStepIcon (item) {
+        item.stepIconStatus = !item.stepIconStatus
+        window.iconOBJ = item
+      },
 
+      setStepIcon (chooseRes) {
+        if (chooseRes !== '') {
+          window.iconOBJ.stepList[window.iconOBJ.stepCurrentValue].icon = chooseRes.className
+        }
+        window.iconOBJ.stepIconStatus = false
+      },
       setIcon (chooseRes) {
         if (chooseRes !== '') {
           window.iconOBJ.className = chooseRes.className
@@ -346,7 +427,6 @@
         window.validateOBJ = item
       },
       setValidate (chooseRes) {
-        console.error(chooseRes)
         if (chooseRes !== '') {
           window.validateOBJ.validateModel = chooseRes
         }

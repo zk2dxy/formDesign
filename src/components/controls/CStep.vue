@@ -1,39 +1,50 @@
 <template>
-  <div class="CCascader" @click="ControlClick()">
+  <div class="CStep" @click="ControlClick()">
     <div v-if="config && (!ControlID)" @click.stop>
       <div class="title">
         {{config.CTitleCN}}
       </div>
-      <el-form :label-position="config.labelPositionModel" :label-width=labelWidthCalc>
-        <el-form-item :label="config.CTitleCN">
-          <el-cascader
-            :options="config.CAttribute.cascadeList"
-            :props="config.CAttribute.cascadeProps"
-            :show-all-levels="config.CAttribute.showAllLevelFlag"
-            :filterable="config.CAttribute.filterable"
-            :change-on-select="config.CAttribute.changeOnSelect"
-            :size="config.CAttribute.cascadeSize"
-            :placeholder="config.CAttribute.cascadePlaceholder"
-            v-model="config.CAttribute.selectedOptions">
-          </el-cascader>
-        </el-form-item>
-      </el-form>
+      <!--step-->
+      <extend-steps
+        :space="config.CAttribute.stepSpace"
+        :direction="config.CAttribute.stepDirection"
+        :active="config.CAttribute.stepActive"
+        :show-single-status="config.CAttribute.showSingleStatus"
+        :process-status="config.CAttribute.stepStatusProcess"
+        :finish-status="config.CAttribute.stepStatusSuccess"
+        :align-center="config.CAttribute.stepAlignCenter"
+        :center="config.CAttribute.StepCenter">
+        <extend-step
+          v-for="(item,index) in config.CAttribute.stepList"
+          :key="item.title"
+          @handleClickStep="handleClickStep"
+          :description="item.description"
+          :icon="item.icon"
+          :title="item.title"></extend-step>
+      </extend-steps>
     </div>
     <div v-else>
-      <el-form :label-position="ControlConfig.labelPositionModel" :label-width=labelWidthCalc>
-        <el-form-item :label="ControlConfig.CTitleCN">
-          <el-cascader
-            :options="ControlConfig.CAttribute.cascadeList"
-            :props="ControlConfig.CAttribute.cascadeProps"
-            :show-all-levels="ControlConfig.CAttribute.showAllLevelFlag"
-            :filterable="ControlConfig.CAttribute.filterable"
-            :change-on-select="ControlConfig.CAttribute.changeOnSelect"
-            :size="ControlConfig.CAttribute.cascadeSize"
-            :placeholder="ControlConfig.CAttribute.cascadePlaceholder"
-            v-model="ControlConfig.CAttribute.selectedOptions">
-          </el-cascader>
-        </el-form-item>
-      </el-form>
+      <div class="title">
+        {{ControlConfig.CTitleCN}}
+      </div>
+      <!--step-->
+      <extend-steps
+        :space="ControlConfig.CAttribute.stepSpace"
+        :direction="ControlConfig.CAttribute.stepDirection"
+        :active="ControlConfig.CAttribute.stepActive"
+        :show-single-status="ControlConfig.CAttribute.showSingleStatus"
+        :process-status="ControlConfig.CAttribute.stepStatusProcess"
+        :finish-status="ControlConfig.CAttribute.stepStatusSuccess"
+        :align-center="ControlConfig.CAttribute.stepAlignCenter"
+        :center="ControlConfig.CAttribute.StepCenter">
+        <extend-step
+          v-for="(item,index) in ControlConfig.CAttribute.stepList"
+          :key="item.title"
+          @handleClickStep="handleClickStep"
+          :description="item.description"
+          :icon="item.icon"
+          :title="item.title"></extend-step>
+      </extend-steps>
     </div>
   </div>
 </template>
@@ -41,7 +52,7 @@
   // 控件配置、表单配置、数据来源配置
   // props: ['ControlConfig', 'FormConfig', 'OriginDataConfig', 'value'],
   export default {
-    name: `CCascader`,
+    name: `CStep`,
     props: {
       ControlConfig: {
         type: Object
@@ -79,11 +90,7 @@
     /* keep-alive 组件停用时调用。 */
     deactivated () {
     },
-    watch: {
-      'config.CKey.default' (val, old) {
-        // console.log(val)
-      }
-    },
+    watch: {},
     beforeDestroy () {
     },
     destroyed () {
@@ -113,7 +120,11 @@
         }
         this.$emit(`getValue`, this.config)
       },
-
+//      steps点击事件
+      handleClickStep (index) {
+        this.config.CAttribute.stepCurrentValue = index
+        this.config.CAttribute.stepIcon = false
+      },
       getChildrenLayoutValue () {
         this.config.currentLayout = null
         if (this.config.CLayout === '') {
@@ -134,14 +145,14 @@
         initConfig: {
           ControlID: '', // 表单生成后的控件id
           CBelong: 'others',
-          CTitleCN: '级联选择器', // 标题
-          CTitleEN: 'cascader Control', // 英文标题
-          CName: 'CCascader', // 控件名称
+          CTitleCN: 'step步骤条', // 标题
+          CTitleEN: 'step Control', // 英文标题
+          CName: 'CStep', // 控件名称
           labelPositionModel: 'left',
           labelPositionValue: [
-            {value: 'left', name: '左对齐'},
-            {value: 'right', name: '右对齐'},
-            {value: 'top', name: '居上对齐'}
+            {value: 'left', name: '文字左对齐'},
+            {value: 'right', name: '文字右对齐'},
+            {value: 'top', name: '文字居上对齐'}
           ],
           labelWidth: 100,
           layoutModel: 'flexLayout',
@@ -149,7 +160,7 @@
           CLayout: [ // 布局
             { // flex 布局
               type: Number,
-              name: '自适应',
+              name: '自适应布局',
               default: 1,
               value: 'flexLayout',
               status: true,
@@ -157,7 +168,7 @@
             },
             { // 百分比布局
               type: Number,
-              name: '百分比',
+              name: '百分比布局',
               default: 100,
               value: 'percentLayout',
               status: false,
@@ -165,7 +176,7 @@
             },
             { // 像素布局
               type: Number,
-              name: '像素',
+              name: '像素布局',
               default: 100,
               value: 'pixelLayout',
               status: false,
@@ -173,7 +184,7 @@
             },
             { // 栅格布局
               type: Number,
-              name: '栅格',
+              name: '栅格布局',
               default: 12,
               value: 'columnLayout',
               status: false,
@@ -181,77 +192,73 @@
             }
           ],
           CAttribute: {
-            cascadeList: [{
-              value: 'jilianyi',
-              label: '级联一',
-              children: [{
-                value: 'jilian1-1',
-                label: '级联1-1',
-                children: [{
-                  value: 'jilian1-1-1',
-                  label: '级联1-1-1'
-                }, {
-                  value: 'jilian1-1-2',
-                  label: '级联1-1-2'
-                }]
-              }]
+            stepList: [{
+              title: '步骤一',
+              description: '',
+              icon: ''
             }, {
-              value: 'jilianer',
-              label: '级联2',
-              children: [{
-                value: 'jilian2-2',
-                label: '级联2-2',
-                children: [{
-                  value: 'jilian2-2-2',
-                  label: '级联2-2-2'
-                }, {
-                  value: 'jilian2-2-3',
-                  label: '级联2-2-3'
-                }]
-              }]
+              title: '步骤二',
+              description: '',
+              icon: ''
+            }, {
+              title: '步骤三',
+              description: '',
+              icon: ''
+            }, {
+              title: '步骤四',
+              description: '',
+              icon: ''
             }],
-            cascadeProps: {
-              value: 'value',
-              children: 'children'
-            },
-            cascadePropsTitle: '',
-            showAllLevelFlag: true, // 是否显示完整路径
-            showAllLevels: [{
-              value: true,
-              name: '是'
+            stepCurrentValue: '', // 点击的当前值
+            stepActive: 2,  // 设置当前激活步骤
+            showSingleStatus: false,  // 是否只显示当前状态
+            stepSpace: 100, // 设置每个step的间距，不填写表示自适应
+            stepAlignCenter: false,  // 标题描述是否居中对齐
+            StepCenter: false,  // 组件是否居中显示
+            stepDirection: 'horizontal',  // 显示方向
+            stepIcon: false, // 是否使用图标
+            stepIconStatus: false, // 是否启用选择图标
+            stepDirectionOption: [{
+              name: '水平方向',
+              value: 'horizontal'
             }, {
-              value: false,
-              name: '否'
+              name: '垂直方向',
+              value: 'vertical'
             }],
-            filterable: false, // 是否可搜索选项
-            filterableOption: [{
-              value: true,
-              name: '是'
+            stepStatusProcess: 'process',  // 设置当前默认步骤状态
+            stepProcessOption: [{
+              value: 'wait',
+              name: '等待'
             }, {
-              value: false,
-              name: '否'
-            }],
-            changeOnSelect: true, // 是否允许选择任意一级的选项
-            changeOnSelectOption: [{
-              value: true,
-              name: '是'
+              value: 'process',
+              name: '当前'
             }, {
-              value: false,
-              name: '否'
-            }],
-            cascadeSize: 'small', // 尺寸
-            cascadeSizeOption: [{
-              value: 'large',
-              name: '大'
+              value: 'finish',
+              name: '完成'
             }, {
-              value: 'small',
-              name: '小型'
+              value: 'error',
+              name: '错误'
             }, {
-              value: 'mini',
-              name: '超小'
-            }],
-            cascadePlaceholder: '请选择*****', // 默认文本
-            selectedOptions: [],
+              value: 'success',
+              name: '成功'
+            }], // 设置当前步骤状态
+            stepStatusSuccess: 'finish',  // 设置结束默认步骤状态
+            stepSuccessOption: [{
+              value: 'wait',
+              name: '等待'
+            }, {
+              value: 'process',
+              name: '当前'
+            }, {
+              value: 'finish',
+              name: '完成'
+            }, {
+              value: 'error',
+              name: '错误'
+            }, {
+              value: 'success',
+              name: '成功'
+            }], // 设置结束步骤状态
             description: '', // 描述
             height: '', // 高度
             vertical: ['top', 'middle', 'bottom'] // 对齐方式
@@ -318,33 +325,4 @@
 
   .CDom
     color $font-danger
-
-  //    卡片样式
-  .box-card
-    float left
-    width 45%
-    margin-bottom 20px
-    margin-right 20px
-
-  .item
-    margin-bottom 20px
-
-  .CCard
-    display inline-block
-    width: 100%
-
-  .cardImg, .card-category, .card-img-item
-    display inline-block
-
-  .card-img-item
-    margin-right 20px
-    margin-bottom 20px
-    > div
-      .bottom
-        margin-top: 13px
-        line-height: 12px
-
-  .button
-    padding 0
-    float right
 </style>

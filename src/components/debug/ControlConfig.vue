@@ -84,6 +84,28 @@
               <!--<el-input @change="changeConfig()" v-model="config[index].collapseItem[itemIn].name"></el-input>-->
               <!--</div>-->
             </div>
+
+            <div v-else-if="indexIn === 'tabsStatus'"> <!--tabs标签页的状态属性-->
+              <p>可增加</p>
+              <el-radio-group v-model="config[index][indexIn].addable">
+                <el-radio :key="radio.value" v-for="radio in config[index][indexIn].addStatus" :label="radio.value">
+                  {{radio.name}}
+                </el-radio>
+              </el-radio-group>
+              <p>可关闭</p>
+              <el-radio-group v-model="config[index][indexIn].closable">
+                <el-radio :key="radio.value" v-for="radio in config[index][indexIn].closeStatus" :label="radio.value">
+                  {{radio.name}}
+                </el-radio>
+              </el-radio-group>
+              <p>可同时增加和关闭</p>
+              <el-radio-group v-model="config[index][indexIn].editable">
+                <el-radio :key="radio.value" v-for="radio in config[index][indexIn].editStatus" :label="radio.value">
+                  {{radio.name}}
+                </el-radio>
+              </el-radio-group>
+            </div> <!--tabs标签页的状态属性-->
+
             <!--Card卡片-->
             <div v-else-if="indexIn === 'cardCurrent'">
               <!--卡片标题-->
@@ -483,7 +505,7 @@
                 <el-time-picker
                   is-range
                   v-model="timeSelectableRange"
-                  @change="formateSelectableRange"
+                  @change="formatSelectableRange"
                   placeholder="选择时间范围">
                 </el-time-picker>
               </div>

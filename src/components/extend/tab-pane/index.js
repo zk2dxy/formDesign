@@ -1,8 +1,8 @@
-import ExtendTabPane from '../tabs/src/tab-pane.vue';
+import ExtendTabPane from '../tabs/src/tab-pane.vue'
 
 /* istanbul ignore next */
-TabPane.install = function(Vue) {
-  Vue.component(TabPane.name, TabPane);
-};
+ExtendTabPane.install = function (Vue) {
+  Vue.component(ExtendTabPane.name, ExtendTabPane)
+}
 
-export default ExtendTabPane;
+export default ExtendTabPane

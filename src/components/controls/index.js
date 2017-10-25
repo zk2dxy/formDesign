@@ -11,8 +11,9 @@ import CTag from '@/components/controls/CTag'
 import CButton from '@/components/controls/CButton'
 import CBadge from '@/components/controls/CBadge'
 import CCard from '@/components/controls/CCard'
-import CCascader from '@/components/controls/CCascader'
+import CCascade from '@/components/controls/CCascader'
 import CUpload from '@/components/controls/CUpload'
+import CStep from '@/components/controls/CStep'
 import CDateTimePicker from '@/components/controls/CDateTimePicker'
 import CDialog from '@/components/controls/CDialog'
 import CLoading from '@/components/controls/CLoading'
@@ -22,6 +23,7 @@ import CPopover from '@/components/controls/CPopover'
 import CProgress from '@/components/controls/CProgress'
 import CSlider from '@/components/controls/CSlider'
 import CSwitch from '@/components/controls/CSwitch'
+import CTabs from '@/components/controls/CTabs'
 
 const components = [
   CCard,
@@ -29,7 +31,7 @@ const components = [
   CSwitch,
   CPopover,
   CSlider,
-  CCascader,
+  CCascade,
   CDateTimePicker,
   CLoading,
   CMessageBox,
@@ -40,6 +42,7 @@ const components = [
   CCollapse,
   CCard,
   CUpload,
+  CStep,
   CValidate,
   CInput,
   CRadio,
@@ -47,7 +50,8 @@ const components = [
   CSelect,
   CTag,
   CButton,
-  CBadge
+  CBadge,
+  CTabs
 ]
 export default {
   install () {
