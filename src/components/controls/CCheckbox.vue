@@ -7,46 +7,59 @@
       <!--初始化组件-->
     </div>
     <div v-else>
-      <div class="title">
-        {{ControlConfig.CTitleCN}}
-      </div>
-      <div v-if="ControlConfig.CAttribute.typeModel==='checkbox'">
-        <div>
-          <extend-checkbox
-            :indeterminate="ControlConfig.CAttribute.indeterminateCheckbox" v-model="ControlConfig.CAttribute.checkAllCheckbox"
-            @change="CheckAllChange"
-            v-if="ControlConfig.CAttribute.showAllCheckbox">全选</extend-checkbox>
-        </div>
-        <extend-checkbox-group
-          v-model="ControlConfig.CAttribute.defaultCheckboxSelected"
-          :min="ControlConfig.CAttribute.ableSelectedMin"
-          :max="ControlConfig.CAttribute.ableSelectedMax">
-          <extend-checkbox
-            @click="SelectedChange(item.label)"
-            v-for="(item, index) in ControlConfig.CAttribute.itemAttr"
-            :key="item.label"
-            :label="item.label"
-            :disabled="item.isDisabled">
-            {{item.showContent}}</extend-checkbox>
-        </extend-checkbox-group>
-      </div>
-      <div v-else>
-        <extend-checkbox-group
-          v-model="ControlConfig.CAttribute.defaultCheckboxSelected"
-          :size="ControlConfig.CAttribute.sizeModel"
-          :text-color="ControlConfig.CAttribute.textColor"
-          :fill="ControlConfig.CAttribute.fillColor"
-          :min="ControlConfig.CAttribute.ableSelectedMin"
-          :max="ControlConfig.CAttribute.ableSelectedMax">
-          <extend-checkbox-button
-            @click="SelectedChange(item.label)"
-            v-for="(item, index) in ControlConfig.CAttribute.itemAttr"
-            :key="item.label"
-            :label="item.label"
-            :disabled="item.isDisabled">
-            {{item.showContent}}</extend-checkbox-button>
-        </extend-checkbox-group>
-      </div>
+      <el-form
+        v-if="ControlConfig.CAttribute.typeModel==='checkbox'"
+        :label-position="ControlConfig.labelPositionModel"
+        :label-width=labelWidthCalc
+      >
+        <el-form-item :label="ControlConfig.CTitleCN">
+          <div v-if="ControlConfig.CAttribute.typeModel==='checkbox' && ControlConfig.CAttribute.showAllCheckbox">
+            <extend-checkbox
+              :indeterminate="ControlConfig.CAttribute.indeterminateCheckbox"
+              v-model="ControlConfig.CAttribute.checkAllCheckbox"
+              @change="CheckAllChange"
+            >全选
+            </extend-checkbox>
+          </div>
+          <extend-checkbox-group
+            :class="[
+              !(ControlConfig.CAttribute.showAllCheckbox) ? 'showAll' : ''
+            ]"
+            v-if="ControlConfig.CAttribute.typeModel==='checkbox'"
+            v-model="ControlConfig.CAttribute.defaultCheckboxSelected"
+            :min="ControlConfig.CAttribute.ableSelectedMin"
+            :max="ControlConfig.CAttribute.ableSelectedMax">
+            <extend-checkbox
+              @click="SelectedChange(item.label)"
+              v-for="(item, index) in ControlConfig.CAttribute.itemAttr"
+              :key="item.label"
+              :label="item.label"
+              :disabled="item.isDisabled">
+              {{item.showContent}}
+            </extend-checkbox>
+          </extend-checkbox-group>
+          <extend-checkbox-group
+            v-else
+            :class="[
+              !(ControlConfig.CAttribute.showAllCheckbox) ? 'showAll' : ''
+            ]"
+            v-model="ControlConfig.CAttribute.defaultCheckboxSelected"
+            :size="ControlConfig.CAttribute.sizeModel"
+            :text-color="ControlConfig.CAttribute.textColor"
+            :fill="ControlConfig.CAttribute.fillColor"
+            :min="ControlConfig.CAttribute.ableSelectedMin"
+            :max="ControlConfig.CAttribute.ableSelectedMax">
+            <extend-checkbox-button
+              @click="SelectedChange(item.label)"
+              v-for="(item, index) in ControlConfig.CAttribute.itemAttr"
+              :key="item.label"
+              :label="item.label"
+              :disabled="item.isDisabled">
+              {{item.showContent}}
+            </extend-checkbox-button>
+          </extend-checkbox-group>
+        </el-form-item>
+      </el-form>
     </div>
   </div>
 </template>
@@ -269,4 +282,7 @@
     padding 8px 0px
     color $font-primary
     font-size $font-medium
+
+  .showAll
+    margin-top 8px
 </style>
