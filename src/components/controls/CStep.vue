@@ -17,6 +17,7 @@
         <extend-step
           :key="index"
           v-for="(item,index) in config.CAttribute.stepList"
+          :key="item.title"
           @handleClickStep="handleClickStep"
           :description="item.description"
           :icon="item.icon"
@@ -40,6 +41,7 @@
         <extend-step
           :key="index"
           v-for="(item,index) in ControlConfig.CAttribute.stepList"
+          :key="item.title"
           @handleClickStep="handleClickStep"
           :description="item.description"
           :icon="item.icon"
