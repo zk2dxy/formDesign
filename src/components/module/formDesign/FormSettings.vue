@@ -74,7 +74,7 @@
             </el-form>
           </div><!--英文标题ended-->
           <!--文字对齐方式 start-->
-          <div v-else-if="index === 'labelPositionModel'">
+          <div v-else-if="index === 'labelPositionModel' && config['CTitleCN'] ">
             <el-form label-position="top">
               <el-form-item
                 class="lineRow"
@@ -294,8 +294,9 @@
                               placeholder="唯一标识符"></el-input>
                     <el-input v-model="config.CAttribute.collapseItem[config.CAttribute.collapseItem.length - 1].title"
                               placeholder="面板标题"></el-input>
-                    <el-input v-model="config.CAttribute.collapseItem[config.CAttribute.collapseItem.length - 1].content"
-                              placeholder="面板内容"></el-input>
+                    <el-input
+                      v-model="config.CAttribute.collapseItem[config.CAttribute.collapseItem.length - 1].content"
+                      placeholder="面板内容"></el-input>
                     <div slot="footer" class="dialog-footer">
                       <el-button @click="closeCollapseDialog(false)">取 消</el-button>
                       <el-button type="primary" @click="closeCollapseDialog(true)">确 定</el-button>
@@ -368,7 +369,23 @@
                               v-model.number="config[index][indexIn]"></el-input>
                   </el-form-item>
                 </el-form>
-              </div> <!--page分页  ended-->
+              </div>
+
+              <div v-else-if="indexIn === 'pageAlign'">
+                <el-form label-position="top" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="控件对齐方式"
+                  >
+                    <el-radio-group v-model="config[index][indexIn]">
+                      <el-radio :key="radio.value" v-for="radio in config[index].pageAlignOption" :label="radio.value">
+                        {{radio.name}}
+                      </el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <!--page分页  ended-->
 
 
               <!--Cascader 级联  start-->
@@ -461,7 +478,8 @@
                     label="控件类型"
                   >
                     <el-radio-group v-model="config[index].typeModel">
-                      <el-radio :key="radio.value" v-for="radio in config[index][indexIn]" :label="radio.value" class="type">
+                      <el-radio :key="radio.value" v-for="radio in config[index][indexIn]" :label="radio.value"
+                                class="type">
                         {{radio.name}}
                       </el-radio>
                     </el-radio-group>
@@ -921,7 +939,7 @@
                     </el-form-item>
                   </div>
                   <div v-if="!config[index].timeFixed">
-                      <el-form-item
+                    <el-form-item
                       class="lineRow"
                       label="可选择范围"
                     >
@@ -934,16 +952,16 @@
                     </el-form-item>
                   </div>
                 </el-form>
-                  <div>
-                    <el-form label-position="right" label-width="112px">
-                      <el-form-item
-                        class="lineRow"
-                        label="是否为范围选择"
-                      >
-                        <el-checkbox v-model="config[index].isRangeSelect"></el-checkbox>
-                      </el-form-item>
-                    </el-form>
-                  </div>
+                <div>
+                  <el-form label-position="right" label-width="112px">
+                    <el-form-item
+                      class="lineRow"
+                      label="是否为范围选择"
+                    >
+                      <el-checkbox v-model="config[index].isRangeSelect"></el-checkbox>
+                    </el-form-item>
+                  </el-form>
+                </div>
               </div>
               <div v-else-if="indexIn === 'typeModel' && itemIn === 'date'">
                 <el-form label-position="right" label-width="70px">
@@ -1141,7 +1159,8 @@
                       label="文字显示位置"
                     >
                       <el-radio-group v-model="config[index][indexIn].textInsideStatus">
-                        <el-radio :key="radio.value" v-for="radio in config[index][indexIn].textInside" :label="radio.value">
+                        <el-radio :key="radio.value" v-for="radio in config[index][indexIn].textInside"
+                                  :label="radio.value">
                           {{radio.name}}
                         </el-radio>
                       </el-radio-group>
@@ -1184,31 +1203,31 @@
               <!--badge标记的属性  start-->
               <div v-else-if="indexIn === 'badgeValue'">
                 <el-form label-position="right" label-width="70px">
-                    <div v-if="config[index].typeModel === 'string' && !config[index].isDot.dotStatus">
-                      <el-form-item
-                        class="lineRow"
-                        label="字符串值"
-                      >
-                        <el-input type="input" @change="changeConfig()" placeholder="请输入"
-                                  v-model="config[index][indexIn].defaultValue"></el-input>
-                      </el-form-item>
-                    </div>
-                    <div v-if="config[index].typeModel === 'number' && !config[index].isDot.dotStatus">
-                      <el-form-item
-                        class="lineRow"
-                        label="数字值"
-                      >
-                        <el-input type="input" @change="changeConfig()" placeholder="请输入"
-                                  v-model.number="config[index][indexIn].defaultValue"></el-input>
-                      </el-form-item>
-                      <el-form-item
-                        class="lineRow"
-                        label="最大值"
-                      >
-                        <el-input type="input" @change="changeConfig()" placeholder="请输入最大值"
-                                  v-model.number="config[index][indexIn].max"></el-input>
-                      </el-form-item>
-                    </div>
+                  <div v-if="config[index].typeModel === 'string' && !config[index].isDot.dotStatus">
+                    <el-form-item
+                      class="lineRow"
+                      label="字符串值"
+                    >
+                      <el-input type="input" @change="changeConfig()" placeholder="请输入"
+                                v-model="config[index][indexIn].defaultValue"></el-input>
+                    </el-form-item>
+                  </div>
+                  <div v-if="config[index].typeModel === 'number' && !config[index].isDot.dotStatus">
+                    <el-form-item
+                      class="lineRow"
+                      label="数字值"
+                    >
+                      <el-input type="input" @change="changeConfig()" placeholder="请输入"
+                                v-model.number="config[index][indexIn].defaultValue"></el-input>
+                    </el-form-item>
+                    <el-form-item
+                      class="lineRow"
+                      label="最大值"
+                    >
+                      <el-input type="input" @change="changeConfig()" placeholder="请输入最大值"
+                                v-model.number="config[index][indexIn].max"></el-input>
+                    </el-form-item>
+                  </div>
                 </el-form>
               </div>
               <div v-else-if="indexIn === 'isDot'">
@@ -1232,7 +1251,8 @@
                     label="标记状态"
                   >
                     <el-radio-group v-model="config[index][indexIn].hidden">
-                      <el-radio :key="radio.value" v-for="radio in config[index][indexIn].hiddenAble" :label="radio.value">
+                      <el-radio :key="radio.value" v-for="radio in config[index][indexIn].hiddenAble"
+                                :label="radio.value">
                         {{radio.name}}
                       </el-radio>
                     </el-radio-group>
@@ -1249,7 +1269,8 @@
                     label="可增加"
                   >
                     <el-radio-group v-model="config[index][indexIn].addable">
-                      <el-radio :key="radio.value" v-for="radio in config[index][indexIn].addStatus" :label="radio.value">
+                      <el-radio :key="radio.value" v-for="radio in config[index][indexIn].addStatus"
+                                :label="radio.value">
                         {{radio.name}}
                       </el-radio>
                     </el-radio-group>
@@ -1259,7 +1280,8 @@
                     label="可关闭"
                   >
                     <el-radio-group v-model="config[index][indexIn].closable">
-                      <el-radio :key="radio.value" v-for="radio in config[index][indexIn].closeStatus" :label="radio.value">
+                      <el-radio :key="radio.value" v-for="radio in config[index][indexIn].closeStatus"
+                                :label="radio.value">
                         {{radio.name}}
                       </el-radio>
                     </el-radio-group>
@@ -1269,7 +1291,8 @@
                     label="可同时增加和关闭"
                   >
                     <el-radio-group v-model="config[index][indexIn].editable">
-                      <el-radio :key="radio.value" v-for="radio in config[index][indexIn].editStatus" :label="radio.value">
+                      <el-radio :key="radio.value" v-for="radio in config[index][indexIn].editStatus"
+                                :label="radio.value">
                         {{radio.name}}
                       </el-radio>
                     </el-radio-group>
@@ -1321,7 +1344,8 @@
                     label="是否需要遮罩层"
                   >
                     <el-radio-group v-model="config[index][indexIn].modal">
-                      <el-radio :key="radio.value" v-for="radio in config[index][indexIn].modalAble" :label="radio.value">
+                      <el-radio :key="radio.value" v-for="radio in config[index][indexIn].modalAble"
+                                :label="radio.value">
                         {{radio.name}}
                       </el-radio>
                     </el-radio-group>
@@ -1332,7 +1356,8 @@
                       label="遮罩层插入位置"
                     >
                       <el-radio-group v-model="config[index][indexIn].modalPosition.modalPosition">
-                        <el-radio :key="radio.value" v-for="radio in config[index][indexIn].modalPosition.modalPositionAble"
+                        <el-radio :key="radio.value"
+                                  v-for="radio in config[index][indexIn].modalPosition.modalPositionAble"
                                   :label="radio.value">
                           {{radio.name}}
                         </el-radio>
@@ -1363,7 +1388,8 @@
                     label="是否显示关闭按钮"
                   >
                     <el-radio-group v-model="config[index][indexIn].showClose">
-                      <el-radio :key="radio.value" v-for="radio in config[index][indexIn].showCloseAble" :label="radio.value">
+                      <el-radio :key="radio.value" v-for="radio in config[index][indexIn].showCloseAble"
+                                :label="radio.value">
                         {{radio.name}}
                       </el-radio>
                     </el-radio-group>
@@ -1472,7 +1498,8 @@
                     label="控件位置"
                   >
                     <el-radio-group v-model="config[index][indexIn].placement">
-                      <el-radio :key="radio.name" v-for="radio in config[index][indexIn].placementAble" :label="radio.name">
+                      <el-radio :key="radio.name" v-for="radio in config[index][indexIn].placementAble"
+                                :label="radio.name">
                         {{radio.name}}
                       </el-radio>
                     </el-radio-group>
@@ -1556,7 +1583,7 @@
                 class="lineRow"
                 label="控件验证"
               >
-              <el-checkbox @change="validateStatusChange(item)" v-model="item.status"></el-checkbox>
+                <el-checkbox @change="validateStatusChange(item)" v-model="item.status"></el-checkbox>
               </el-form-item>
               <div v-if="item.status">
                 <el-form-item>
@@ -1623,24 +1650,24 @@
                   ></el-input>
                 </div>
               </el-form-item>
-                <!--xyl-->
+              <!--xyl-->
             </el-form>
           </div> <!--CLayout属性  ended-->
 
           <!--Demo start-->
           <!--<div v-else-if="index === ''">-->
-            <!--<el-form label-position="right" label-width="70px">-->
-              <!--<el-form-item-->
-                <!--class="lineRow"-->
-                <!--label=""-->
-              <!--&gt;-->
-                <!--<el-input-->
-                  <!--@change="changeConfig()"-->
-                  <!--v-model="config[index]"-->
-                  <!--placeholder=""-->
-                <!--&gt;</el-input>-->
-              <!--</el-form-item>-->
-            <!--</el-form>-->
+          <!--<el-form label-position="right" label-width="70px">-->
+          <!--<el-form-item-->
+          <!--class="lineRow"-->
+          <!--label=""-->
+          <!--&gt;-->
+          <!--<el-input-->
+          <!--@change="changeConfig()"-->
+          <!--v-model="config[index]"-->
+          <!--placeholder=""-->
+          <!--&gt;</el-input>-->
+          <!--</el-form-item>-->
+          <!--</el-form>-->
           <!--</div>&lt;!&ndash;Demo ended&ndash;&gt;-->
         </div>
       </div><!--控件属性设置 start-->
@@ -1651,7 +1678,7 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import {layoutJudge} from '@/assets/js/common'
+  import { layoutJudge } from '@/assets/js/common'
 
   export default {
     name: 'ControlConfig',
@@ -2056,7 +2083,7 @@
     > div
       margin-bottom .3rem
     .configSetting
-    >  .el-input__inner, .el-textarea__inner
+    > .el-input__inner, .el-textarea__inner
       margin-top 4px !important
 
   .warnSpan

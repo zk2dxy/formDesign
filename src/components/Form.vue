@@ -1,5 +1,5 @@
 <template>
-  <div class="formDesign" ref="formDesign">
+  <div class="formDesign" ref="formDesign" v-if="ControlList">
     <div class="leftControls" ref="leftControls">
       <ul class="typeBox" v-if="ControlList">
         <li
@@ -77,6 +77,7 @@
     </div>
     <div class="rightFormSettings" ref="rightFormSettings">
       <form-settings
+        :selectControl="controlSelect"
         :config="Config.CConfig"
         :fConfig="Config.FConfig"
         @changeConfig="changeView"
@@ -88,8 +89,9 @@
 <script type="text/ecmascript-6">
   import draggable from 'vuedraggable'
   import uuid from 'node-uuid'
-  import {calcLayoutClass} from '@/assets/js/common'
+  import { calcLayoutClass } from '@/assets/js/common'
   import FormSettings from '@/components/module/formDesign/FormSettings.vue'
+  import * as properties from 'api/properties.json'
 
   export default {
     name: `formDesign`,
@@ -98,9 +100,24 @@
       FormSettings
     },
     created () {
-      this.loadAllControls()
+      this.loading = this.$loading({
+        text: '拼命加载中...'
+      })
     },
     mounted () {
+      // 定时计划loading
+      this.timeInterval = setInterval(() => {
+        if (this.Config.FConfig.properties !== '') {
+          window.clearInterval(this.timeInterval)
+          this.loadAllControls()
+          this.loading.close()
+        }
+      }, 100)
+
+      // 模拟请求属性
+      setTimeout(() => {
+        this.Config.FConfig.properties = properties.data
+      }, 2000)
       // console.info(uuid)
       // console.info(calcLayoutClass)
     },
@@ -314,7 +331,10 @@
     },
     data () {
       return {
-        tabIndex: 'normal',
+        controlSelect: null, // 是否选中了控件
+        timeInterval: null, // 获取属性集定时器
+        loading: null, // loading 表单设计器loading控件
+        tabIndex: 'normal', // 设置控件选择状态
         tabHeight: 2.35,
         list: [],
         ControlList: null,
@@ -324,7 +344,8 @@
             description: '表单描述',
             classification: '',
             listViews: [],
-            flowBindResult: []
+            flowBindResult: [],
+            properties: ''
           },
           CConfig: ''
         }

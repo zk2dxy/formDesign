@@ -15,6 +15,27 @@
     <div class="controlAttribute">
       <!--表单设置 start-->
       <div v-if="activeJudge">
+        <!--选择字段-->
+        <el-form
+          v-if="controlSelect"
+          class="controlElForm"
+          label-position="right"
+          label-width="70px"
+        >
+          <el-form-item
+            v-if="fConfig.properties"
+            class="lineRow"
+            label="选择字段"
+          >
+            <el-cascader
+              v-model="propertyArray"
+              style="display: block"
+              :options="fConfig.properties"
+              :props="defaultProps"
+            ></el-cascader>
+          </el-form-item>
+        </el-form>
+        <!--设置标题-->
         <el-form class="controlElForm" label-position="right" label-width="70px">
           <el-form-item
             class="lineRow"
@@ -39,6 +60,27 @@
             </el-input>
           </el-form-item>
         </el-form>
+        <!--未指定的字段-->
+        <el-form class="controlElForm" label-position="top">
+          <el-form-item
+            v-if="fConfig.properties"
+            label="未指定属性"
+            class="propertiesNoneParent"
+          >
+            <div class="propertiesDiv">
+              <el-tag
+                v-for="properties in fConfig.properties"
+                v-if="!properties.disabled"
+                type="danger"
+                class="propertiesNone"
+                :key="properties.edmpCode"
+              >
+                {{properties.edmpName}}
+              </el-tag>
+            </div>
+          </el-form-item>
+        </el-form>
+
       </div><!--表单设置 ended-->
       <!--控件属性设置 start-->
       <div v-else-if="!activeJudge && config" class="configSetting">
@@ -132,16 +174,23 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import {layoutJudge} from '@/assets/js/common'
+  import { layoutJudge } from '@/assets/js/common'
 
   export default {
     name: 'ControlConfig',
-    props: ['config', 'fConfig'],
+    props: ['config', 'fConfig', 'controlSelect'],
     destroy () {
       console.info(`destroy`)
     },
     data () {
       return {
+        propertyArray: [],
+        defaultProps: {
+          children: 'for_null', // 不显示子节点配置。如果为属性集。则绑定到属性集控件
+          label: 'edmpName',
+          value: 'edmpCode',
+          disabled: 'disabled'
+        },
         activeSetting: 'formSetting',
         startTime: '',
         stepTime: '',
@@ -204,6 +253,9 @@
     mounted () {
       if (this.config) {
         this.activeSetting = 'controlSetting'
+      }
+      if (this.fConfig) {
+        console.warn(this.fConfig)
       }
     },
     computed: {
@@ -550,5 +602,12 @@
   .lineRow
     padding-bottom .3rem
     border-bottom: 1px dashed rgba(102, 175, 233, .5)
+
+  .propertiesNoneParent
+    .propertiesDiv
+      text-align center
+      .propertiesNone
+        margin 0 .3rem .4rem !important
+        display inline-block
 
 </style>
