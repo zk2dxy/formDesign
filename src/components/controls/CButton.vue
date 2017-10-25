@@ -122,7 +122,7 @@
           CLayout: [ // 布局
             { // flex 布局
               type: Number,
-              name: '自适应布局',
+              name: '自适应',
               default: 1,
               value: 'flexLayout',
               status: true,
@@ -130,7 +130,7 @@
             },
             { // 百分比布局
               type: Number,
-              name: '百分比布局',
+              name: '百分比',
               default: 100,
               value: 'percentLayout',
               status: false,
@@ -138,7 +138,7 @@
             },
             { // 像素布局
               type: Number,
-              name: '像素布局',
+              name: '像素',
               default: 100,
               value: 'pixelLayout',
               status: false,
@@ -146,7 +146,7 @@
             },
             { // 栅格布局
               type: Number,
-              name: '栅格布局',
+              name: '栅格',
               default: 12,
               value: 'columnLayout',
               status: false,
@@ -156,19 +156,19 @@
           CAttribute: {
             type: [{
               value: 'primary',
-              name: '提交按钮',
+              name: '提交',
               default: 'primary'
             }, {
               value: 'danger',
-              name: '审批按钮',
+              name: '审批',
               default: 'danger'
             }, {
               value: '',
-              name: '普通按钮',
+              name: '普通',
               default: ''
             }, {
               value: 'info',
-              name: '详情按钮',
+              name: '详情',
               default: 'info'
             }], // input 类型 text number......and so on
             typeModel: 'primary',

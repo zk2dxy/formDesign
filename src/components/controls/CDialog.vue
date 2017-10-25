@@ -9,7 +9,7 @@
         :title="config.CAttribute.title"
         :top="config.CAttribute.top"
         :visible.sync="config.CAttribute.dialogVisible"
-        :size="config.CAttribute.size.currentSize"
+        :dialogSize="config.CAttribute.dialogSize.currentSize"
         :modal="config.CAttribute.modal.modal"
         :modal-append-to-body="config.CAttribute.modal.modalPosition.modalPosition"
         :lock-scroll="config.CAttribute.lockScroll.lockScroll"
@@ -166,7 +166,7 @@
             dialogVisible: false,
             title: '提示',
             top: '10%',
-            size: {
+            dialogSize: {
               currentSize: 'tiny',
               sizeAble: [
                 {

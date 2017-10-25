@@ -155,7 +155,7 @@
           CLayout: [ // 布局
             { // flex 布局
               type: Number,
-              name: '自适应布局',
+              name: '自适应',
               default: 1,
               value: 'flexLayout',
               status: true,
@@ -163,7 +163,7 @@
             },
             { // 百分比布局
               type: Number,
-              name: '百分比布局',
+              name: '百分比',
               default: 100,
               value: 'percentLayout',
               status: false,
@@ -171,7 +171,7 @@
             },
             { // 像素布局
               type: Number,
-              name: '像素布局',
+              name: '像素',
               default: 100,
               value: 'pixelLayout',
               status: false,
@@ -179,7 +179,7 @@
             },
             { // 栅格布局
               type: Number,
-              name: '栅格布局',
+              name: '栅格',
               default: 12,
               value: 'columnLayout',
               status: false,
@@ -198,7 +198,7 @@
             }], // input 类型 text number......and so on
             typeModel: 'input',
             description: '', // 描述
-            placeholder: '请输入默认值或者为空', // 控件提示值
+            placeholder: '', // 控件提示值
             height: '', // 高度
             vertical: ['top', 'middle', 'bottom'] // 对齐方式
           },

@@ -215,7 +215,7 @@
           CLayout: [ // 布局
             { // flex 布局
               type: Number,
-              name: '自适应布局',
+              name: '自适应',
               default: 1,
               value: 'flexLayout',
               status: true,
@@ -223,7 +223,7 @@
             },
             { // 百分比布局
               type: Number,
-              name: '百分比布局',
+              name: '百分比',
               default: 100,
               value: 'percentLayout',
               status: false,
@@ -231,7 +231,7 @@
             },
             { // 像素布局
               type: Number,
-              name: '像素布局',
+              name: '像素',
               default: 100,
               value: 'pixelLayout',
               status: false,
@@ -239,7 +239,7 @@
             },
             { // 栅格布局
               type: Number,
-              name: '栅格布局',
+              name: '栅格',
               default: 12,
               value: 'columnLayout',
               status: false,
