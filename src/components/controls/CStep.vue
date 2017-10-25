@@ -16,6 +16,7 @@
         :center="config.CAttribute.StepCenter">
         <extend-step
           v-for="(item,index) in config.CAttribute.stepList"
+          :key="item.title"
           @handleClickStep="handleClickStep"
           :description="item.description"
           :icon="item.icon"
@@ -38,6 +39,7 @@
         :center="ControlConfig.CAttribute.StepCenter">
         <extend-step
           v-for="(item,index) in ControlConfig.CAttribute.stepList"
+          :key="item.title"
           @handleClickStep="handleClickStep"
           :description="item.description"
           :icon="item.icon"

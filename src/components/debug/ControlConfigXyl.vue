@@ -142,6 +142,14 @@
               <el-input type="text" @change="changeConfig()" placeholder="总条目数"
                         v-model.number="config[index][indexIn]"></el-input>
             </div>
+            <div v-else-if="indexIn === 'pageAlign'">
+              <p>对齐方式</p>
+              <el-radio-group v-model="config[index][indexIn]">
+                <el-radio :key="radio.value" v-for="radio in config[index].pageAlignOption" :label="radio.value">
+                  {{radio.name}}
+                </el-radio>
+              </el-radio-group>
+            </div>
             <!--Cascader 级联-->
             <div v-else-if="indexIn === 'showAllLevels'">
               <p>是否显示完整路径</p>
