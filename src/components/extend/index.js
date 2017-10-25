@@ -8,6 +8,7 @@ import ExtendSwitch from '@/components/extend/switch/src/component'
 import ExtendCheckbox from '@/components/extend/checkbox/src/checkbox'
 import ExtendCheckboxButton from '@/components/extend/checkbox/src/checkbox-button'
 import ExtendCheckboxGroup from '@/components/extend/checkbox/src/checkbox-group'
+import ExtendTabPane from '@/components/extend/tab-pane'
 
 const components = [
   ExtendInput,
@@ -18,7 +19,8 @@ const components = [
   ExtendSwitch,
   ExtendCheckbox,
   ExtendCheckboxButton,
-  ExtendCheckboxGroup
+  ExtendCheckboxGroup,
+  ExtendTabPane
 ]
 
 export default {

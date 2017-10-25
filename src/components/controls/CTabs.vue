@@ -5,7 +5,7 @@
         {{config.CTitleCN}}
       </div>
       <el-tabs
-        v-model="editableTabsValue"
+        v-model="config.CAttribute.editableTabsValue"
         :type="config.CAttribute.typeModel"
         :closable="config.CAttribute.tabsStatus.closable"
         :editable="config.CAttribute.tabsStatus.editable"
@@ -13,7 +13,7 @@
         @edit="handleTabsEdit">
         <extend-tab-pane
           :key="item.name"
-          v-for="(item, index) in editableTabs"
+          v-for="(item, index) in config.CAttribute.editableTabs"
           :label="item.title"
           :name="item.name"
           :ref="Selection"
@@ -27,7 +27,7 @@
         {{ControlConfig.CTitleCN}}
       </div>
       <el-tabs
-        v-model="editableTabsValue"
+        v-model="ControlConfig.CAttribute.editableTabsValue"
         :type="ControlConfig.CAttribute.typeModel"
         :closable="ControlConfig.CAttribute.tabsStatus.closable"
         :editable="ControlConfig.CAttribute.tabsStatus.editable"
@@ -35,12 +35,12 @@
         @edit="handleTabsEdit">
         <extend-tab-pane
           :key="item.name"
-          v-for="(item, index) in editableTabs"
+          v-for="(item, index) in ControlConfig.CAttribute.editableTabs"
           :label="item.title"
           :ref="Selection"
           :click="clickAction"
           :name="item.name">
-          {{item.content}}+`12345`
+          {{item.content}}
         </extend-tab-pane>
       </el-tabs>
     </div>
@@ -77,6 +77,10 @@
       if (this.ControlID && (!this.config.ControlID)) {
         this.config.ControlID = this.ControlID
       }
+      if (this.config.CAttribute.editableTabs.length > 0) {
+        this.config.CAttribute.editableTabsValue = this.config.CAttribute.editableTabs[0].name
+      }
+      this.getChildrenLayoutValue()
       this.$emit('input', this.config)
     },
     updated () {},
@@ -120,16 +124,16 @@
       handleTabsEdit (targetName, action) {
         if (action === 'add') {
           let newTabName = ++this.tabIndex + ''
-          this.editableTabs.push({
+          this.config.CAttribute.editableTabs.push({
             title: 'New Tab',
             name: newTabName,
             content: 'New Tab content'
           })
-          this.editableTabsValue = newTabName
+          this.config.CAttribute.editableTabsValue = newTabName
         }
         if (action === 'remove') {
-          let tabs = this.editableTabs
-          let activeName = this.editableTabsValue
+          let tabs = this.config.CAttribute.editableTabs
+          let activeName = this.config.CAttribute.editableTabsValue
           if (activeName === targetName) {
             tabs.forEach((tab, index) => {
               if (tab.name === targetName) {
@@ -140,34 +144,45 @@
               }
             })
           }
-          this.editableTabsValue = activeName
-          this.editableTabs = tabs.filter(tab => tab.name !== targetName)
+          this.config.CAttribute.editableTabsValue = activeName
+          this.config.CAttribute.editableTabs = tabs.filter(tab => tab.name !== targetName)
         }
       },
       handleSelectionChange (val) {
         this.Selection = val
         // console.log(123456)
         // console.log(this.Selection)
-        // console.log(this.editableTabs)
+        // console.log(this.config.CAttribute.editableTabs)
       },
       clickAction (index) {
         console.warn(`ControlConfig`)
         // console.error(index)
+      },
+      getChildrenLayoutValue () {
+        this.config.currentLayout = null
+        if (this.config.CLayout === '') {
+          return
+        }
+        for (let key in this.config.CLayout) {
+          if (this.config.CLayout[key].status === false) {
+            continue
+          } else {
+            this.config.currentLayout = this.config.CLayout[key]
+            break
+          }
+        }
+      }
+    },
+    computed: {
+      labelWidthCalc () {
+        if (this.config.labelWidth) {
+          return this.config.labelWidth + 'px'
+        }
       }
     },
     data () {
       return {
-        editableTabsValue: '2',
-        editableTabs: [{
-          title: '用户管理',
-          name: '1',
-          content: '123'
-        }, {
-          title: '配置管理',
-          name: '2',
-          content: '456'
-        }],
-        tabIndex: 2,
+        tabIndex: 0,
         Selection: '', // 选中项
         initConfig: {
           ControlID: '', // 表单生成后的控件id
@@ -175,29 +190,60 @@
           CTitleCN: '标签页', // 标题
           CTitleEN: 'tabs Control', // 英文标题
           CName: 'CTabs', // 控件名称
-          CLayout: { // 布局
-            percentLayout: { // 百分比布局
+          labelPositionModel: 'left',
+          labelPositionValue: [
+            {value: 'left', name: '左对齐'},
+            {value: 'right', name: '右对齐'},
+            {value: 'top', name: '居上对齐'}
+          ],
+          labelWidth: 80,
+          layoutModel: 'flexLayout',
+          currentLayout: null,
+          CLayout: [ // 布局
+            { // flex 布局
               type: Number,
-              default: 100,
-              status: true
-            },
-            pixelLayout: { // 像素布局
-              type: Number,
-              default: 100,
-              status: true
-            },
-            flexLayout: { // flex 布局
-              type: Number,
+              name: '自适应布局',
               default: 1,
-              status: false
+              value: 'flexLayout',
+              status: true,
+              max: 10
             },
-            columnLayout: { // 栅格布局
+            { // 百分比布局
               type: Number,
+              name: '百分比布局',
+              default: 100,
+              value: 'percentLayout',
+              status: false,
+              max: 100
+            },
+            { // 像素布局
+              type: Number,
+              name: '像素布局',
+              default: 100,
+              value: 'pixelLayout',
+              status: false,
+              max: null
+            },
+            { // 栅格布局
+              type: Number,
+              name: '栅格布局',
               default: 12,
-              status: false
+              value: 'columnLayout',
+              status: false,
+              max: 12
             }
-          },
+          ],
           CAttribute: {
+            editableTabsValue: '',
+            editableTabs: [{
+              title: '用户管理',
+              name: '1',
+              content: '123'
+            }, {
+              title: '配置管理',
+              name: '2',
+              content: '456'
+            }],
             type: [{
               value: '',
               name: '默认'

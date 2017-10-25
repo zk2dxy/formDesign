@@ -15,6 +15,7 @@
         :align-center="config.CAttribute.stepAlignCenter"
         :center="config.CAttribute.StepCenter">
         <extend-step
+          :key="index"
           v-for="(item,index) in config.CAttribute.stepList"
           @handleClickStep="handleClickStep"
           :description="item.description"
@@ -37,6 +38,7 @@
         :align-center="ControlConfig.CAttribute.stepAlignCenter"
         :center="ControlConfig.CAttribute.StepCenter">
         <extend-step
+          :key="index"
           v-for="(item,index) in ControlConfig.CAttribute.stepList"
           @handleClickStep="handleClickStep"
           :description="item.description"
@@ -88,8 +90,7 @@
     /* keep-alive 组件停用时调用。 */
     deactivated () {
     },
-    watch: {
-    },
+    watch: {},
     beforeDestroy () {
     },
     destroyed () {
