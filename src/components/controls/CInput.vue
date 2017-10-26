@@ -53,7 +53,8 @@
       ControlID: {
         type: String,
         default: null
-      }
+      },
+      selected: Object
     },
     created () {
       this.config = this.initConfig
@@ -75,20 +76,28 @@
       this.getChildrenLayoutValue()
       this.$emit('input', this.config)
     },
-    updated () {},
+    updated () {
+    },
     /* keep-alive 组件激活时调用。 */
-    activated () {},
+    activated () {
+    },
     /* keep-alive 组件停用时调用。 */
-    deactivated () {},
+    deactivated () {
+    },
     watch: {
       'config.CKey.default' (val, old) {
         // console.log(val)
       }
     },
-    beforeDestroy () {},
-    destroyed () {},
+    beforeDestroy () {
+    },
+    destroyed () {
+    },
     methods: {
       ControlClick () {
+        console.error(' ===> item selected')
+        this.config = this.selected
+        this.$emit('getSelectControl', this.selected)
         this.emitConfig()
       },
       // 获得焦点事件
@@ -138,6 +147,7 @@
     data () {
       return {
         initConfig: {
+          ControlProperties: '',
           ControlID: '', // 表单生成后的控件id
           CBelong: 'form',
           CTitleCN: '输入框', // 标题

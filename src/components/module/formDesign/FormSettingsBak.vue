@@ -6,7 +6,7 @@
       ]">
         表单属性
       </li>
-      <li @click="changeTab('controlSetting')" class="items" :class="[
+      <li @click="changeTab('controlSetting',true)" class="items" :class="[
         activeJudge === false ? 'active' : ''
       ]">
         控件属性
@@ -16,8 +16,9 @@
       <!--表单设置 start-->
       <div v-if="activeJudge">
         <!--选择字段-->
+        {{propertyArray}}
         <el-form
-          v-if="controlSelect"
+          v-if="selectControl"
           class="controlElForm"
           label-position="right"
           label-width="70px"
@@ -174,11 +175,11 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import { layoutJudge } from '@/assets/js/common'
+  import {layoutJudge} from '@/assets/js/common'
 
   export default {
     name: 'ControlConfig',
-    props: ['config', 'fConfig', 'controlSelect'],
+    props: ['config', 'fConfig', 'selectControl'],
     destroy () {
       console.info(`destroy`)
     },
@@ -250,12 +251,25 @@
         rulesAdd: {}
       }
     },
+    watch: {
+      selectControl (val) {
+        console.error('val=>')
+        val.CNameCN = '123456'
+        console.error(val)
+      },
+      propertyArray (val) {
+        console.error('propertyArray => ')
+        console.error(this.propertyArray)
+        // this.$emit('setControlProperties', this.propertyArray)
+        this.controlSelect
+      }
+    },
     mounted () {
       if (this.config) {
         this.activeSetting = 'controlSetting'
       }
       if (this.fConfig) {
-        console.warn(this.fConfig)
+        // console.warn(this.fConfig)
       }
     },
     computed: {
@@ -268,8 +282,17 @@
       }
     },
     methods: {
-      changeTab (values) {
-        this.activeSetting = values
+      changeTab (values, status) {
+        if (status) {
+          console.error(this.selectControl)
+          if (this.selectControl) {
+            console.error('has selectControl')
+          } else {
+            console.error('has')
+          }
+        } else {
+          this.activeSetting = values
+        }
       },
       //      添加collapse条目
       addItem () {

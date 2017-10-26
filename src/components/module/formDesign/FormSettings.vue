@@ -6,7 +6,7 @@
       ]">
         表单属性
       </li>
-      <li @click="changeTab('controlSetting')" class="items" :class="[
+      <li @click="changeTab('controlSetting',true)" class="items" :class="[
         activeJudge === false ? 'active' : ''
       ]">
         控件属性
@@ -1678,11 +1678,11 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-  import { layoutJudge } from '@/assets/js/common'
+  import {layoutJudge} from '@/assets/js/common'
 
   export default {
     name: 'ControlConfig',
-    props: ['config', 'fConfig'],
+    props: ['config', 'fConfig', 'selectControl'],
     destroy () {
       console.info(`destroy`)
     },
@@ -1762,8 +1762,17 @@
       }
     },
     methods: {
-      changeTab (values) {
-        this.activeSetting = values
+      changeTab (values, status) {
+        if (status) {
+          console.error(this.selectControl)
+          if (this.selectControl) {
+            console.error('has selectControl')
+          } else {
+            console.error('has')
+          }
+        } else {
+          this.activeSetting = values
+        }
       },
       //      添加collapse条目
       addItem () {

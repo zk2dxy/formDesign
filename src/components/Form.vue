@@ -57,7 +57,7 @@
             v-if="list"
             class="item"
             :key="controlItem.id"
-            v-for="controlItem in list"
+            v-for="(controlItem, key) in list"
             :ControlConfig="controlItem.config"
             :ControlID='controlItem.id'
             :is="controlItem.component"
@@ -65,18 +65,22 @@
             @getValue="showAttribute($event,controlItem)"
             :children="controlItem.children"
             :childrenDefault="controlItem.childrenDefault"
+            @getSelectControl="getActiveItem"
+            :selected="controlItem"
             :style="[
-            controlItem.config.layoutModel === 'percentLayout'  && controlItem.config.currentLayout !== null ? {'width' : controlItem.config.currentLayout.default+`%`} : null,
-            controlItem.config.layoutModel === 'pixelLayout'  && controlItem.config.currentLayout !== null ? {'width' : controlItem.config.currentLayout.default+`px`} : null,
-            controlItem.config.layoutModel === 'flexLayout'  && controlItem.config.currentLayout !== null ? {'flex' : controlItem.config.currentLayout.default} : null
-          ]"
+              controlItem.config.layoutModel === 'percentLayout'  && controlItem.config.currentLayout !== null ? {'width' : controlItem.config.currentLayout.default+`%`} : null,
+              controlItem.config.layoutModel === 'pixelLayout'  && controlItem.config.currentLayout !== null ? {'width' : controlItem.config.currentLayout.default+`px`} : null,
+              controlItem.config.layoutModel === 'flexLayout'  && controlItem.config.currentLayout !== null ? {'flex' : controlItem.config.currentLayout.default} : null
+            ]"
           >
           </component>
         </draggable>
       </div>
+      {{list}}
     </div>
     <div class="rightFormSettings" ref="rightFormSettings">
       <form-settings
+        @setControlProperties="setProperties"
         :selectControl="controlSelect"
         :config="Config.CConfig"
         :fConfig="Config.FConfig"
@@ -89,8 +93,8 @@
 <script type="text/ecmascript-6">
   import draggable from 'vuedraggable'
   import uuid from 'node-uuid'
-  import { calcLayoutClass } from '@/assets/js/common'
-  import FormSettings from '@/components/module/formDesign/FormSettings.vue'
+  import {calcLayoutClass} from '@/assets/js/common'
+  import FormSettings from '@/components/module/formDesign/FormSettingsBak.vue'
   import * as properties from 'api/properties.json'
 
   export default {
@@ -117,7 +121,7 @@
       // 模拟请求属性
       setTimeout(() => {
         this.Config.FConfig.properties = properties.data
-      }, 2000)
+      }, 1500)
       // console.info(uuid)
       // console.info(calcLayoutClass)
     },
@@ -133,7 +137,12 @@
     },
     destroyed () {
     },
-    watch: {},
+    watch: {
+      controlSelect (val) {
+        console.warn('controlSelect = >')
+        console.error(val)
+      }
+    },
     computed: {
       layoutClass () {
         return calcLayoutClass(this.list)
@@ -143,7 +152,7 @@
         if (this.list.length > 0) {
           let flexClass = 'flexLayout'
           for (let key in this.list) {
-            console.error(this.list[key].config)
+            // console.error(this.list[key].config)
             flex = (this.list[key].config.currentLayout.value === flexClass) && flex
             if (!flex) {
               break
@@ -327,6 +336,20 @@
       },
       changeViewForm (fConfig) {
         this.Config.FConfig = fConfig
+      },
+      getActiveItem (active) {
+        console.error('active=>')
+//        active.CNameCN = '123456'
+        console.error(JSON.stringify(active))
+        this.controlSelect = active
+//        console.error(this.controlSelect)
+//        this.controlSelect.CNameCN = '123456'
+//        this.controlSelect.config.CNameCN = 'changes'
+//        this.controlSelect.id = 'id12345'
+      },
+      setProperties (property) {
+        console.info(`setProperties`)
+        this.controlSelect.ControlProperties = property
       }
     },
     data () {
