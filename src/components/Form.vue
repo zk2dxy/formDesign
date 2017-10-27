@@ -96,6 +96,7 @@
   import {calcLayoutClass} from '@/assets/js/common'
   import FormSettings from '@/components/module/formDesign/FormSettingsBak.vue'
   import * as properties from 'api/properties.json'
+  import FormList from '@/store/formStore.js'
 
   export default {
     name: `formDesign`,
@@ -109,12 +110,14 @@
       })
     },
     mounted () {
+      // console.error(FormList.data)
       // 定时计划loading
       this.timeInterval = setInterval(() => {
         if (this.Config.FConfig.properties !== '') {
           window.clearInterval(this.timeInterval)
           this.loadAllControls()
           this.loading.close()
+          this.list = FormList.data
         }
       }, 100)
 
@@ -141,6 +144,12 @@
       controlSelect (val) {
         console.warn('controlSelect = >')
         console.error(val)
+      },
+      'list' (val) {
+        setTimeout(() => {
+          FormList.methods.commitList(this.list)
+          console.error(FormList.data)
+        }, 20)
       }
     },
     computed: {
@@ -152,7 +161,6 @@
         if (this.list.length > 0) {
           let flexClass = 'flexLayout'
           for (let key in this.list) {
-            // console.error(this.list[key].config)
             flex = (this.list[key].config.currentLayout.value === flexClass) && flex
             if (!flex) {
               break
@@ -339,16 +347,10 @@
       },
       getActiveItem (active) {
         console.error('active=>')
-//        active.CNameCN = '123456'
         console.error(JSON.stringify(active))
         this.controlSelect = active
-//        console.error(this.controlSelect)
-//        this.controlSelect.CNameCN = '123456'
-//        this.controlSelect.config.CNameCN = 'changes'
-//        this.controlSelect.id = 'id12345'
       },
       setProperties (property) {
-        console.info(`setProperties`)
         this.controlSelect.ControlProperties = property
       }
     },
