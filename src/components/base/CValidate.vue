@@ -29,6 +29,11 @@
 <script type="text/ecmascript-6">
   export default {
     name: `CValidate`,
+    props: {
+      getValidate: {
+        type: Object
+      }
+    },
     created () {
       this.chooseRes = this.getValidate.validateModel
       this.regArray = []
@@ -45,11 +50,6 @@
         chooseRes: '',
         regArray: [],
         checkList: []
-      }
-    },
-    props: {
-      getValidate: {
-        type: Object
       }
     },
     destroyed () {

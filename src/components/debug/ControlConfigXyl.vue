@@ -300,7 +300,7 @@
           <div v-if="item.status">
             <div>
               <el-button @click="chooseIcon(item)" type="primary" size="small" icon="edit">添加图标</el-button>
-              <c-icon @postIcon="setIcon" v-if="item.chooseStatus"></c-icon>
+              <c-icon @postIcon="setIcon" :getIcon="config[index]" v-if="item.chooseStatus"></c-icon>
             </div>
           </div>
         </div>
