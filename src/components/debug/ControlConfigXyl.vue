@@ -322,7 +322,7 @@
           <div v-if="item.status">
             <div>
               <el-button @click="chooseValidate(item)" type="primary" size="small" icon="edit">选择验证规则</el-button>
-              <c-validate @postValidate="setValidate" v-if="item.chooseStatus"></c-validate>
+              <c-validate @postValidate="setValidate" :getValidate="config[index]" v-if="item.chooseStatus"></c-validate>
             </div>
           </div>
         </div>
