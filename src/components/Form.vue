@@ -43,7 +43,7 @@
       </div>
       <div class="formContainer">
         <draggable
-          v-model="list"
+          v-model="formStorage.states"
           :options="{name:'list',animation: 100,group:{name:'controls'},ghostClass: 'item-block-drag'}"
           style="display:flex; padding-bottom:50px"
           :style="[
@@ -54,10 +54,10 @@
           ]"
         >
           <component
-            v-if="list"
+            v-if="formStorage.states"
             class="item"
             :key="controlItem.id"
-            v-for="(controlItem, key) in list"
+            v-for="(controlItem, key) in formStorage.states"
             :ControlConfig="controlItem.config"
             :ControlID='controlItem.id'
             :is="controlItem.component"
@@ -76,7 +76,7 @@
           </component>
         </draggable>
       </div>
-      {{list}}
+      {{formStorage.states}}
     </div>
     <div class="rightFormSettings" ref="rightFormSettings">
       <form-settings
@@ -96,6 +96,7 @@
   import {calcLayoutClass} from '@/assets/js/common'
   import FormSettings from '@/components/module/formDesign/FormSettingsBak.vue'
   import * as properties from 'api/properties.json'
+  import FormStore from '@/store/formStore'
 
   export default {
     name: `formDesign`,
@@ -112,6 +113,9 @@
       // 定时计划loading
       this.timeInterval = setInterval(() => {
         if (this.Config.FConfig.properties !== '') {
+          if (!this.formStorage) {
+            this.formStorage = new FormStore(this)
+          }
           window.clearInterval(this.timeInterval)
           this.loadAllControls()
           this.loading.close()
@@ -145,20 +149,22 @@
     },
     computed: {
       layoutClass () {
-        return calcLayoutClass(this.list)
+        return calcLayoutClass(this.formStorage.states)
       },
       computedFormClass () {
         let flex = true
-        if (this.list.length > 0) {
-          let flexClass = 'flexLayout'
-          for (let key in this.list) {
-            // console.error(this.list[key].config)
-            flex = (this.list[key].config.currentLayout.value === flexClass) && flex
-            if (!flex) {
-              break
+        if (this.formStorage) {
+          if (this.formStorage.states.length > 0) {
+            let flexClass = 'flexLayout'
+            for (let key in this.formStorage.states) {
+              // console.error(this.list[key].config)
+              flex = (this.formStorage.states[key].config.currentLayout.value === flexClass) && flex
+              if (!flex) {
+                break
+              }
             }
+            return flex
           }
-          return flex
         } else {
           return flex
         }
@@ -338,18 +344,15 @@
         this.Config.FConfig = fConfig
       },
       getActiveItem (active) {
-        console.error('active=>')
-//        active.CNameCN = '123456'
-        console.error(JSON.stringify(active))
+        // console.error('active=>')
         this.controlSelect = active
-//        console.error(this.controlSelect)
-//        this.controlSelect.CNameCN = '123456'
-//        this.controlSelect.config.CNameCN = 'changes'
-//        this.controlSelect.id = 'id12345'
       },
       setProperties (property) {
-        console.info(`setProperties`)
+        // console.info(`setProperties`)
         this.controlSelect.ControlProperties = property
+      },
+      FormStorage (listVal) {
+        // this.formStorage.mutations.getData(this.formStorage.states)
       }
     },
     data () {
@@ -359,7 +362,7 @@
         loading: null, // loading 表单设计器loading控件
         tabIndex: 'normal', // 设置控件选择状态
         tabHeight: 2.35,
-        list: [],
+        formStorage: null,
         ControlList: null,
         Config: {
           FConfig: {
