@@ -153,7 +153,7 @@
       },
       computedFormClass () {
         let flex = true
-        if (this.formStorage) {
+        if (this.formStorage.states) {
           if (this.formStorage.states.length > 0) {
             let flexClass = 'flexLayout'
             for (let key in this.formStorage.states) {
@@ -362,6 +362,7 @@
         loading: null, // loading 表单设计器loading控件
         tabIndex: 'normal', // 设置控件选择状态
         tabHeight: 2.35,
+        list: [],
         formStorage: null,
         ControlList: null,
         Config: {
