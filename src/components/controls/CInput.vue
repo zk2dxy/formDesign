@@ -65,6 +65,7 @@
       }
     },
     created () {
+      // console.info(FormStore)
       this.config = this.initConfig
       if (this.ControlConfig) {
         this.config = this.ControlConfig
@@ -107,8 +108,7 @@
     },
     methods: {
       ControlClick () {
-        // console.error(' ===> CInput selected')
-        // this.emitConfig()
+        this.formOBJ.mutations.selectObj(this.formOBJ, this.formItem)
       },
       // 获得焦点事件
       focusAction () {

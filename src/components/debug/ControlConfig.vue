@@ -1,5 +1,6 @@
 <template>
   <div class="ControlConfig">
+    {{config}}
     <div v-if="config">
       <div v-for="(item , index) in config">
         <div v-if="index === 'CTitleCN'">
