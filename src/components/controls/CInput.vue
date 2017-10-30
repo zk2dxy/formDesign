@@ -1,5 +1,6 @@
 <template>
   <div class="CInput" @click="ControlClick()">
+    <slot></slot>
     <div v-if="config && (!ControlID)" @click.stop>
       <div class="title">
         {{config.CTitleCN}}
@@ -52,9 +53,16 @@
       },
       ControlID: {
         type: String,
-        default: null
+        default () {
+          return null
+        }
       },
-      selected: Object
+      formOBJ: {
+        type: Object
+      },
+      formItem: {
+        type: Object
+      }
     },
     created () {
       this.config = this.initConfig
@@ -64,8 +72,12 @@
       if (this.ControlID && (!this.config.ControlID)) {
         this.config.ControlID = this.ControlID
       }
+      if (this.formOBJ) {
+        console.error(this.formOBJ)
+      }
     },
     mounted () {
+      // console.log(this.formOBJ)
       this.config = this.initConfig
       if (this.ControlConfig) {
         this.config = this.ControlConfig
@@ -95,10 +107,8 @@
     },
     methods: {
       ControlClick () {
-        console.error(' ===> item selected')
-        this.config = this.selected
-        this.$emit('getSelectControl', this.selected)
-        this.emitConfig()
+        // console.error(' ===> CInput selected')
+        // this.emitConfig()
       },
       // 获得焦点事件
       focusAction () {
@@ -120,7 +130,6 @@
         if (this.ControlID && (!this.config.ControlID)) {
           this.config.ControlID = this.ControlID
         }
-        this.$emit(`getValue`, this.config)
       },
       getChildrenLayoutValue () {
         this.config.currentLayout = null

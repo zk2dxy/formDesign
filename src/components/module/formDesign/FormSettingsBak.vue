@@ -13,6 +13,7 @@
       </li>
     </ul>
     <div class="controlAttribute">
+      {{config}}
       <!--表单设置 start-->
       <div v-if="activeJudge">
         <!--选择字段-->
@@ -283,16 +284,7 @@
     },
     methods: {
       changeTab (values, status) {
-        if (status) {
-          console.error(this.selectControl)
-          if (this.selectControl) {
-            console.error('has selectControl')
-          } else {
-            console.error('has')
-          }
-        } else {
-          this.activeSetting = values
-        }
+        this.activeSetting = values
       },
       //      添加collapse条目
       addItem () {

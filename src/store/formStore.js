@@ -4,6 +4,7 @@ const formStore = function (form, initState) {
     return true
   }
   this.form = form
+  this.selected = null
   this.states = this.form.$data.list
 }
 

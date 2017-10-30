@@ -61,31 +61,30 @@
             :ControlConfig="controlItem.config"
             :ControlID='controlItem.id'
             :is="controlItem.component"
-            v-model="controlItem.config"
-            @getValue="showAttribute($event,controlItem)"
             :children="controlItem.children"
             :childrenDefault="controlItem.childrenDefault"
-            @getSelectControl="getActiveItem"
-            :selected="controlItem"
+            :formOBJ="formStorage"
+            :formItem="controlItem"
             :style="[
               controlItem.config.layoutModel === 'percentLayout'  && controlItem.config.currentLayout !== null ? {'width' : controlItem.config.currentLayout.default+`%`} : null,
               controlItem.config.layoutModel === 'pixelLayout'  && controlItem.config.currentLayout !== null ? {'width' : controlItem.config.currentLayout.default+`px`} : null,
               controlItem.config.layoutModel === 'flexLayout'  && controlItem.config.currentLayout !== null ? {'flex' : controlItem.config.currentLayout.default} : null
             ]"
           >
+            <div>formOBJ==>{{formStorage.states}}</div>
+            <div>controlItem==>{{controlItem}}</div>
           </component>
         </draggable>
       </div>
       {{formStorage.states}}
     </div>
     <div class="rightFormSettings" ref="rightFormSettings">
+      {{`selected = `+formStorage.selected}}
       <form-settings
         @setControlProperties="setProperties"
         :selectControl="controlSelect"
         :config="Config.CConfig"
         :fConfig="Config.FConfig"
-        @changeConfig="changeView"
-        @changeFConfig="changeViewForm"
       ></form-settings>
     </div>
   </div>
