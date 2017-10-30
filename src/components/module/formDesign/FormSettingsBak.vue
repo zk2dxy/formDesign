@@ -27,7 +27,6 @@
             class="lineRow"
             label="选择字段"
           >
-            {{propertyArray}}
             <el-cascader
               v-model="propertyArray"
               style="display: block"
@@ -1798,11 +1797,8 @@
       },
       propertyArray (val) {
         console.warn(val)
-        // console.error(this.selectControl.config.ControlID)
-        // this.properties.mutations.removeDisabled(this.properties, this.selectControl.config.ControlID)
         if (this.selectControl !== null) {
           this.selectControl.config.ControlProperties = val.toString()
-          // this.selectControl.config.ControlProperties = val.toString()
           for (let key in this.properties.states) {
             if (this.properties.states[key].edmpCode === val.toString()) {
               this.properties.states[key].controlId = this.selectControl.config.ControlID
@@ -1815,17 +1811,6 @@
         } else {
           console.info('1234567890')
         }
-//        for (let key in this.properties.states) {
-//          console.warn(this.properties.states[key].controlId === this.selectControl.config.ControlID)
-//          if (this.properties.states[key].controlId === this.selectControl.config.ControlID) {
-//            console.warn('12345')
-//            this.properties.states[key].disabled = true
-//            this.properties.states[key].controlId = this.selectControl.config.ControlID
-//            break
-//          } else {
-//            continue
-//          }
-//        }
       }
     },
     mounted () {

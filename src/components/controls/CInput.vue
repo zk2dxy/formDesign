@@ -6,8 +6,6 @@
         {{config.CTitleCN}}
       </div>
       <extend-input
-        @focus="focusAction()"
-        @blur="blurAction()"
         :type="config.CAttribute.typeModel"
         :placeholder="config.CAttribute.placeholder"
         v-model="config.CKey.default"
@@ -24,8 +22,6 @@
       <el-form :label-position="ControlConfig.labelPositionModel" :label-width=labelWidthCalc>
         <el-form-item :label="ControlConfig.CTitleCN">
           <extend-input
-            @focus="focusAction()"
-            @blur="blurAction()"
             :type="ControlConfig.CAttribute.typeModel"
             :placeholder="ControlConfig.CAttribute.placeholder"
             v-model="ControlConfig.CKey.default"
@@ -109,27 +105,6 @@
     methods: {
       ControlClick () {
         this.formOBJ.mutations.selectObj(this.formOBJ, this.formItem)
-      },
-      // 获得焦点事件
-      focusAction () {
-        this.emitConfig()
-      },
-      // 失去焦点事件
-      blurAction () {
-        this.emitConfig()
-      },
-      // 值变更事件
-      changeAction () {
-        this.emitConfig()
-      },
-      emitConfig () {
-        this.config = this.initConfig
-        if (this.ControlConfig) {
-          this.config = this.ControlConfig
-        }
-        if (this.ControlID && (!this.config.ControlID)) {
-          this.config.ControlID = this.ControlID
-        }
       },
       getChildrenLayoutValue () {
         this.config.currentLayout = null
