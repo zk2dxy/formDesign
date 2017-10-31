@@ -58,6 +58,12 @@
       ControlID: {
         type: String,
         default: null
+      },
+      formOBJ: {
+        type: Object
+      },
+      formItem: {
+        type: Object
       }
     },
     created () {
@@ -83,43 +89,27 @@
       this.getChildrenLayoutValue()
       this.$emit('input', this.config)
     },
-    updated () {},
+    updated () {
+    },
     /* keep-alive 组件激活时调用。 */
-    activated () {},
+    activated () {
+    },
     /* keep-alive 组件停用时调用。 */
-    deactivated () {},
+    deactivated () {
+    },
     watch: {
       'config.CKey.default' (val, old) {
         // console.log(val)
       }
     },
-    beforeDestroy () {},
-    destroyed () {},
+    beforeDestroy () {
+    },
+    destroyed () {
+    },
     methods: {
       ControlClick () {
-        this.emitConfig()
-      },
-      // 获得焦点事件
-      focusAction () {
-        this.emitConfig()
-      },
-      // 失去焦点事件
-      blurAction () {
-        this.emitConfig()
-      },
-      // 值变更事件
-      changeAction () {
-        this.emitConfig()
-      },
-      emitConfig () {
-        this.config = this.initConfig
-        if (this.ControlConfig) {
-          this.config = this.ControlConfig
-        }
-        if (this.ControlID && (!this.config.ControlID)) {
-          this.config.ControlID = this.ControlID
-        }
-        this.$emit(`getValue`, this.config)
+        this.formOBJ.mutations.selectObj(this.formOBJ, this.formItem)
+        this.$emit('changeTAB', this.formItem)
       },
       handleTabsEdit (targetName, action) {
         if (action === 'add') {

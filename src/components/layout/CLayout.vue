@@ -24,11 +24,6 @@
         ]"
       >
         <component
-          :style="[
-            controlItem.config.layoutModel === 'percentLayout'  && controlItem.config.currentLayout !== null ? {'width' : controlItem.config.currentLayout.default-2+`%`} : null,
-            controlItem.config.layoutModel === 'pixelLayout'  && controlItem.config.currentLayout !== null ? {'width' : controlItem.config.currentLayout.default+`px`} : null,
-            controlItem.config.layoutModel === 'flexLayout'  && controlItem.config.currentLayout !== null ? {'flex' : controlItem.config.currentLayout.default} : null
-          ]"
           class="block"
           v-if="(children[key].length > 0)&&(children[0].toString() !== childrenDefault[0].toString())"
           v-for="controlItem in children[key]"
@@ -36,12 +31,17 @@
           :ControlConfig="controlItem.config"
           :ControlID='controlItem.id'
           :is="controlItem.component"
-          v-model="controlItem.config"
-          @getValue="showAttribute($event,controlItem)"
           :children="controlItem.children"
           :childrenDefault="controlItem.childrenDefault"
+          :formOBJ="formOBJ"
+          :formItem="controlItem"
+          @changeTAB="changeTabs"
+          :style="[
+            controlItem.config.layoutModel === 'percentLayout'  && controlItem.config.currentLayout !== null ? {'width' : controlItem.config.currentLayout.default+`%`} : null,
+            controlItem.config.layoutModel === 'pixelLayout'  && controlItem.config.currentLayout !== null ? {'width' : controlItem.config.currentLayout.default+`px`} : null,
+            controlItem.config.layoutModel === 'flexLayout'  && controlItem.config.currentLayout !== null ? {'flex' : controlItem.config.currentLayout.default} : null
+          ]"
         >
-          {{controlItem}}
         </component>
       </draggable>
       <!--{{children}}-->
@@ -65,6 +65,12 @@
       ControlID: {
         type: String,
         default: null
+      },
+      formOBJ: {
+        type: Object
+      },
+      formItem: {
+        type: Object
       }
     },
     created () {
@@ -87,12 +93,11 @@
       this.getChildrenLayoutValue()
       this.$emit('input', this.config)
     },
-    watch: {
-      'config.currentLayout' (val) {
-        // console.error(val)
-      }
-    },
+    watch: {},
     methods: {
+      changeTabs (config) {
+        this.$emit('changeTAB', config)
+      },
       clickStop (evt) {
         if (this.children.toString() !== this.childrenDefault.toString()) {
           evt.stopPropagation()
@@ -100,30 +105,14 @@
         }
       },
       commitLayoutConfig () {
-        this.config = this.initConfig
-        if (this.ControlConfig) {
-          this.config = this.ControlConfig
-        }
-        if (this.ControlID && (!this.config.ControlID)) {
-          this.config.ControlID = this.ControlID
-        }
-        this.$emit('getValue', this.config)
+        this.formOBJ.mutations.selectObj(this.formOBJ, this.formItem)
+        this.$emit('changeTAB', this.formItem)
       },
       destroyDom () {
         console.error(`destroyDom`)
       },
       showAttribute (data, item) {
         this.$emit('getValue', data)
-      },
-      emitConfig () {
-        this.config = this.initConfig
-        if (this.ControlConfig) {
-          this.config = this.ControlConfig
-        }
-        if (this.ControlID && (!this.config.ControlID)) {
-          this.config.ControlID = this.ControlID
-        }
-        this.$emit('getValue', this.config)
       },
       getChildrenLayoutValue () {
         this.config.currentLayout = null

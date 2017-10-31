@@ -104,6 +104,12 @@
       ControlID: {
         type: String,
         default: null
+      },
+      formOBJ: {
+        type: Object
+      },
+      formItem: {
+        type: Object
       }
     },
     created () {
@@ -135,17 +141,8 @@
     },
     methods: {
       ControlClick () {
-        this.emitConfig()
-      },
-      emitConfig () {
-        this.config = this.initConfig
-        if (this.ControlConfig) {
-          this.config = this.ControlConfig
-        }
-        if (this.ControlID && (!this.config.ControlID)) {
-          this.config.ControlID = this.ControlID
-        }
-        this.$emit(`getValue`, this.config)
+        this.formOBJ.mutations.selectObj(this.formOBJ, this.formItem)
+        this.$emit('changeTAB', this.formItem)
       },
       startFixTime () {
         this.config.CAttribute.rangeOfFixedEnd = false
@@ -346,26 +343,28 @@
             }], // 日期选择器类型
             dateTypeModel: 'date', // 日期选择器类型
             rangeSeparator: '-', // 选择范围时的分隔符
-            datePickerShortcuts: {shortcuts: [{
-              text: '今天',
-              onClick (picker) {
-                picker.$emit('pick', new Date())
-              }
-            }, {
-              text: '昨天',
-              onClick (picker) {
-                const date = new Date()
-                date.setTime(date.getTime() - 3600 * 1000 * 24)
-                picker.$emit('pick', date)
-              }
-            }, {
-              text: '一周前',
-              onClick (picker) {
-                const date = new Date()
-                date.setTime(date.getTime() - 3600 * 1000 * 24 * 7)
-                picker.$emit('pick', date)
-              }
-            }]},
+            datePickerShortcuts: {
+              shortcuts: [{
+                text: '今天',
+                onClick (picker) {
+                  picker.$emit('pick', new Date())
+                }
+              }, {
+                text: '昨天',
+                onClick (picker) {
+                  const date = new Date()
+                  date.setTime(date.getTime() - 3600 * 1000 * 24)
+                  picker.$emit('pick', date)
+                }
+              }, {
+                text: '一周前',
+                onClick (picker) {
+                  const date = new Date()
+                  date.setTime(date.getTime() - 3600 * 1000 * 24 * 7)
+                  picker.$emit('pick', date)
+                }
+              }]
+            },
             isShowClearable: true, // 是否显示清除按钮
             isShowClearableend: true, // 是否显示清除按钮
             placeholder: '请输入默认值或者为空' // 控件提示值

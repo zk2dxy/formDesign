@@ -24,26 +24,26 @@
       </el-dialog>
     </div>
     <!--<div v-else>-->
-      <!--<div class="title">-->
-        <!--{{ControlConfig.CTitleCN}}-->
-      <!--</div>-->
-      <!--<el-button type="text" @click="ControlConfig.CAttribute.dialogVisible = true">打开Dialog</el-button>-->
-      <!--<el-dialog-->
-        <!--:title="ControlConfig.CAttribute.title"-->
-        <!--:top="ControlConfig.CAttribute.top"-->
-        <!--:visible.sync="ControlConfig.CAttribute.dialogVisible-->
-        <!--:size="ControlConfig.CAttribute.size.currentSize"-->
-        <!--:modal="ControlConfig.CAttribute.modal.modal"-->
-        <!--:modal-append-to-body="ControlConfig.CAttribute.modal.modalPosition.modalPosition"-->
-        <!--:lock-scroll="ControlConfig.CAttribute.lockScroll.lockScroll"-->
-        <!--:show-close="ControlConfig.CAttribute.showClose.showClose"-->
-        <!--:before-close="handleClose">-->
-        <!--<span>这是一段信息</span>-->
-        <!--<span slot="footer" class="dialog-footer">-->
+    <!--<div class="title">-->
+    <!--{{ControlConfig.CTitleCN}}-->
+    <!--</div>-->
+    <!--<el-button type="text" @click="ControlConfig.CAttribute.dialogVisible = true">打开Dialog</el-button>-->
+    <!--<el-dialog-->
+    <!--:title="ControlConfig.CAttribute.title"-->
+    <!--:top="ControlConfig.CAttribute.top"-->
+    <!--:visible.sync="ControlConfig.CAttribute.dialogVisible-->
+    <!--:size="ControlConfig.CAttribute.size.currentSize"-->
+    <!--:modal="ControlConfig.CAttribute.modal.modal"-->
+    <!--:modal-append-to-body="ControlConfig.CAttribute.modal.modalPosition.modalPosition"-->
+    <!--:lock-scroll="ControlConfig.CAttribute.lockScroll.lockScroll"-->
+    <!--:show-close="ControlConfig.CAttribute.showClose.showClose"-->
+    <!--:before-close="handleClose">-->
+    <!--<span>这是一段信息</span>-->
+    <!--<span slot="footer" class="dialog-footer">-->
     <!--<el-button @click="ControlConfig.CAttribute.dialogVisible = false">取 消</el-button>-->
     <!--<el-button type="primary" @click="ControlConfig.CAttribute.dialogVisible = false">确 定</el-button>-->
     <!--</span>-->
-      <!--</el-dialog>-->
+    <!--</el-dialog>-->
     <!--</div>-->
   </div>
 </template>
@@ -59,6 +59,12 @@
       ControlID: {
         type: String,
         default: null
+      },
+      formOBJ: {
+        type: Object
+      },
+      formItem: {
+        type: Object
       }
     },
     created () {
@@ -99,37 +105,16 @@
     },
     methods: {
       ControlClick () {
-        console.warn(`emitConfig`)
-        this.emitConfig()
-      },
-      // 获得焦点事件
-      focusAction () {
-        this.emitConfig()
-      },
-      // 失去焦点事件
-      blurAction () {
-        this.emitConfig()
-      },
-      // 值变更事件
-      changeAction () {
-        this.emitConfig()
-      },
-      emitConfig () {
-        this.config = this.initConfig
-        if (this.ControlConfig) {
-          this.config = this.ControlConfig
-        }
-        if (this.ControlID && (!this.config.ControlID)) {
-          this.config.ControlID = this.ControlID
-        }
-        this.$emit(`getValue`, this.config)
+        this.formOBJ.mutations.selectObj(this.formOBJ, this.formItem)
+        this.$emit('changeTAB', this.formItem)
       },
       handleClose (done) {
         this.$confirm('确认关闭？')
           .then(_ => {
             done()
           })
-          .catch(_ => {})
+          .catch(_ => {
+          })
       }
     },
     data () {

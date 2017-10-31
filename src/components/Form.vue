@@ -65,6 +65,7 @@
             :childrenDefault="controlItem.childrenDefault"
             :formOBJ="formStorage"
             :formItem="controlItem"
+            @changeTAB="changeTabs"
             :style="[
               controlItem.config.layoutModel === 'percentLayout'  && controlItem.config.currentLayout !== null ? {'width' : controlItem.config.currentLayout.default+`%`} : null,
               controlItem.config.layoutModel === 'pixelLayout'  && controlItem.config.currentLayout !== null ? {'width' : controlItem.config.currentLayout.default+`px`} : null,
@@ -84,6 +85,7 @@
         :config="formStorage.selected"
         :fConfig="Config.FConfig"
         :formOBJ="formStorage"
+        :tabStatus="tabStatus"
       ></form-settings>
     </div>
   </div>
@@ -339,15 +341,20 @@
           }
         }
       },
-      showAttribute (data, item) {
-        this.Config.CConfig = data
-      },
       changeViewForm (fConfig) {
         this.Config.FConfig = fConfig
+      },
+      changeTabs (config) {
+        if (config.type === 'layout') {
+          this.tabStatus = true
+        } else {
+          this.tabStatus = false
+        }
       }
     },
     data () {
       return {
+        tabStatus: false, // 是否不需要选属性
         controlSelect: null, // 是否选中了控件
         timeInterval: null, // 获取属性集定时器
         loading: null, // loading 表单设计器loading控件

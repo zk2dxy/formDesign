@@ -17,7 +17,7 @@
       <div v-if="activeJudge">
         <!--选择字段-->
         <el-form
-          v-if="selectControl"
+          v-if="selectControl && !tabStatus"
           class="controlElForm"
           label-position="right"
           label-width="70px"
@@ -1709,7 +1709,7 @@
 
   export default {
     name: 'ControlConfig',
-    props: ['fConfig', 'selectControl', 'formOBJ', 'properties'],
+    props: ['fConfig', 'selectControl', 'formOBJ', 'properties', 'tabStatus'],
     destroy () {
       console.info(`destroy`)
     },
@@ -1794,9 +1794,15 @@
         if (this.formOBJ.selected) {
           this.config = this.formOBJ.selected.config
         }
+        if (this.tabStatus && val.config.ControlProperties !== '') {
+          this.activeSetting = 'controlSetting'
+          console.error(`controlSetting`)
+        } else if (!this.tabStatus && val.config.ControlProperties === '') {
+          this.activeSetting = 'formSetting'
+          console.error(`formSetting`)
+        }
       },
       propertyArray (val) {
-        console.warn(val)
         if (this.selectControl !== null) {
           this.selectControl.config.ControlProperties = val.toString()
           for (let key in this.properties.states) {
@@ -1808,8 +1814,6 @@
               this.properties.states[key].disabled = false
             }
           }
-        } else {
-          console.info('1234567890')
         }
       }
     },
@@ -1829,12 +1833,12 @@
 
       },
       changeTab (values, status) {
-        if (!this.selectControl) {
+        if (!this.selectControl && !this.tabStatus) {
           console.info('没选控件,你切个鬼啊')
           return
         }
         if (status) {
-          if (!this.selectControl.config.ControlProperties) {
+          if (!this.selectControl.config.ControlProperties && !this.tabStatus) {
             console.info('没选值。你切个屁啊')
           } else {
             this.activeSetting = values

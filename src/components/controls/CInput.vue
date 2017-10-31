@@ -74,7 +74,6 @@
       }
     },
     mounted () {
-      // console.log(this.formOBJ)
       this.config = this.initConfig
       if (this.ControlConfig) {
         this.config = this.ControlConfig
@@ -105,6 +104,7 @@
     methods: {
       ControlClick () {
         this.formOBJ.mutations.selectObj(this.formOBJ, this.formItem)
+        this.$emit('changeTAB', this.formItem)
       },
       getChildrenLayoutValue () {
         this.config.currentLayout = null

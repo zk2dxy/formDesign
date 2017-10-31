@@ -154,21 +154,18 @@
       ControlID: {
         type: String,
         default: null
+      },
+      formOBJ: {
+        type: Object
+      },
+      formItem: {
+        type: Object
       }
     },
     methods: {
-      emitConfig () {
-        this.config = this.initConfig
-        if (this.ControlConfig) {
-          this.config = this.ControlConfig
-        }
-        if (this.ControlID && (!this.config.ControlID)) {
-          this.config.ControlID = this.ControlID
-        }
-        this.$emit(`getValue`, this.config)
-      },
       ControlClick () {
-        this.emitConfig()
+        this.formOBJ.mutations.selectObj(this.formOBJ, this.formItem)
+        this.$emit('changeTAB', this.formItem)
       },
       SelectedChange (label) {
         if (this.config.CAttribute.typeModel === 'select') {
@@ -214,7 +211,7 @@
             this.loading = false
             this.options = this.config.CAttribute.itemAttr.filter(item => {
               return item.showContent.toLowerCase()
-                .indexOf(query.toLowerCase()) > -1
+                  .indexOf(query.toLowerCase()) > -1
             })
             console.log('oo', this.options)
           }, 20)
