@@ -1602,12 +1602,13 @@
               <div v-if="item.status">
                 <el-form-item>
                   <el-button @click="chooseIcon(item)" type="primary" size="small" icon="edit">选择图标</el-button>
-                  <c-icon @postIcon="setIcon" v-if="item.chooseStatus"></c-icon>
+                  <c-icon @postIcon="setIcon" :getIcon="config[index]" v-if="item.chooseStatus"></c-icon>
                 </el-form-item>
                 <div v-if="item.position!=''&&item.position.length>0&&item.status&&(item.className!='')">
-                  <el-form-item>
-                    <br/>
-                    <div>图标放置位置</div>
+                  <el-form-item
+                    class="lineRow"
+                    label="图标位置"
+                  >
                     <el-radio-group v-model="item.positionModel">
                       <el-radio v-for="radio in item.position" :key="radio.value" :label="radio.value">
                         {{radio.name}}
@@ -1631,7 +1632,7 @@
               <div v-if="item.status">
                 <el-form-item>
                   <el-button @click="chooseValidate(item)" type="primary" size="small" icon="edit">选择验证规则</el-button>
-                  <c-validate @postValidate="setValidate" v-if="item.chooseStatus"></c-validate>
+                  <c-validate @postValidate="setValidate" :getValidate="config[index]" v-if="item.chooseStatus"></c-validate>
                 </el-form-item>
               </div>
             </el-form>

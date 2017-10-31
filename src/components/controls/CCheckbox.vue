@@ -4,51 +4,51 @@
       <div class="title">
         {{config.CTitleCN}}
       </div>
-      <!--<div v-if="config.CAttribute.typeModel==='checkbox' && config.CAttribute.showAllCheckbox">-->
-        <!--<extend-checkbox-->
-          <!--:indeterminate="config.CAttribute.indeterminateCheckbox"-->
-          <!--v-model="config.CAttribute.checkAllCheckbox"-->
-          <!--@change="CheckAllChange"-->
-        <!--&gt;全选-->
-        <!--</extend-checkbox>-->
-      <!--</div>-->
-      <!--<extend-checkbox-group-->
-        <!--:class="[-->
-              <!--!(config.CAttribute.showAllCheckbox) ? 'showAll' : ''-->
-            <!--]"-->
-        <!--v-if="config.CAttribute.typeModel==='checkbox'"-->
-        <!--v-model="config.CAttribute.defaultCheckboxSelected"-->
-        <!--:min="config.CAttribute.ableSelectedMin"-->
-        <!--:max="config.CAttribute.ableSelectedMax">-->
-        <!--<extend-checkbox-->
-          <!--@click="SelectedChange(item.label)"-->
-          <!--v-for="(item, index) in config.CAttribute.itemAttr"-->
-          <!--:key="item.label"-->
-          <!--:label="item.label"-->
-          <!--:disabled="item.isDisabled">-->
-          <!--{{item.showContent}}-->
-        <!--</extend-checkbox>-->
-      <!--</extend-checkbox-group>-->
-      <!--<extend-checkbox-group-->
-        <!--v-else-->
-        <!--:class="[-->
-              <!--!(config.CAttribute.showAllCheckbox) ? 'showAll' : ''-->
-            <!--]"-->
-        <!--v-model="config.CAttribute.defaultCheckboxSelected"-->
-        <!--:size="config.CAttribute.sizeModel"-->
-        <!--:text-color="config.CAttribute.textColor"-->
-        <!--:fill="config.CAttribute.fillColor"-->
-        <!--:min="config.CAttribute.ableSelectedMin"-->
-        <!--:max="config.CAttribute.ableSelectedMax">-->
-        <!--<extend-checkbox-button-->
-          <!--@click="SelectedChange(item.label)"-->
-          <!--v-for="(item, index) in config.CAttribute.itemAttr"-->
-          <!--:key="item.label"-->
-          <!--:label="item.label"-->
-          <!--:disabled="item.isDisabled">-->
-          <!--{{item.showContent}}-->
-        <!--</extend-checkbox-button>-->
-      <!--</extend-checkbox-group>-->
+      <div v-if="config.CAttribute.typeModel==='checkbox' && config.CAttribute.showAllCheckbox">
+        <extend-checkbox
+          :indeterminate="config.CAttribute.indeterminateCheckbox"
+          v-model="config.CAttribute.checkAllCheckbox"
+          @change="CheckAllChange"
+        >全选
+        </extend-checkbox>
+      </div>
+      <extend-checkbox-group
+        :class="[
+              !(config.CAttribute.showAllCheckbox) ? 'showAll' : ''
+            ]"
+        v-if="config.CAttribute.typeModel==='checkbox'"
+        v-model="config.CAttribute.defaultCheckboxSelected"
+        :min="config.CAttribute.ableSelectedMin"
+        :max="config.CAttribute.ableSelectedMax">
+        <extend-checkbox
+          @click="SelectedChange(item.label)"
+          v-for="(item, index) in config.CAttribute.itemAttr"
+          :key="item.label"
+          :label="item.label"
+          :disabled="item.isDisabled">
+          {{item.showContent}}
+        </extend-checkbox>
+      </extend-checkbox-group>
+      <extend-checkbox-group
+        v-else
+        :class="[
+              !(config.CAttribute.showAllCheckbox) ? 'showAll' : ''
+            ]"
+        v-model="config.CAttribute.defaultCheckboxSelected"
+        :size="config.CAttribute.sizeModel"
+        :text-color="config.CAttribute.textColor"
+        :fill="config.CAttribute.fillColor"
+        :min="config.CAttribute.ableSelectedMin"
+        :max="config.CAttribute.ableSelectedMax">
+        <extend-checkbox-button
+          @click="SelectedChange(item.label)"
+          v-for="(item, index) in config.CAttribute.itemAttr"
+          :key="item.label"
+          :label="item.label"
+          :disabled="item.isDisabled">
+          {{item.showContent}}
+        </extend-checkbox-button>
+      </extend-checkbox-group>
     </div>
     <div v-else>
       <el-form

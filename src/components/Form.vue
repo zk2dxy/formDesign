@@ -14,7 +14,7 @@
         <draggable
           v-if="item.children.length > 0"
           v-model="item.children"
-          :options="{group:{name:'controls',pull:'clone', put: false}, animation: 0, ghostClass: 'ghost-none', sort:false}"
+          :options="{group:{name:'controls',pull:'clone', put: false}, animation: 0, ghostClass: 'movingControl', sort:false}"
           :clone="formClone"
         >
           <div
@@ -22,11 +22,13 @@
             v-for="controlItem in item.children"
             class="singleControl"
             :key="controlItem.CNameCN">
-            <el-button icon="circle-check">
+            <el-button
+              class="moveButton"
+              icon="circle-check">
               {{controlItem.CNameCN}}
             </el-button>
             <component
-              class="opacity0 hidden"
+              class="opacity0 hidden moveControl"
               :ControlID='controlItem.id'
               v-model="controlItem.config"
               :is="controlItem.component"
@@ -97,7 +99,8 @@
   import FormSettings from '@/components/module/formDesign/FormSettingsBak.vue'
   import * as properties from 'api/properties.json'
   import FormStore from '@/store/formStore'
-  import Properties from '@/store/properties'
+  import Properties from '@/store/formProperties'
+  import Methods from '@/store/formMethods'
 
   export default {
     name: `formDesign`,
@@ -129,6 +132,8 @@
           if (!this.properties) {
             this.properties = new Properties(this)
             this.properties.mutations.setData(this.properties, properties.data.properties)
+            this.Methods = new Methods(this)
+            this.Methods.mutations.setData(this.Methods, properties.data.methods)
           }
         } else {
           alert('表单设计属性集请求数据失败')
@@ -163,7 +168,6 @@
           if (this.formStorage.states.length > 0) {
             let flexClass = 'flexLayout'
             for (let key in this.formStorage.states) {
-              // console.error(this.list[key].config)
               flex = (this.formStorage.states[key].config.currentLayout.value === flexClass) && flex
               if (!flex) {
                 break
@@ -354,15 +358,16 @@
     },
     data () {
       return {
+        list: [],
         tabStatus: false, // 是否不需要选属性
         controlSelect: null, // 是否选中了控件
         timeInterval: null, // 获取属性集定时器
         loading: null, // loading 表单设计器loading控件
         tabIndex: 'normal', // 设置控件选择状态
         tabHeight: 2.35,
-        list: [],
-        formStorage: null,
-        properties: null,
+        formStorage: null, // 表单设计器数据
+        properties: null, // 单据一级属性数据集合
+        Methods: null, // 单据方法数据集合
         ControlList: null,
         Config: {
           FConfig: {
@@ -456,6 +461,7 @@
     font-size $font-huge
     color $font-primary
     padding 11px 15px
+    border-bottom 1px dashed $font-primary
 
   .floatChildren
     clear both
@@ -468,4 +474,14 @@
     .item
       float left
       margin-bottom 10px
+
+  .formContainer
+    .movingControl
+      .moveButton
+        opacity 0 !important
+        display none !important
+      .moveControl
+        opacity 1 !important
+        display block !important
+
 </style>

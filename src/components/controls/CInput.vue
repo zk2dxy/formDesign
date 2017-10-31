@@ -70,7 +70,7 @@
         this.config.ControlID = this.ControlID
       }
       if (this.formOBJ) {
-        console.error(this.formOBJ)
+        // console.error(this.formOBJ)
       }
     },
     mounted () {
