@@ -67,6 +67,7 @@
             :childrenDefault="controlItem.childrenDefault"
             :formOBJ="formStorage"
             :formItem="controlItem"
+            :Methods="Methods"
             @changeTAB="changeTabs"
             :style="[
               controlItem.config.layoutModel === 'percentLayout'  && controlItem.config.currentLayout !== null ? {'width' : controlItem.config.currentLayout.default+`%`} : null,
@@ -77,7 +78,7 @@
           </component>
         </draggable>
       </div>
-      <!--{{formStorage.states}}-->
+      {{formStorage.states}}
     </div>
     <div class="rightFormSettings" ref="rightFormSettings">
       <form-settings
@@ -88,6 +89,7 @@
         :fConfig="Config.FConfig"
         :formOBJ="formStorage"
         :tabStatus="tabStatus"
+        :Methods="Methods"
       ></form-settings>
     </div>
   </div>
@@ -349,7 +351,7 @@
         this.Config.FConfig = fConfig
       },
       changeTabs (config) {
-        if (config.type === 'layout') {
+        if (config.type === 'layout' || config.type === 'button') {
           this.tabStatus = true
         } else {
           this.tabStatus = false

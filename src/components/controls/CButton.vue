@@ -33,6 +33,9 @@
       },
       formItem: {
         type: Object
+      },
+      Methods: {
+        type: Object
       }
     },
     created () {
@@ -54,19 +57,27 @@
       }
       this.getChildrenLayoutValue()
       this.$emit('input', this.config)
+      if (this.Methods) {
+        this.config.methodDB = this.Methods.states
+      }
     },
-    updated () {},
+    updated () {
+    },
     /* keep-alive 组件激活时调用。 */
-    activated () {},
+    activated () {
+    },
     /* keep-alive 组件停用时调用。 */
-    deactivated () {},
+    deactivated () {
+    },
     watch: {
       'config.CKey.default' (val, old) {
         // console.log(val)
       }
     },
-    beforeDestroy () {},
-    destroyed () {},
+    beforeDestroy () {
+    },
+    destroyed () {
+    },
     methods: {
       ControlClick () {
         this.formOBJ.mutations.selectObj(this.formOBJ, this.formItem)
@@ -104,6 +115,8 @@
           CName: 'CButton', // 控件名称
           layoutModel: 'flexLayout',
           currentLayout: null,
+          methodDB: null,
+          methodDBModel: null,
           CLayout: [ // 布局
             { // flex 布局
               type: Number,
@@ -209,17 +222,12 @@
             content: '', // 图标content
             title: '', // 图标标题
             library: '' // 图标库
-          },
-          CValidate: {
-            status: false,
-            chooseStatus: false,
-            validateModel: ''
-          },
-          methodDB: [{
-            name: '提交', // 中文名称（Example）
-            methodName: 'save', // 英文名称 (Example)
-            action: '/form/saveAction' // postAction(接口名称)
-          }]
+          }
+//          methodDB: [{
+//            name: '提交', // 中文名称（Example）
+//            methodName: 'save', // 英文名称 (Example)
+//            action: '/form/saveAction' // postAction(接口名称)
+//          }]
         },
         currentConfig: null,
         config: null,

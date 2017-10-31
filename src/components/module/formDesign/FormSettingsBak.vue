@@ -32,7 +32,6 @@
               style="display: block"
               :options="properties.states"
               :props="defaultProps"
-              @change="setControlProperties"
             ></el-cascader>
           </el-form-item>
         </el-form>
@@ -578,10 +577,10 @@
               <!--radio,checkbox按钮  start-->
               <div
                 v-else-if="indexIn === 'size' && (config.CAttribute.typeModel==='button' || config.CName === 'CSelect' || config.CName === 'CDateTimePicker'|| config.CName === 'CButton')">
-                <el-form label-position="right" label-width="70px">
+                <el-form label-position="top" label-width="70px">
                   <el-form-item
                     class="lineRow"
-                    label="控件尺寸"
+                    label="按钮尺寸"
                   >
                     <div v-if="config.CName === 'CDateTimePicker' && config.CAttribute.rangeOfFixedEnd">
                       <el-form-item>
@@ -1591,6 +1590,24 @@
           </div> <!--Status属性  ended-->
 
           <!--Icon属性  start-->
+          <div v-else-if="index === 'methodDB' && config[index]!=null">
+            <el-form label-position="right" label-width="70px">
+              <el-form-item
+                class="lineRow"
+                label="绑定事件"
+              >
+                <el-cascader
+                  v-if="Methods.states"
+                  v-model="methodArray"
+                  style="display: block"
+                  :options="Methods.states"
+                  :props="methodProps"
+                ></el-cascader>
+              </el-form-item>
+            </el-form>
+          </div>
+
+          <!--Icon属性  start-->
           <div v-else-if="index === 'Icon'">
             <el-form label-position="right" label-width="70px">
               <el-form-item
@@ -1710,7 +1727,7 @@
 
   export default {
     name: 'ControlConfig',
-    props: ['fConfig', 'selectControl', 'formOBJ', 'properties', 'tabStatus'],
+    props: ['fConfig', 'selectControl', 'formOBJ', 'properties', 'tabStatus', 'Methods'],
     destroy () {
       console.info(`destroy`)
     },
@@ -1718,10 +1735,17 @@
       return {
         config: null,
         propertyArray: [],
+        methodArray: [],
         defaultProps: {
           children: 'for_null', // 不显示子节点配置。如果为属性集。则绑定到属性集控件
           label: 'edmpName',
           value: 'edmpCode',
+          disabled: 'disabled'
+        },
+        methodProps: {
+          children: 'for_null', // 不显示子节点配置。如果为属性集。则绑定到属性集控件
+          label: 'edmmTypeName',
+          value: 'edmmName',
           disabled: 'disabled'
         },
         activeSetting: 'formSetting',
@@ -1735,8 +1759,7 @@
           label: '',
           options: {label: '', showContent: '', isDisabled: false}
         },
-        rules: {
-//          radio和checkbox label值校验
+        rules: { // radio和checkbox label值校验
           label: [
             {required: true, message: '请输入选项值'},
             {
@@ -1796,10 +1819,8 @@
         }
         if (this.tabStatus && val.config.ControlProperties !== '') {
           this.activeSetting = 'controlSetting'
-          console.error(`controlSetting`)
         } else if (!this.tabStatus && val.config.ControlProperties === '') {
           this.activeSetting = 'formSetting'
-          console.error(`formSetting`)
         }
       },
       propertyArray (val) {
@@ -1812,6 +1833,20 @@
             } else if (this.properties.states[key].controlId === this.selectControl.config.ControlID && this.properties.states[key].edmpCode !== val.toString()) {
               this.properties.states[key].controlId = null
               this.properties.states[key].disabled = false
+            }
+          }
+        }
+      },
+      methodArray (val) {
+        if (this.selectControl !== null) {
+          this.selectControl.config.methodDBModel = val.toString()
+          for (let key in this.Methods.states) {
+            if (this.Methods.states[key].edmmName === val.toString()) {
+              this.Methods.states[key].controlId = this.selectControl.config.ControlID
+              this.Methods.states[key].disabled = true
+            } else if (this.Methods.states[key].controlId === this.selectControl.config.ControlID && this.Methods.states[key].edmmName !== val.toString()) {
+              this.Methods.states[key].controlId = null
+              this.Methods.states[key].disabled = false
             }
           }
         }
@@ -1829,9 +1864,6 @@
       }
     },
     methods: {
-      setControlProperties () {
-
-      },
       changeTab (values, status) {
         if (!this.selectControl && !this.tabStatus) {
           console.info('没选控件,你切个鬼啊')
@@ -1882,7 +1914,7 @@
         this.config.CAttribute.cardItemAttribute.cardItem[this.config.CAttribute.cardCurrent].imageUrl = this.cardImageUrl
       },
       validateLayout (layoutItem, layoutType) {
-        console.error(`validateLayout`)
+        // console.error(`validateLayout`)
         let returnValue = layoutJudge(layoutItem, layoutType)
         if (!returnValue) {
           return

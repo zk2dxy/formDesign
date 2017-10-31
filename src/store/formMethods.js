@@ -8,7 +8,12 @@ const Methods = function (methodsOBJ, initState) {
 
 Methods.prototype.mutations = {
   setData (obj, states) {
-    obj.states = states
+    let values = states
+    for (let key in values) {
+      values[key].disabled = false
+      values[key].controlId = null
+    }
+    obj.states = values
   }
 }
 

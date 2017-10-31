@@ -15,11 +15,6 @@ Properties.prototype.mutations = {
     }
     obj.states = values
   },
-  setDisabled (obj, param, controlId) {
-    console.error(obj)
-    console.error(param)
-    console.error(controlId)
-  },
   removeDisabled (obj, controlId) {
     for (let key in obj.states) {
       if (obj.states[key].controlId === controlId) {
