@@ -4,6 +4,7 @@ const formStore = function (form, initState) {
     return true
   }
   this.form = form
+  this.selected = null
   this.states = this.form.$data.list
 }
 
@@ -11,8 +12,8 @@ formStore.prototype.mutations = {
   setData (formStore, newValue) {
     formStore.states = newValue
   },
-  getData (states) {
-    // return states
+  selectObj (formStore, selected) {
+    formStore.selected = selected
   },
   cloneData () {
     console.error(`cloneData`)

@@ -47,8 +47,8 @@
           :options="{name:'list',animation: 100,group:{name:'controls'},ghostClass: 'item-block-drag'}"
           style="display:flex; padding-bottom:50px"
           :style="[
-          computedFormClass === true ?{'display' : 'flex'} : {'display' : 'block'}
-        ]"
+            computedFormClass === true ?{'display' : 'flex'} : {'display' : 'block'}
+          ]"
           :class="[
             computedFormClass ? '' : 'floatChildren'
           ]"
@@ -56,17 +56,15 @@
           <component
             v-if="formStorage.states"
             class="item"
-            :key="controlItem.id"
             v-for="(controlItem, key) in formStorage.states"
+            :key="controlItem.id"
             :ControlConfig="controlItem.config"
             :ControlID='controlItem.id'
             :is="controlItem.component"
-            v-model="controlItem.config"
-            @getValue="showAttribute($event,controlItem)"
             :children="controlItem.children"
             :childrenDefault="controlItem.childrenDefault"
-            @getSelectControl="getActiveItem"
-            :selected="controlItem"
+            :formOBJ="formStorage"
+            :formItem="controlItem"
             :style="[
               controlItem.config.layoutModel === 'percentLayout'  && controlItem.config.currentLayout !== null ? {'width' : controlItem.config.currentLayout.default+`%`} : null,
               controlItem.config.layoutModel === 'pixelLayout'  && controlItem.config.currentLayout !== null ? {'width' : controlItem.config.currentLayout.default+`px`} : null,
@@ -76,16 +74,16 @@
           </component>
         </draggable>
       </div>
-      {{formStorage.states}}
+      <!--{{formStorage.states}}-->
     </div>
     <div class="rightFormSettings" ref="rightFormSettings">
       <form-settings
-        @setControlProperties="setProperties"
-        :selectControl="controlSelect"
-        :config="Config.CConfig"
+        v-if="properties"
+        :properties="properties"
+        :selectControl="formStorage.selected"
+        :config="formStorage.selected"
         :fConfig="Config.FConfig"
-        @changeConfig="changeView"
-        @changeFConfig="changeViewForm"
+        :formOBJ="formStorage"
       ></form-settings>
     </div>
   </div>
@@ -97,6 +95,7 @@
   import FormSettings from '@/components/module/formDesign/FormSettingsBak.vue'
   import * as properties from 'api/properties.json'
   import FormStore from '@/store/formStore'
+  import Properties from '@/store/properties'
 
   export default {
     name: `formDesign`,
@@ -112,7 +111,7 @@
     mounted () {
       // 定时计划loading
       this.timeInterval = setInterval(() => {
-        if (this.Config.FConfig.properties !== '') {
+        if (this.properties !== null) {
           if (!this.formStorage) {
             this.formStorage = new FormStore(this)
           }
@@ -124,10 +123,15 @@
 
       // 模拟请求属性
       setTimeout(() => {
-        this.Config.FConfig.properties = properties.data
+        if (properties.retCode === 1) {
+          if (!this.properties) {
+            this.properties = new Properties(this)
+            this.properties.mutations.setData(this.properties, properties.data.properties)
+          }
+        } else {
+          alert('表单设计属性集请求数据失败')
+        }
       }, 1500)
-      // console.info(uuid)
-      // console.info(calcLayoutClass)
     },
     updated () {
     },
@@ -338,21 +342,8 @@
       showAttribute (data, item) {
         this.Config.CConfig = data
       },
-      changeView (config) {
-      },
       changeViewForm (fConfig) {
         this.Config.FConfig = fConfig
-      },
-      getActiveItem (active) {
-        // console.error('active=>')
-        this.controlSelect = active
-      },
-      setProperties (property) {
-        // console.info(`setProperties`)
-        this.controlSelect.ControlProperties = property
-      },
-      FormStorage (listVal) {
-        // this.formStorage.mutations.getData(this.formStorage.states)
       }
     },
     data () {
@@ -364,6 +355,7 @@
         tabHeight: 2.35,
         list: [],
         formStorage: null,
+        properties: null,
         ControlList: null,
         Config: {
           FConfig: {
@@ -372,7 +364,7 @@
             classification: '',
             listViews: [],
             flowBindResult: [],
-            properties: ''
+            properties: null
           },
           CConfig: ''
         }
@@ -383,7 +375,7 @@
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   @import "~assets/css/stylus/mixin"
   .leftControls
-    width 18%
+    width 23%
     position absolute
     top 1%
     bottom 1%
@@ -391,12 +383,13 @@
     box-shadow inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 1px rgba(102, 175, 233, 1)
 
   .container
-    width 60%
+    width 50%
     position absolute
+    overflow auto
     top 1%
     bottom 1%
-    left 20%
-    right 20%
+    left 25%
+    right 25%
     box-shadow inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 1px rgba(102, 175, 233, 1)
     .formContainer
       padding 11px 15px
@@ -404,7 +397,7 @@
   .rightFormSettings
     position absolute
     overflow auto
-    width 18%
+    width 23%
     top 1%
     bottom 1%
     right 1%
