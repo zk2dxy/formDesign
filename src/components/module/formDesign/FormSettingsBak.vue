@@ -852,19 +852,19 @@
                       >
                         <el-checkbox v-model="config[index].showSwitchTooltip"></el-checkbox>
                       </el-form-item>
-                      <el-form-item
-                        class="lineRow"
-                        label="关闭时文字"
-                      >
-                        <el-input v-model="config[index].offText"></el-input>
-                      </el-form-item>
-                      <el-form-item
-                        class="lineRow"
-                        label="关闭时背景"
-                      >
-                        <el-color-picker v-model="config[index].offFillColor"></el-color-picker>
-                      </el-form-item>
                     </div>
+                    <el-form-item
+                      class="lineRow"
+                      label="关闭时文字"
+                    >
+                      <el-input v-model="config[index].offText"></el-input>
+                    </el-form-item>
+                    <el-form-item
+                      class="lineRow"
+                      label="关闭时背景"
+                    >
+                      <el-color-picker v-model="config[index].offFillColor"></el-color-picker>
+                    </el-form-item>
                   </div>
                 </el-form>
               </div> <!--设置switch属性  ended-->
@@ -989,7 +989,7 @@
                       <el-time-picker
                         is-range
                         v-model="timeSelectableRange"
-                        @change="formateSelectableRange"
+                        @change="formatSelectableRange"
                         placeholder="选择时间范围">
                       </el-time-picker>
                     </el-form-item>
@@ -1727,7 +1727,6 @@
         startTime: '',
         stepTime: '',
         endTime: '',
-        formateItems: ['HH:mm:ss', 'HH-mm-ss', 'HH/mm/ss'],
         timeSelectableRange: new Date(),
         addSwitchValue: false, // 是否增加switch值
         currentIndex: 0, // 当前选中项在默认值的index(多选)

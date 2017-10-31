@@ -7,16 +7,14 @@
       <div v-if="config.CAttribute.typeModel==='radio'">
         <el-radio-group
           v-model="config.CKey.default">
-            <span class="radio"
-                  @click="SelectedChange(item.label)"
-                  v-for="(item, index) in config.CAttribute.itemAttr"
-                  :key="item.label">
-              <el-radio
-                :label="item.label"
-                :disabled="item.isDisabled">
-                {{item.showContent}}
-              </el-radio>
-            </span>
+            <el-radio
+              v-for="(item, index) in config.CAttribute.itemAttr"
+              :key="item.label"
+              :label="item.label"
+              :disabled="item.isDisabled">
+              <span @click="SelectedChange(item.label)"
+                    >{{item.showContent}}</span>
+            </el-radio>
         </el-radio-group>
       </div>
       <div v-else>
@@ -25,16 +23,15 @@
           :size="config.CAttribute.sizeModel"
           :text-color="config.CAttribute.textColor"
           :fill="config.CAttribute.fillColor">
-          <span class="radio"
+          <el-radio-button
+            v-for="(item, index) in config.CAttribute.itemAttr"
+            :key="item.label"
+            :label="item.label"
+            :disabled="item.isDisabled">
+              <span
                 @click="SelectedChange(item.label)"
-                v-for="(item, index) in config.CAttribute.itemAttr"
-                :key="item.label">
-            <el-radio-button
-              :label="item.label"
-              :disabled="item.isDisabled">
-              {{item.showContent}}
-            </el-radio-button>
-          </span>
+              >{{item.showContent}}</span>
+          </el-radio-button>
         </el-radio-group>
       </div>
     </div>
@@ -45,17 +42,14 @@
             v-if="ControlConfig.CAttribute.typeModel==='radio'"
             v-model="ControlConfig.CKey.default">
             <!--增加span修改禁用状态-->
-            <span class="radio"
-                  @click="SelectedChange(item.label)"
-                  v-for="(item, index) in ControlConfig.CAttribute.itemAttr"
-                  :key="item.label">
-              <el-radio
-                :label="item.label"
-                :disabled="item.isDisabled"
-                @click="SelectedChange(item.label)">
-                {{item.showContent}}
-              </el-radio>
-            </span>
+            <el-radio
+              v-for="(item, index) in ControlConfig.CAttribute.itemAttr"
+              :key="item.label"
+              :label="item.label"
+              :disabled="item.isDisabled">
+              <span @click="SelectedChange(item.label)"
+              >{{item.showContent}}</span>
+            </el-radio>
           </el-radio-group>
           <el-radio-group
             v-else
@@ -64,17 +58,14 @@
             :text-color="ControlConfig.CAttribute.textColor"
             :fill="ControlConfig.CAttribute.fillColor"
             @change="SelectedChange">
-            <span class="radio"
-                  @click="SelectedChange(item.label)"
-                  v-for="(item, index) in ControlConfig.CAttribute.itemAttr"
-                  :key="item.label">
-              <el-radio-button
-                :label="item.label"
-                :disabled="item.isDisabled"
-                @click="SelectedChange(item.label)">
-                {{item.showContent}}
-              </el-radio-button>
-            </span>
+            <el-radio-button
+              v-for="(item, index) in ControlConfig.CAttribute.itemAttr"
+              :key="item.label"
+              :label="item.label"
+              :disabled="item.isDisabled">
+                <span
+                  @click="SelectedChange(item.label)">{{item.showContent}}</span>
+            </el-radio-button>
           </el-radio-group>
         </el-form-item>
       </el-form>

@@ -4,6 +4,48 @@
       <div class="title">
         {{config.CTitleCN}}
       </div>
+      <el-tooltip
+        v-if="(config.CAttribute.onSwitchValue || config.CAttribute.offSwitchValue) && config.CAttribute.showSwitchTooltip"
+        :content="config.CAttribute.defaultSwitchStatus"
+        :placement="config.CAttribute.tooltipPosition">
+        <extend-switch
+          v-model="config.CAttribute.defaultSwitchStatus"
+          :on-color="config.CAttribute.onFillColor"
+          :off-color="config.CAttribute.offFillColor"
+          :on-value="config.CAttribute.onSwitchValue"
+          :off-value="config.CAttribute.offSwitchValue"
+          :on-icon-class="config.CAttribute.onSwitchIcon"
+          :off-icon-class="config.CAttribute.offSwitchIcon"
+          :width="config.CAttribute.width"
+          :on-text="config.CAttribute.onText"
+          :off-text="config.CAttribute.offText"
+          @change="handleChange"></extend-switch>
+      </el-tooltip>
+      <extend-switch
+        v-else-if="config.CAttribute.onSwitchValue || config.CAttribute.offSwitchValue"
+        v-model="config.CAttribute.defaultSwitchStatus"
+        :on-color="config.CAttribute.onFillColor"
+        :off-color="config.CAttribute.offFillColor"
+        :on-value="config.CAttribute.onSwitchValue"
+        :off-value="config.CAttribute.offSwitchValue"
+        :on-icon-class="config.CAttribute.onSwitchIcon"
+        :off-icon-class="config.CAttribute.offSwitchIcon"
+        :width="config.CAttribute.width"
+        :on-text="config.CAttribute.onText"
+        :off-text="config.CAttribute.offText"
+        @change="handleChange"></extend-switch>
+      <extend-switch
+        v-else
+        v-model="config.CAttribute.defaultSwitchStatus"
+        :on-color="config.CAttribute.onFillColor"
+        :off-color="config.CAttribute.offFillColor"
+        :on-icon-class="config.CAttribute.onSwitchIcon"
+        :off-icon-class="config.CAttribute.offSwitchIcon"
+        :width="config.CAttribute.width"
+        :on-text="config.CAttribute.onText"
+        :off-text="config.CAttribute.offText"
+        @change="handleChange">
+      </extend-switch>
     </div>
     <div v-else>
       <el-form :label-position="ControlConfig.labelPositionModel" :label-width=labelWidthCalc>
@@ -190,43 +232,6 @@
             onSwitchIcon: '', // 打开时图标
             offSwitchIcon: '', // 关闭时图标
             width: 58
-//            tooltipPositionType: [{
-//              value: 'top-start',
-//              name: '上左'
-//            }, {
-//              value: 'top',
-//              name: '上边'
-//            }, {
-//              value: 'top-end',
-//              name: '上右'
-//            }, {
-//              value: 'left-start',
-//              name: '左上'
-//            }, {
-//              value: 'left',
-//              name: '左边'
-//            }, {
-//              value: 'left-end',
-//              name: '左下'
-//            }, {
-//              value: 'right-start',
-//              name: '右上'
-//            }, {
-//              value: 'right',
-//              name: '右边'
-//            }, {
-//              value: 'right-end',
-//              name: '右下'
-//            }, {
-//              value: 'bottom-start',
-//              name: '下左'
-//            }, {
-//              value: 'bottom',
-//              name: '下边'
-//            }, {
-//              value: 'bottom-end',
-//              name: '下右'
-//            }]
           },
           Status: { // 状态
             status: false, // 是否应用状态

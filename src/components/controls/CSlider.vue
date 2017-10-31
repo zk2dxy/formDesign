@@ -4,6 +4,19 @@
       <div class="title">
         {{config.CTitleCN}}
       </div>
+      <el-slider
+        v-model="config.CAttribute.defaultSliderValue"
+        :vertical="config.CAttribute.typeModel === 'vertical'"
+        :height="config.CAttribute.height + 'px'"
+        :min="config.CAttribute.ableSelectedMin"
+        :max="config.CAttribute.ableSelectedMax"
+        :step="config.CAttribute.sliderStep === '' ? 1 : config.CAttribute.sliderStep"
+        :show-input="config.CAttribute.sliderShowInput"
+        :show-input-controls="config.CAttribute.sliderShowInputButton"
+        :range="config.CAttribute.sliderRange"
+        :show-stops="config.CAttribute.sliderShowStops"
+        :show-tooltip="config.CAttribute.sliderShowTooltip">
+      </el-slider>
     </div>
     <div v-else>
       <el-form :label-position="ControlConfig.labelPositionModel" :label-width=labelWidthCalc>
