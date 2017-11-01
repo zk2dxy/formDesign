@@ -4,49 +4,105 @@
       <div class="title">
         {{config.CTitleCN}}
       </div>
-      <!--初始化组件-->
+      <div v-if="config.CAttribute.typeModel==='checkbox' && config.CAttribute.showAllCheckbox">
+        <extend-checkbox
+          :indeterminate="config.CAttribute.indeterminateCheckbox"
+          v-model="config.CAttribute.checkAllCheckbox"
+          @change="CheckAllChange"
+        >全选
+        </extend-checkbox>
+      </div>
+      <extend-checkbox-group
+        :class="[
+              !(config.CAttribute.showAllCheckbox) ? 'showAll' : ''
+            ]"
+        v-if="config.CAttribute.typeModel==='checkbox'"
+        v-model="config.CAttribute.defaultCheckboxSelected"
+        :min="config.CAttribute.ableSelectedMin"
+        :max="config.CAttribute.ableSelectedMax">
+        <extend-checkbox
+          @click="SelectedChange(item.label)"
+          v-for="(item, index) in config.CAttribute.itemAttr"
+          :key="item.label"
+          :label="item.label"
+          :disabled="item.isDisabled">
+          {{item.showContent}}
+        </extend-checkbox>
+      </extend-checkbox-group>
+      <extend-checkbox-group
+        v-else
+        :class="[
+              !(config.CAttribute.showAllCheckbox) ? 'showAll' : ''
+            ]"
+        v-model="config.CAttribute.defaultCheckboxSelected"
+        :size="config.CAttribute.sizeModel"
+        :text-color="config.CAttribute.textColor"
+        :fill="config.CAttribute.fillColor"
+        :min="config.CAttribute.ableSelectedMin"
+        :max="config.CAttribute.ableSelectedMax">
+        <extend-checkbox-button
+          @click="SelectedChange(item.label)"
+          v-for="(item, index) in config.CAttribute.itemAttr"
+          :key="item.label"
+          :label="item.label"
+          :disabled="item.isDisabled">
+          {{item.showContent}}
+        </extend-checkbox-button>
+      </extend-checkbox-group>
     </div>
     <div v-else>
-      <div class="title">
-        {{ControlConfig.CTitleCN}}
-      </div>
-      <div v-if="ControlConfig.CAttribute.typeModel==='checkbox'">
-        <div>
-          <extend-checkbox
-            :indeterminate="ControlConfig.CAttribute.indeterminateCheckbox" v-model="ControlConfig.CAttribute.checkAllCheckbox"
-            @change="CheckAllChange"
-            v-if="ControlConfig.CAttribute.showAllCheckbox">全选</extend-checkbox>
-        </div>
-        <extend-checkbox-group
-          v-model="ControlConfig.CAttribute.defaultCheckboxSelected"
-          :min="ControlConfig.CAttribute.ableSelectedMin"
-          :max="ControlConfig.CAttribute.ableSelectedMax">
-          <extend-checkbox
-            @click="SelectedChange(item.label)"
-            v-for="(item, index) in ControlConfig.CAttribute.itemAttr"
-            :key="item.label"
-            :label="item.label"
-            :disabled="item.isDisabled">
-            {{item.showContent}}</extend-checkbox>
-        </extend-checkbox-group>
-      </div>
-      <div v-else>
-        <extend-checkbox-group
-          v-model="ControlConfig.CAttribute.defaultCheckboxSelected"
-          :size="ControlConfig.CAttribute.sizeModel"
-          :text-color="ControlConfig.CAttribute.textColor"
-          :fill="ControlConfig.CAttribute.fillColor"
-          :min="ControlConfig.CAttribute.ableSelectedMin"
-          :max="ControlConfig.CAttribute.ableSelectedMax">
-          <extend-checkbox-button
-            @click="SelectedChange(item.label)"
-            v-for="(item, index) in ControlConfig.CAttribute.itemAttr"
-            :key="item.label"
-            :label="item.label"
-            :disabled="item.isDisabled">
-            {{item.showContent}}</extend-checkbox-button>
-        </extend-checkbox-group>
-      </div>
+      <el-form
+        :label-position="ControlConfig.labelPositionModel"
+        :label-width=labelWidthCalc
+      >
+        <el-form-item :label="ControlConfig.CTitleCN">
+          <div v-if="ControlConfig.CAttribute.typeModel==='checkbox' && ControlConfig.CAttribute.showAllCheckbox">
+            <extend-checkbox
+              :indeterminate="ControlConfig.CAttribute.indeterminateCheckbox"
+              v-model="ControlConfig.CAttribute.checkAllCheckbox"
+              @change="CheckAllChange"
+            >全选
+            </extend-checkbox>
+          </div>
+          <extend-checkbox-group
+            :class="[
+              !(ControlConfig.CAttribute.showAllCheckbox) ? 'showAll' : ''
+            ]"
+            v-if="ControlConfig.CAttribute.typeModel==='checkbox'"
+            v-model="ControlConfig.CAttribute.defaultCheckboxSelected"
+            :min="ControlConfig.CAttribute.ableSelectedMin"
+            :max="ControlConfig.CAttribute.ableSelectedMax">
+            <extend-checkbox
+              @click="SelectedChange(item.label)"
+              v-for="(item, index) in ControlConfig.CAttribute.itemAttr"
+              :key="item.label"
+              :label="item.label"
+              :disabled="item.isDisabled">
+              {{item.showContent}}
+            </extend-checkbox>
+          </extend-checkbox-group>
+          <extend-checkbox-group
+            v-else
+            :class="[
+              !(ControlConfig.CAttribute.showAllCheckbox) ? 'showAll' : ''
+            ]"
+            v-model="ControlConfig.CAttribute.defaultCheckboxSelected"
+            :size="ControlConfig.CAttribute.sizeModel"
+            :text-color="ControlConfig.CAttribute.textColor"
+            :fill="ControlConfig.CAttribute.fillColor"
+            :min="ControlConfig.CAttribute.ableSelectedMin"
+            :max="ControlConfig.CAttribute.ableSelectedMax">
+            <extend-checkbox-button
+              @click="SelectedChange(item.label)"
+              v-for="(item, index) in ControlConfig.CAttribute.itemAttr"
+              :key="item.label"
+              :label="item.label"
+              :disabled="item.isDisabled">
+              {{item.showContent}}
+            </extend-checkbox-button>
+          </extend-checkbox-group>
+        </el-form-item>
+      </el-form>
     </div>
   </div>
 </template>
@@ -80,6 +136,12 @@
       ControlID: {
         type: String,
         default: null
+      },
+      formOBJ: {
+        type: Object
+      },
+      formItem: {
+        type: Object
       }
     },
     computed: {
@@ -90,18 +152,9 @@
       }
     },
     methods: {
-      emitConfig () {
-        this.config = this.initConfig
-        if (this.ControlConfig) {
-          this.config = this.ControlConfig
-        }
-        if (this.ControlID && (!this.config.ControlID)) {
-          this.config.ControlID = this.ControlID
-        }
-        this.$emit(`getValue`, this.config)
-      },
       ControlClick () {
-        this.emitConfig()
+        this.formOBJ.mutations.selectObj(this.formOBJ, this.formItem)
+        this.$emit('changeTAB', this.formItem)
       },
       SelectedChange (label) {
         this.config.CAttribute.itemAttr.forEach((item, index) => {
@@ -153,7 +206,7 @@
           CLayout: [ // 布局
             { // flex 布局
               type: Number,
-              name: '自适应布局',
+              name: '自适应',
               default: 1,
               value: 'flexLayout',
               status: true,
@@ -161,7 +214,7 @@
             },
             { // 百分比布局
               type: Number,
-              name: '百分比布局',
+              name: '百分比',
               default: 100,
               value: 'percentLayout',
               status: false,
@@ -169,7 +222,7 @@
             },
             { // 像素布局
               type: Number,
-              name: '像素布局',
+              name: '像素',
               default: 100,
               value: 'pixelLayout',
               status: false,
@@ -177,7 +230,7 @@
             },
             { // 栅格布局
               type: Number,
-              name: '栅格布局',
+              name: '栅格',
               default: 12,
               value: 'columnLayout',
               status: false,
@@ -269,4 +322,7 @@
     padding 8px 0px
     color $font-primary
     font-size $font-medium
+
+  .showAll
+    margin-top 8px
 </style>

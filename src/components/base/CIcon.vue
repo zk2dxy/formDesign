@@ -11,6 +11,7 @@
           <i class="icon-block" :title="icon.title" :class="`el-icon-`+icon.className"></i>
         </span>
       </div>
+      {{chooseRes}}
       <span slot="footer" class="dialog-footer">
         <el-button @click="postIcon(false)">取 消</el-button>
         <el-button type="primary" @click="postIcon(true)">确 定</el-button>
@@ -21,10 +22,21 @@
 <script type="text/ecmascript-6">
   export default {
     name: `CIcon`,
+    props: {
+      getIcon: {
+        type: Object
+      }
+    },
     created () {
-      this.chooseRes = '' // 清空选择结果集
       this.IconArray = [] // 清空所有选择集
       this.IconArray = this.I // 赋值图标组
+      let getIconClassName = this.getIcon.className
+      for (let i in this.IconArray) {
+        if (this.IconArray[i].className === getIconClassName) {
+          this.chooseRes = this.IconArray[i] // 默认选中结果集
+          this.IconArray[i].status = true
+        }
+      }
     },
     data () {
       return {
@@ -43,7 +55,7 @@
     },
     methods: {
       handleClose () {
-        this.$emit('postIcon', this.chooseRes)
+        this.getIcon.chooseStatus = false
       },
       choose (item) {
         this.chooseRes = ''
@@ -67,9 +79,12 @@
               type: 'warning'
             })
             return false
+          } else {
+            this.$emit('postIcon', this.chooseRes)
           }
+        } else {
+          this.getIcon.chooseStatus = false
         }
-        this.$emit('postIcon', this.chooseRes)
       }
     }
   }

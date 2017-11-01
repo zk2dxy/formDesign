@@ -6,7 +6,7 @@
       ]">
         表单属性
       </li>
-      <li @click="changeTab('controlSetting')" class="items" :class="[
+      <li @click="changeTab('controlSetting',true)" class="items" :class="[
         activeJudge === false ? 'active' : ''
       ]">
         控件属性
@@ -74,7 +74,7 @@
             </el-form>
           </div><!--英文标题ended-->
           <!--文字对齐方式 start-->
-          <div v-else-if="index === 'labelPositionModel'">
+          <div v-else-if="index === 'labelPositionModel' && config['CTitleCN'] ">
             <el-form label-position="top">
               <el-form-item
                 class="lineRow"
@@ -171,6 +171,7 @@
           <!--基本属性 start-->
           <div v-else-if="index === 'CAttribute'">
             <div v-for="(itemIn, indexIn) in item">
+
               <!--折叠面板标题 start-->
               <div v-if="indexIn === 'currentValue' && config.CAttribute.typeModel === 'collapse'">
                 <el-form label-position="right" label-width="70px">
@@ -196,6 +197,8 @@
                   </el-form-item>
                 </el-form>
               </div> <!--折叠面板标题 ended-->
+
+
               <!--Card卡片 start-->
               <div v-else-if="index === 'cardCurrent'">
                 <!--卡片标题 start-->
@@ -274,22 +277,32 @@
                   </div>
                 </div>
               </div><!--Card卡片 ended-->
+
+
               <!--addCollapseStatus start-->
               <div v-else-if="indexIn === 'addCollapseStatus'">
-                <el-button type="primary" @click="addItem()"><i class="el-icon-plus"></i></el-button>
-                <el-dialog :visible.sync="config.CAttribute.addCollapseStatus" :show-close="false">
-                  <h4 slot="title">添加：</h4>
-                  <el-input v-model="config.CAttribute.collapseItem[config.CAttribute.collapseItem.length - 1].name"
-                            placeholder="唯一标识符"></el-input>
-                  <el-input v-model="config.CAttribute.collapseItem[config.CAttribute.collapseItem.length - 1].title"
-                            placeholder="面板标题"></el-input>
-                  <el-input v-model="config.CAttribute.collapseItem[config.CAttribute.collapseItem.length - 1].content"
-                            placeholder="面板内容"></el-input>
-                  <div slot="footer" class="dialog-footer">
-                    <el-button @click="closeCollapseDialog(false)">取 消</el-button>
-                    <el-button type="primary" @click="closeCollapseDialog(true)">确 定</el-button>
-                  </div>
-                </el-dialog>
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="增加选项"
+                  >
+                    <el-button type="primary" @click="addItem()"><i class="el-icon-plus"></i></el-button>
+                  </el-form-item>
+                  <el-dialog :visible.sync="config.CAttribute.addCollapseStatus" :show-close="false">
+                    <h4 slot="title">添加：</h4>
+                    <el-input v-model="config.CAttribute.collapseItem[config.CAttribute.collapseItem.length - 1].name"
+                              placeholder="唯一标识符"></el-input>
+                    <el-input v-model="config.CAttribute.collapseItem[config.CAttribute.collapseItem.length - 1].title"
+                              placeholder="面板标题"></el-input>
+                    <el-input
+                      v-model="config.CAttribute.collapseItem[config.CAttribute.collapseItem.length - 1].content"
+                      placeholder="面板内容"></el-input>
+                    <div slot="footer" class="dialog-footer">
+                      <el-button @click="closeCollapseDialog(false)">取 消</el-button>
+                      <el-button type="primary" @click="closeCollapseDialog(true)">确 定</el-button>
+                    </div>
+                  </el-dialog>
+                </el-form>
               </div> <!--addCollapseStatus ended-->
               <!--Loading加载  start-->
               <div v-else-if="indexIn === 'loadingText'">
@@ -303,9 +316,11 @@
                   </el-form-item>
                 </el-form>
               </div> <!--Loading加载  ended-->
+
+
               <!--page分页  start-->
               <div v-else-if="indexIn === 'pageSmall'">
-                <el-form label-position="right" label-width="70px">
+                <el-form label-position="right" label-width="154px">
                   <el-form-item
                     class="lineRow"
                     label="是否使用小型分页样式"
@@ -354,10 +369,28 @@
                               v-model.number="config[index][indexIn]"></el-input>
                   </el-form-item>
                 </el-form>
-              </div> <!--page分页  ended-->
+              </div>
+
+              <div v-else-if="indexIn === 'pageAlign'">
+                <el-form label-position="top" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="控件对齐方式"
+                  >
+                    <el-radio-group v-model="config[index][indexIn]">
+                      <el-radio :key="radio.value" v-for="radio in config[index].pageAlignOption" :label="radio.value">
+                        {{radio.name}}
+                      </el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <!--page分页  ended-->
+
+
               <!--Cascader 级联  start-->
               <div v-else-if="indexIn === 'showAllLevels'">
-                <el-form label-position="right" label-width="70px">
+                <el-form label-position="right" label-width="125px">
                   <el-form-item
                     class="lineRow"
                     label="是否显示完整路径"
@@ -371,7 +404,7 @@
                 </el-form>
               </div>
               <div v-else-if="indexIn === 'filterableOption'">
-                <el-form label-position="right" label-width="70px">
+                <el-form label-position="right" label-width="110px">
                   <el-form-item
                     class="lineRow"
                     label="是否可搜索选项"
@@ -385,10 +418,10 @@
                 </el-form>
               </div>
               <div v-else-if="indexIn === 'changeOnSelectOption'">
-                <el-form label-position="right" label-width="70px">
+                <el-form label-position="right" label-width="166px">
                   <el-form-item
                     class="lineRow"
-                    label="是否允许选择任意一级的选项"
+                    label="是否允许选择任一级选项"
                   >
                     <el-radio-group v-model="config[index].changeOnSelect">
                       <el-radio :key="radio.value" v-for="radio in config[index][indexIn]" :label="radio.value">
@@ -402,7 +435,7 @@
                 <el-form label-position="right" label-width="70px">
                   <el-form-item
                     class="lineRow"
-                    label="尺寸"
+                    label="控件尺寸"
                   >
                     <el-radio-group v-model="config[index].cascadeSize">
                       <el-radio :key="radio.value" v-for="radio in config[index][indexIn]" :label="radio.value">
@@ -416,7 +449,7 @@
                 <el-form label-position="right" label-width="70px">
                   <el-form-item
                     class="lineRow"
-                    label="标题"
+                    label="控件标题"
                   >
                     <el-input @change="changeConfig()" placeholder="级联标题"
                               v-model="config[index][indexIn]"></el-input>
@@ -427,7 +460,7 @@
                 <el-form label-position="right" label-width="70px">
                   <el-form-item
                     class="lineRow"
-                    label="控件提示语"
+                    label="控件提示"
                   >
                     <el-input @change="changeConfig()" placeholder="控件描述(非必填)"
                               v-model="config[index][indexIn]"></el-input>
@@ -435,39 +468,31 @@
                 </el-form>
               </div>
               <!--Cascader 级联 ended-->
+
+
               <!--type属性  start-->
               <div v-if="indexIn === 'type'">
-                <el-form label-position="right" label-width="70px">
+                <el-form label-position="top" label-width="70px">
                   <el-form-item
                     class="lineRow"
                     label="控件类型"
                   >
                     <el-radio-group v-model="config[index].typeModel">
-                      <el-radio :key="radio.value" v-for="radio in config[index][indexIn]" :label="radio.value">
+                      <el-radio :key="radio.value" v-for="radio in config[index][indexIn]" :label="radio.value"
+                                class="type">
                         {{radio.name}}
                       </el-radio>
                     </el-radio-group>
                   </el-form-item>
                 </el-form>
               </div> <!--type属性  ended-->
-              <div v-else-if="indexIn === 'description'">
-                <el-form label-position="right" label-width="70px">
-                  <el-form-item
-                    class="lineRow"
-                    label="控件描述"
-                  >
-                    <el-input type="textarea" @change="changeConfig()" placeholder="控件描述(非必填)"
-                              v-model="config[index][indexIn]"></el-input>
-                  </el-form-item>
-                </el-form>
-              </div>
               <div v-else-if="indexIn === 'placeholder'">
                 <el-form label-position="right" label-width="70px">
                   <el-form-item
                     class="lineRow"
-                    label="控件提示语"
+                    label="控件提示"
                   >
-                    <el-input @change="changeConfig()" placeholder="控件描述(非必填)"
+                    <el-input @change="changeConfig()" placeholder="请输入默认值或者为空"
                               v-model="config[index][indexIn]"></el-input>
                   </el-form-item>
                 </el-form>
@@ -476,7 +501,7 @@
                 <el-form label-position="right" label-width="70px">
                   <el-form-item
                     class="lineRow"
-                    label="输入框前置追加"
+                    label="前置追加"
                   >
                     <el-input @change="changeConfig()" placeholder="输入框前置追加头(非必填)"
                               v-model="config[index][indexIn]"></el-input>
@@ -487,15 +512,576 @@
                 <el-form label-position="right" label-width="70px">
                   <el-form-item
                     class="lineRow"
-                    label="输入框尾部增加"
+                    label="尾部增加"
                   >
                     <el-input @change="changeConfig()" placeholder="输入框尾部增加(非必填)"
                               v-model="config[index][indexIn]"></el-input>
                   </el-form-item>
                 </el-form>
               </div>
+              <div v-else-if="indexIn === 'description'">
+                <el-form label-position="top" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="控件描述"
+                  >
+                    <el-input type="textarea" @change="changeConfig()" placeholder="控件描述(非必填)"
+                              v-model="config[index][indexIn]"></el-input>
+                  </el-form-item>
+                </el-form>
+              </div>
+
+
+              <!--radio,checkbox按钮  start-->
+              <div
+                v-else-if="indexIn === 'size' && (config.CAttribute.typeModel==='button' || config.CName === 'CSelect' || config.CName === 'CDateTimePicker'|| config.CName === 'CButton')">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="控件尺寸"
+                  >
+                    <div v-if="config.CName === 'CDateTimePicker' && config.CAttribute.rangeOfFixedEnd">
+                      <el-form-item>
+                        <el-radio-group v-model="config[index].sizeModelend">
+                          <el-radio :key="radio.value" v-for="radio in config[index][indexIn]" :label="radio.value">
+                            {{radio.name}}
+                          </el-radio>
+                        </el-radio-group>
+                      </el-form-item>
+                    </div>
+                    <div v-else>
+                      <el-form-item>
+                        <el-radio-group v-model="config[index].sizeModel">
+                          <el-radio :key="radio.value" v-for="radio in config[index][indexIn]" :label="radio.value">
+                            {{radio.name}}
+                          </el-radio>
+                        </el-radio-group>
+                      </el-form-item>
+                    </div>
+                  </el-form-item>
+                </el-form>
+              </div> <!--radio,checkbox按钮样式尺寸  ended-->
+              <div v-else-if="indexIn === 'textColor' && config.CAttribute.typeModel==='button'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="激活文本颜色"
+                  >
+                    <el-color-picker v-model="config[index].textColor"></el-color-picker>
+                  </el-form-item>
+                </el-form>
+              </div> <!--radio,checkbox按钮样式激活时文本颜色  ended-->
+              <div v-else-if="indexIn === 'fillColor' && config.CAttribute.typeModel==='button'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="激活填充和边框颜色"
+                  >
+                    <el-color-picker v-model="config[index].fillColor"></el-color-picker>
+                  </el-form-item>
+                </el-form>
+              </div> <!--radio,checkbox按钮样式激活时填充边和边框颜色  ended-->
+              <div v-else-if="indexIn === 'currentSelected' && config[index].typeModel !== 'selectGroup'">
+                <el-form
+                  :model="config[index].itemAttr[itemIn]"
+                  :rules="rules">
+                  <el-form-item prop="label">
+                    <p>控件选项值</p>
+                    <el-input v-model="config[index].itemAttr[itemIn].label"
+                              @focus="focusCheckbox"
+                              @change="valueChange"></el-input>
+                  </el-form-item>
+                  <el-form-item
+                    class="lineRow"
+                    label="显示内容"
+                  >
+                    <el-input v-model="config[index].itemAttr[itemIn].showContent"></el-input>
+                  </el-form-item>
+                  <el-form-item
+                    class="lineRow"
+                    label="删除选项"
+                  >
+                    <el-button type="primary" @click="DeleteItem(itemIn)"><i class="el-icon-delete"></i></el-button>
+                  </el-form-item>
+                  <el-form-item
+                    class="lineRow"
+                    label="禁用选项"
+                  >
+                    <el-checkbox v-model="config[index].itemAttr[itemIn].isDisabled" label="禁用"></el-checkbox>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'showAllCheckbox' && config[index].typeModel !== 'button'">
+                <el-form label-position="right" label-width="80px">
+                  <el-form-item
+                    class="lineRow"
+                    label="全选选项"
+                  >
+                    <el-checkbox v-model="config[index].showAllCheckbox"></el-checkbox>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'ableSelectedMin'">
+                <el-form label-position="right" label-width="86px">
+                  <el-form-item
+                    class="lineRow"
+                    label="可选最小值"
+                  >
+                    <el-input-number v-model="config[index].ableSelectedMin" :min="0"></el-input-number>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div
+                v-else-if="indexIn === 'ableSelectedMax' && (config.CName !== 'CSelect' || config[index].isMultiple === true)">
+                <el-form label-position="right" label-width="86px">
+                  <el-form-item
+                    class="lineRow"
+                    label="可选最大值"
+                  >
+                    <el-input-number v-model="config[index].ableSelectedMax" :min="0"></el-input-number>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'currentSelectedGroup' && config[index].typeModel === 'selectGroup'">
+                <el-form label-position="right" label-width="90px">
+                  <el-form-item
+                    class="lineRow"
+                    label="控件选项值"
+                  >
+                    <el-input
+                      v-model="config[index].itemAttrSelectGroup[itemIn[0]].options[itemIn[1]].label"
+                      @focus="focusSelect"
+                      @change="selectValueChange"></el-input>
+                  </el-form-item>
+                  <el-form-item
+                    class="lineRow"
+                    label="显示内容"
+                  >
+                    <el-input
+                      v-model="config[index].itemAttrSelectGroup[itemIn[0]].options[itemIn[1]].showContent"></el-input>
+                  </el-form-item>
+                  <el-form-item
+                    class="lineRow"
+                    label="删除选项"
+                  >
+                    <el-button type="primary" @click="DeleteItemSelectGroup(itemIn)"><i class="el-icon-delete"></i>
+                    </el-button>
+                  </el-form-item>
+                  <el-form-item
+                    class="lineRow"
+                    label="禁用选项"
+                  >
+                    <el-checkbox v-model="config[index].itemAttrSelectGroup[itemIn[0]].options[itemIn[1]].isDisabled"
+                                 label="禁用"></el-checkbox>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'isMultiple'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="多选"
+                  >
+                    <el-checkbox v-model="config[index].isMultiple" label="多选" @change="doSelectMultiple"></el-checkbox>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="config[index].isMultiple === false && indexIn === 'isSelectClearable'">
+                <el-form label-position="right" label-width="150px">
+                  <el-form-item
+                    class="lineRow"
+                    label="单选时显示清除选项"
+                  >
+                    <el-checkbox v-model="config[index].isSelectClearable"></el-checkbox>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'isSelectFilterable'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="可搜索"
+                  >
+                    <el-checkbox v-model="config[index].isSelectFilterable"></el-checkbox>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'isSelectCreate'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="创建条目"
+                  >
+                    <el-checkbox v-model="config[index].isSelectCreate" @change="doSelectCreate"></el-checkbox>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'isSelectRemote'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="远程搜索"
+                  >
+                    <el-checkbox v-model="config[index].isSelectRemote" @change="doSelectRemote"></el-checkbox>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'loadingText' && config[index].isSelectRemote">
+                <el-form label-position="top" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="远程加载时显示"
+                  >
+                    <el-input v-model="config[index].loadingText"></el-input>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'noMatchText' && config[index].isSelectFilterable">
+                <el-form label-position="top" label-width="110px">
+                  <el-form-item
+                    class="lineRow"
+                    label="搜索条件无匹配显示"
+                  >
+                    <el-input v-model="config[index].noMatchText"></el-input>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'noDataText'">
+                <el-form label-position="right" label-width="90px">
+                  <el-form-item
+                    class="lineRow"
+                    label="选项为空显示"
+                  >
+                    <el-input v-model="config[index].noDataText"></el-input>
+                  </el-form-item>
+                </el-form>
+              </div>
+
+
+              <!--设置switch属性  start-->
+              <div v-else-if="indexIn === 'switchStatus'">
+                <el-form label-position="right" label-width="86px">
+                  <el-form-item
+                    class="lineRow"
+                    label="设置开关值"
+                  >
+                    <el-checkbox v-model="addSwitchValue"></el-checkbox>
+                  </el-form-item>
+                  <div v-if="itemIn">
+                    <div v-if="addSwitchValue">
+                      <el-form-item
+                        class="lineRow"
+                        label="打开时的值"
+                      >
+                        <el-input v-model="config[index].onSwitchValue" @change="switchValue"></el-input>
+                      </el-form-item>
+                      <el-form-item
+                        class="lineRow"
+                        label="增加值提示"
+                      >
+                        <el-checkbox v-model="config[index].showSwitchTooltip"></el-checkbox>
+                      </el-form-item>
+                    </div>
+                    <el-form-item
+                      class="lineRow"
+                      label="打开时文字"
+                    >
+                      <el-input v-model="config[index].onText"></el-input>
+                    </el-form-item>
+                    <el-form-item
+                      class="lineRow"
+                      label="打开时背景"
+                    >
+                      <el-color-picker v-model="config[index].onFillColor"></el-color-picker>
+                    </el-form-item>
+                  </div>
+                  <div v-else>
+                    <div v-if="addSwitchValue">
+                      <el-form-item
+                        class="lineRow"
+                        label="关闭时的值"
+                      >
+                        <el-input v-model="config[index].offSwitchValue" @change="switchValue"></el-input>
+                      </el-form-item>
+                      <el-form-item
+                        class="lineRow"
+                        label="增加值提示"
+                      >
+                        <el-checkbox v-model="config[index].showSwitchTooltip"></el-checkbox>
+                      </el-form-item>
+                    </div>
+                    <el-form-item
+                      class="lineRow"
+                      label="关闭时文字"
+                    >
+                      <el-input v-model="config[index].offText"></el-input>
+                    </el-form-item>
+                    <el-form-item
+                      class="lineRow"
+                      label="关闭时背景"
+                    >
+                      <el-color-picker v-model="config[index].offFillColor"></el-color-picker>
+                    </el-form-item>
+                  </div>
+                </el-form>
+              </div> <!--设置switch属性  ended-->
+
+
+              <!--设置slider  start-->
+              <div v-else-if="indexIn === 'sliderStep'">
+                <el-form label-position="right" label-width="86px" :model="config[index]" :rules="rulesSlider">
+                  <el-form-item
+                    prop="sliderStep"
+                    class="lineRow"
+                    label="控件步长"
+                  >
+                    <el-input v-model.number="config[index].sliderStep"></el-input>
+                  </el-form-item>
+                  <el-form-item
+                    v-if="config[index].typeModel === 'vertical'"
+                    prop="height"
+                    class="lineRow"
+                    label="控件高度"
+                  >
+                    <el-input v-model.number="config[index].height"></el-input>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'sliderRange'">
+                <el-form label-position="right" label-width="86px">
+                  <el-form-item
+                    class="lineRow"
+                    label="范围选择"
+                  >
+                    <el-checkbox v-model="config[index].sliderRange" label="范围" @change="rangeChange"></el-checkbox>
+                  </el-form-item>
+                  <div v-if="!config[index].sliderRange">
+                    <el-form-item
+                      class="lineRow"
+                      label="显示输入框"
+                    >
+                      <el-checkbox v-model="config[index].sliderShowInput"></el-checkbox>
+                    </el-form-item>
+                  </div>
+                  <div v-if="config[index].sliderShowInput">
+                    <el-form-item
+                      class="lineRow"
+                      label="显示按钮"
+                    >
+                      <el-checkbox v-model="config[index].sliderShowInputButton"></el-checkbox>
+                    </el-form-item>
+                  </div>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'sliderShowStops'">
+                <el-form label-position="right" label-width="86px">
+                  <el-form-item
+                    class="lineRow"
+                    label="显示间断点"
+                  >
+                    <el-checkbox v-model="config[index].sliderShowStops"></el-checkbox>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'sliderShowTooltip'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="显示提示"
+                  >
+                    <el-checkbox v-model="config[index].sliderShowTooltip"></el-checkbox>
+                  </el-form-item>
+                </el-form>
+              </div> <!--设置slider  ended-->
+
+
+              <!--设置datePicker  start-->
+              <div v-else-if="indexIn === 'typeModel' && itemIn === 'time'">
+                <el-form label-position="right" label-width="84px">
+                  <el-form-item
+                    class="lineRow"
+                    label="固定时间点"
+                  >
+                    <el-checkbox v-model="config[index].timeFixed"></el-checkbox>
+                  </el-form-item>
+                  <div v-if="config[index].timeFixed">
+                    <el-form-item
+                      class="lineRow"
+                      label="起始时间"
+                    >
+                      <el-time-picker
+                        :picker-options="{selectableRange: '00:00:00 - 23:59:59'}" placeholder="请输入起始时间"
+                        @change="formatStartTime"
+                        format="HH:mm"
+                        v-model="startTime"></el-time-picker>
+                    </el-form-item>
+                    <el-form-item
+                      class="lineRow"
+                      label="时间间隔"
+                    >
+                      <el-time-picker
+                        v-model="stepTime"
+                        :picker-options="{selectableRange: '00:00:00 - 23:59:59'}"
+                        @change="formatStepTime"
+                        format="HH:mm"
+                        placeholder="请输入间隔时间"></el-time-picker>
+                    </el-form-item>
+                    <el-form-item
+                      class="lineRow"
+                      label="结束时间"
+                    >
+                      <el-time-picker
+                        v-model="endTime"
+                        :picker-options="{selectableRange: '00:00:00 - 23:59:59'}"
+                        @change="formatEndTime"
+                        format="HH:mm"
+                        placeholder="请输入间隔时间"></el-time-picker>
+                    </el-form-item>
+                  </div>
+                  <div v-if="!config[index].timeFixed">
+                    <el-form-item
+                      class="lineRow"
+                      label="可选择范围"
+                    >
+                      <el-time-picker
+                        is-range
+                        v-model="timeSelectableRange"
+                        @change="formatSelectableRange"
+                        placeholder="选择时间范围">
+                      </el-time-picker>
+                    </el-form-item>
+                  </div>
+                </el-form>
+                <div>
+                  <el-form label-position="right" label-width="112px">
+                    <el-form-item
+                      class="lineRow"
+                      label="是否为范围选择"
+                    >
+                      <el-checkbox v-model="config[index].isRangeSelect"></el-checkbox>
+                    </el-form-item>
+                  </el-form>
+                </div>
+              </div>
+              <div v-else-if="indexIn === 'typeModel' && itemIn === 'date'">
+                <el-form label-position="right" label-width="70px">
+                  <div v-if="config[index].dateTypeModel === 'date' ||
+                config[index].dateTypeModel === 'daterange' ||
+                config[index].dateTypeModel === 'datetimerange'">
+                    <el-form-item
+                      class="lineRow"
+                      label="是否带快捷选项"
+                    >
+                      <el-checkbox v-model="config[index].isHasShortcut"></el-checkbox>
+                    </el-form-item>
+                  </div>
+                  <el-form-item
+                    class="lineRow"
+                    label="选择类型"
+                  >
+                    <el-radio-group v-model="config[index].dateTypeModel">
+                      <el-radio :key="radio.value" v-for="radio in config[index].dateType" :label="radio.value">
+                        {{radio.name}}
+                      </el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                  <el-form-item
+                    class="lineRow"
+                    label="格式化"
+                  >
+                    <el-input v-model="config[index].formatDate" placeholder="年yyyy月MM日dd小时HH分mm秒ss"></el-input>
+                  </el-form-item>
+                  <div
+                    v-if="config[index].dateTypeModel === 'daterange' || config[index].dateTypeModel ===  'datetimerange'">
+                    <el-form-item
+                      class="lineRow"
+                      label="选择范围时的分隔符"
+                    >
+                      <el-input v-model="config[index].rangeSeparator"></el-input>
+                    </el-form-item>
+                  </div>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'timeEditable' && !config[index].timeFixed">
+                <el-form label-position="right" label-width="130px">
+                  <el-form-item
+                    class="lineRow"
+                    label="文本框是否可输入"
+                  >
+                    <el-checkbox v-model="config[index].timeEditable"></el-checkbox>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'isShowClearable'">
+                <el-form label-position="right" label-width="130px">
+                  <el-form-item
+                    class="lineRow"
+                    label="是否显示清除按钮"
+                  >
+                    <div v-if="config[index].rangeOfFixedEnd">
+                      <el-checkbox v-model="config[index].isShowClearableend"></el-checkbox>
+                    </div>
+                    <div v-else>
+                      <el-checkbox v-model="config[index].isShowClearable"></el-checkbox>
+                    </div>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'defaultSwitchStatus'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="设默认值"
+                  >
+                    {{itemIn}}
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'defaultCheckboxSelected'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="设默认值"
+                  >
+                    {{itemIn}}
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'defaultSelected'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="设默认值"
+                  >
+                    {{itemIn}}
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'width'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="控件宽度"
+                  >
+                    <el-input-number v-model="config[index].width" :min="46"></el-input-number>
+                  </el-form-item>
+                </el-form>
+              </div> <!--设置datePicker  ended-->
+
+
+              <!--tag标签的属性 start-->
+              <div v-else-if="indexIn === 'defaultTagName'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="标签名称"
+                  >
+                    <el-input @change="changeConfig()" v-model="config[index][indexIn]"></el-input>
+                  </el-form-item>
+                </el-form>
+              </div>
               <div v-else-if="indexIn === 'closable'">
-                <el-form label-position="right" label-width="100px">
+                <el-form label-position="right" label-width="90px">
                   <el-form-item
                     class="lineRow"
                     label="可关闭状态"
@@ -504,7 +1090,7 @@
                   </el-form-item>
                 </el-form>
                 <div v-if="config[index][indexIn].closableStatus">
-                  <el-form label-position="right" label-width="100px">
+                  <el-form label-position="top" label-width="100px">
                     <el-form-item
                       class="lineRow"
                       label="是否应用渐变动画"
@@ -519,30 +1105,570 @@
                   </el-form>
                 </div>
               </div>
+              <div v-else-if="indexIn === 'hit'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="是否描边"
+                  >
+                    <el-radio-group v-model="config[index][indexIn].hitStatus">
+                      <el-radio :key="radio.value" v-for="radio in config[index][indexIn].hitable" :label="radio.value">
+                        {{radio.name}}
+                      </el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'colorTag'">
+                <div class="block">
+                  <el-form label-position="right" label-width="70px">
+                    <el-form-item
+                      class="lineRow"
+                      label="选背景色"
+                    >
+                      <el-color-picker v-model="config[index][indexIn]"></el-color-picker>
+                    </el-form-item>
+                  </el-form>
+                </div>
+              </div> <!--tag标签的属性 ended-->
 
 
+              <!--进度条的属性  start-->
+              <div v-else-if="indexIn === 'value'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="设百分比"
+                  >
+                    <el-input @change="changeConfig()"
+                              v-model.number="config[index][indexIn]"></el-input>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'showText'">
+                <el-form label-position="right" label-width="100px" class="left">
+                  <el-form-item
+                    class="lineRow"
+                    label="是否显示文字"
+                  >
+                    <el-checkbox v-model="config[index][indexIn].showTextStatus"></el-checkbox>
+                  </el-form-item>
+                  <div v-if="config[index][indexIn].showTextStatus && config[index].typeModel === 'line'">
+                    <el-form-item
+                      class="lineRow"
+                      label="文字显示位置"
+                    >
+                      <el-radio-group v-model="config[index][indexIn].textInsideStatus">
+                        <el-radio :key="radio.value" v-for="radio in config[index][indexIn].textInside"
+                                  :label="radio.value">
+                          {{radio.name}}
+                        </el-radio>
+                      </el-radio-group>
+                    </el-form-item>
+                  </div>
+                  <div v-if="config[index].typeModel === 'circle'">
+                    <el-form-item
+                      class="lineRow"
+                      label="设环形宽度值"
+                    >
+                      <el-input @change="changeConfig()"
+                                v-model.number="config[index][indexIn].width"></el-input>
+                    </el-form-item>
+                  </div>
+                  <el-form-item
+                    class="lineRow"
+                    label="设线形宽度值"
+                  >
+                    <el-input @change="changeConfig()"
+                              v-model.number="config[index][indexIn].strokeWidth"></el-input>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'progressStatus'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="控件状态"
+                  >
+                    <el-radio-group v-model="config[index][indexIn].progressStatusCurrent">
+                      <el-radio :key="radio.value" v-for="radio in config[index][indexIn].status" :label="radio.value">
+                        {{radio.name}}
+                      </el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-form>
+              </div> <!--进度条的属性  ended-->
 
+
+              <!--badge标记的属性  start-->
+              <div v-else-if="indexIn === 'badgeValue'">
+                <el-form label-position="right" label-width="70px">
+                  <div v-if="config[index].typeModel === 'string' && !config[index].isDot.dotStatus">
+                    <el-form-item
+                      class="lineRow"
+                      label="字符串值"
+                    >
+                      <el-input type="input" @change="changeConfig()" placeholder="请输入"
+                                v-model="config[index][indexIn].defaultValue"></el-input>
+                    </el-form-item>
+                  </div>
+                  <div v-if="config[index].typeModel === 'number' && !config[index].isDot.dotStatus">
+                    <el-form-item
+                      class="lineRow"
+                      label="数字值"
+                    >
+                      <el-input type="input" @change="changeConfig()" placeholder="请输入"
+                                v-model.number="config[index][indexIn].defaultValue"></el-input>
+                    </el-form-item>
+                    <el-form-item
+                      class="lineRow"
+                      label="最大值"
+                    >
+                      <el-input type="input" @change="changeConfig()" placeholder="请输入最大值"
+                                v-model.number="config[index][indexIn].max"></el-input>
+                    </el-form-item>
+                  </div>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'isDot'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="显示类型"
+                  >
+                    <el-radio-group v-model="config[index][indexIn].dotStatus">
+                      <el-radio :key="radio.value" v-for="radio in config[index][indexIn].dotAble" :label="radio.value">
+                        {{radio.name}}
+                      </el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'badgeStatus'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="标记状态"
+                  >
+                    <el-radio-group v-model="config[index][indexIn].hidden">
+                      <el-radio :key="radio.value" v-for="radio in config[index][indexIn].hiddenAble"
+                                :label="radio.value">
+                        {{radio.name}}
+                      </el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-form>
+              </div> <!--badge标记的属性  ended-->
+
+
+              <!--tabs标签页的属性  start-->
+              <div v-else-if="indexIn === 'tabsStatus'">
+                <el-form label-position="top" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="可增加"
+                  >
+                    <el-radio-group v-model="config[index][indexIn].addable">
+                      <el-radio :key="radio.value" v-for="radio in config[index][indexIn].addStatus"
+                                :label="radio.value">
+                        {{radio.name}}
+                      </el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                  <el-form-item
+                    class="lineRow"
+                    label="可关闭"
+                  >
+                    <el-radio-group v-model="config[index][indexIn].closable">
+                      <el-radio :key="radio.value" v-for="radio in config[index][indexIn].closeStatus"
+                                :label="radio.value">
+                        {{radio.name}}
+                      </el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                  <el-form-item
+                    class="lineRow"
+                    label="可同时增加和关闭"
+                  >
+                    <el-radio-group v-model="config[index][indexIn].editable">
+                      <el-radio :key="radio.value" v-for="radio in config[index][indexIn].editStatus"
+                                :label="radio.value">
+                        {{radio.name}}
+                      </el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-form>
+              </div> <!--tabs标签页的属性  ended-->
+
+
+              <!--Dialog对话框的属性  start-->
+              <div v-else-if="indexIn === 'top'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="控件位置"
+                  >
+                    <el-input type="input" @change="changeConfig()" placeholder="控件描述(非必填)"
+                              v-model="config[index][indexIn]"></el-input>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'title'"> <!--Dialog对话框、Popover的title属性-->
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="控件标题"
+                  >
+                    <el-input type="input" @change="changeConfig()" v-model="config[index][indexIn]"></el-input>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'dialogSize'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="控件大小"
+                  >
+                    <el-radio-group v-model="config[index][indexIn].currentSize">
+                      <el-radio :key="radio.name" v-for="radio in config[index][indexIn].sizeAble" :label="radio.name">
+                        {{radio.name}}
+                      </el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'modal'"> <!--Dialog对话框的model属性-->
+                <el-form label-position="right" label-width="120px">
+                  <el-form-item
+                    class="lineRow"
+                    label="是否需要遮罩层"
+                  >
+                    <el-radio-group v-model="config[index][indexIn].modal">
+                      <el-radio :key="radio.value" v-for="radio in config[index][indexIn].modalAble"
+                                :label="radio.value">
+                        {{radio.name}}
+                      </el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                  <div v-if="config[index][indexIn].modal">
+                    <el-form-item
+                      class="lineRow"
+                      label="遮罩层插入位置"
+                    >
+                      <el-radio-group v-model="config[index][indexIn].modalPosition.modalPosition">
+                        <el-radio :key="radio.value"
+                                  v-for="radio in config[index][indexIn].modalPosition.modalPositionAble"
+                                  :label="radio.value">
+                          {{radio.name}}
+                        </el-radio>
+                      </el-radio-group>
+                    </el-form-item>
+                  </div>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'lockScroll'"> <!--Dialog对话框的lockScroll属性-->
+                <el-form label-position="right" label-width="130px">
+                  <el-form-item
+                    class="lineRow"
+                    label="Dialog出现时锁定body滚动"
+                  >
+                    <el-radio-group v-model="config[index][indexIn].lockScroll">
+                      <el-radio :key="radio.value" v-for="radio in config[index][indexIn].lockScrollAble"
+                                :label="radio.value">
+                        {{radio.name}}
+                      </el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'showClose'"> <!--Dialog对话框的showClose属性-->
+                <el-form label-position="right" label-width="120px">
+                  <el-form-item
+                    class="lineRow"
+                    label="是否显示关闭按钮"
+                  >
+                    <el-radio-group v-model="config[index][indexIn].showClose">
+                      <el-radio :key="radio.value" v-for="radio in config[index][indexIn].showCloseAble"
+                                :label="radio.value">
+                        {{radio.name}}
+                      </el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-form>
+              </div> <!--Dialog对话框的属性  ended-->
+
+
+              <!--弹框MessageBox的属性  start-->
+              <div v-else-if="indexIn === 'MessageBoxtitle'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="控件标题"
+                  >
+                    <el-input type="input" @change="changeConfig()" v-model="config[index][indexIn]"></el-input>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'confirmButtonText'">
+                <el-form label-position="right" label-width="90px">
+                  <el-form-item
+                    class="lineRow"
+                    label="确定按钮文字"
+                  >
+                    <el-input type="input" @change="changeConfig()" v-model="config[index][indexIn]"></el-input>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'cancelButtonText'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="取消按钮文字"
+                  >
+                    <el-input type="input" @change="changeConfig()" v-model="config[index][indexIn]"></el-input>
+                  </el-form-item>
+                </el-form>
+              </div> <!--弹框MessageBox的属性  ended-->
+
+
+              <!--Popover弹出框的属性  start-->
+              <div v-else-if="indexIn === 'trigger'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="触发方式"
+                  >
+                    <el-radio-group v-model="config[index].triggerModel">
+                      <el-radio :key="radio.value" v-for="radio in config[index][indexIn]" :label="radio.value">
+                        {{radio.name}}
+                      </el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'width'"> <!--Popover弹出框的width属性-->
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="控件宽度"
+                  >
+                    <el-input type="input" @change="changeConfig()" v-model="config[index][indexIn]"></el-input>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'content'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="控件内容"
+                  >
+                    <el-input type="textarea" @change="changeConfig()" v-model="config[index][indexIn]"></el-input>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'visibleArrow'"> <!--Popover弹出框的visibleArrow属性-->
+                <el-form label-position="right" label-width="138px">
+                  <el-form-item
+                    class="lineRow"
+                    label="是否显示Tooltip箭头"
+                  >
+                    <el-radio-group v-model="config[index][indexIn].visibleArrow">
+                      <el-radio :key="radio.value" v-for="radio in config[index][indexIn].visibleArrowAble"
+                                :label="radio.value">
+                        {{radio.name}}
+                      </el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'offset'"> <!--Popover弹出框的offset属性-->
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="位置偏移"
+                  >
+                    <el-input type="input" @change="changeConfig()" v-model.number="config[index][indexIn]"></el-input>
+                  </el-form-item>
+                </el-form>
+              </div>
+              <div v-else-if="indexIn === 'placement'"> <!--Popover弹出框的位置属性-->
+                <el-form label-position="top" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="控件位置"
+                  >
+                    <el-radio-group v-model="config[index][indexIn].placement">
+                      <el-radio :key="radio.name" v-for="radio in config[index][indexIn].placementAble"
+                                :label="radio.name">
+                        {{radio.name}}
+                      </el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-form>
+              </div> <!--Popover弹出框的属性  ended-->
             </div>
           </div><!--基本属性 ended-->
 
+          <!--CKey属性  start-->
+          <div v-else-if="index === 'CKey'">
+            <div v-for="(itemIn, indexIn) in item">
+              <div v-if="indexIn === 'default'">
+                <el-form label-position="right" label-width="70px">
+                  <el-form-item
+                    class="lineRow"
+                    label="设默认值"
+                  >
+                    <el-input @change="changeConfig()" placeholder="控件默认值"
+                              v-model="config[index][indexIn]"></el-input>
+                  </el-form-item>
+                </el-form>
+              </div>
+            </div>
+          </div> <!--CKey属性  ended-->
 
-
-
-          <!--Demo start-->
-          <div v-else-if="index === ''">
+          <!--Status属性  start-->
+          <div v-else-if="index === 'Status'">
             <el-form label-position="right" label-width="70px">
               <el-form-item
                 class="lineRow"
-                label=""
+                label="控件状态"
               >
-                <el-input
-                  @change="changeConfig()"
-                  v-model="config[index]"
-                  placeholder=""
-                ></el-input>
+                <el-checkbox v-model="item.status"></el-checkbox>
               </el-form-item>
+              <div v-if="item.status">
+                <el-form-item class="lineRow">
+                  <el-checkbox-group v-model="config[index].ruleList">
+                    <el-checkbox :key="checkbox.value" v-for="checkbox in config[index].rules" :label="checkbox.value">
+                      {{checkbox.name}}
+                    </el-checkbox>
+                  </el-checkbox-group>
+                </el-form-item>
+              </div>
             </el-form>
-          </div><!--Demo ended-->
+          </div> <!--Status属性  ended-->
+
+          <!--Icon属性  start-->
+          <div v-else-if="index === 'Icon'">
+            <el-form label-position="right" label-width="70px">
+              <el-form-item
+                class="lineRow"
+                label="控件图标"
+              >
+                <el-checkbox @change="iconStatusChange(item)" v-model="item.status"></el-checkbox>
+              </el-form-item>
+              <div v-if="item.status">
+                <el-form-item>
+                  <el-button @click="chooseIcon(item)" type="primary" size="small" icon="edit">选择图标</el-button>
+                  <c-icon @postIcon="setIcon" v-if="item.chooseStatus"></c-icon>
+                </el-form-item>
+                <div v-if="item.position!=''&&item.position.length>0&&item.status&&(item.className!='')">
+                  <el-form-item>
+                    <br/>
+                    <div>图标放置位置</div>
+                    <el-radio-group v-model="item.positionModel">
+                      <el-radio v-for="radio in item.position" :key="radio.value" :label="radio.value">
+                        {{radio.name}}
+                      </el-radio>
+                    </el-radio-group>
+                  </el-form-item>
+                </div>
+              </div>
+            </el-form>
+          </div> <!--Icon属性  ended-->
+
+          <!--CValidate属性  start-->
+          <div v-else-if="index === 'CValidate'">
+            <el-form label-position="right" label-width="70px">
+              <el-form-item
+                class="lineRow"
+                label="控件验证"
+              >
+                <el-checkbox @change="validateStatusChange(item)" v-model="item.status"></el-checkbox>
+              </el-form-item>
+              <div v-if="item.status">
+                <el-form-item>
+                  <el-button @click="chooseValidate(item)" type="primary" size="small" icon="edit">选择验证规则</el-button>
+                  <c-validate @postValidate="setValidate" v-if="item.chooseStatus"></c-validate>
+                </el-form-item>
+              </div>
+            </el-form>
+          </div> <!--CValidate属性  ended-->
+
+          <!--CLayout属性  start-->
+          <div v-else-if="index === 'CLayout'">
+            <el-form label-position="top" label-width="70px">
+              <el-form-item class="lineRow" label="布局">
+                <el-radio-group
+                  v-model="config.layoutModel"
+                  @change="getLayoutItem()"
+                >
+                  <el-radio
+                    v-if="config.CLayout"
+                    v-for="(layout, key) in config.CLayout"
+                    :key="layout.value"
+                    :label="layout.value">
+                    {{layout.name}}
+                  </el-radio>
+                </el-radio-group>
+              </el-form-item>
+
+              <el-form-item class="lineRow">
+                <div v-if="config.layoutModel==='percentLayout' && config.currentLayout">
+                  {{config.currentLayout.name}}：
+                  <el-input
+                    @change="validateLayout(config.currentLayout,config.layoutModel)"
+                    v-model="config.currentLayout.default"
+                    :placeholder="config.currentLayout.name"
+                    :maxlength=3
+                  ></el-input>
+                </div>
+                <div v-else-if="config.layoutModel==='pixelLayout' && config.currentLayout">
+                  {{config.currentLayout.name}}：
+                  <el-input
+                    @change="validateLayout(config.currentLayout,config.layoutModel)"
+                    v-model="config.currentLayout.default"
+                    :placeholder="config.currentLayout.name"
+                    :maxlength=3
+                  ></el-input>
+                </div>
+                <div v-else-if="config.layoutModel==='flexLayout' && config.currentLayout">
+                  {{config.currentLayout.name}}：
+                  <el-input
+                    @change="validateLayout(config.currentLayout,config.layoutModel)"
+                    v-model="config.currentLayout.default"
+                    :placeholder="config.currentLayout.name"
+                    :maxlength=3
+                  ></el-input>
+                </div>
+                <div v-else-if="config.layoutModel==='columnLayout' && config.currentLayout">
+                  {{config.currentLayout.name}}：
+                  <el-input
+                    @change="validateLayout(config.currentLayout,config.layoutModel)"
+                    v-model="config.currentLayout.default"
+                    :placeholder="config.currentLayout.name"
+                    :maxlength=3
+                  ></el-input>
+                </div>
+              </el-form-item>
+              <!--xyl-->
+            </el-form>
+          </div> <!--CLayout属性  ended-->
+
+          <!--Demo start-->
+          <!--<div v-else-if="index === ''">-->
+          <!--<el-form label-position="right" label-width="70px">-->
+          <!--<el-form-item-->
+          <!--class="lineRow"-->
+          <!--label=""-->
+          <!--&gt;-->
+          <!--<el-input-->
+          <!--@change="changeConfig()"-->
+          <!--v-model="config[index]"-->
+          <!--placeholder=""-->
+          <!--&gt;</el-input>-->
+          <!--</el-form-item>-->
+          <!--</el-form>-->
+          <!--</div>&lt;!&ndash;Demo ended&ndash;&gt;-->
         </div>
       </div><!--控件属性设置 start-->
       <div v-else-if="!activeJudge && !config">
@@ -556,7 +1682,7 @@
 
   export default {
     name: 'ControlConfig',
-    props: ['config', 'fConfig'],
+    props: ['config', 'fConfig', 'selectControl'],
     destroy () {
       console.info(`destroy`)
     },
@@ -566,7 +1692,6 @@
         startTime: '',
         stepTime: '',
         endTime: '',
-        formateItems: ['HH:mm:ss', 'HH-mm-ss', 'HH/mm/ss'],
         timeSelectableRange: new Date(),
         addSwitchValue: false, // 是否增加switch值
         currentIndex: 0, // 当前选中项在默认值的index(多选)
@@ -636,8 +1761,17 @@
       }
     },
     methods: {
-      changeTab (values) {
-        this.activeSetting = values
+      changeTab (values, status) {
+        if (status) {
+          console.error(this.selectControl)
+          if (this.selectControl) {
+            console.error('has selectControl')
+          } else {
+            console.error('has')
+          }
+        } else {
+          this.activeSetting = values
+        }
       },
       //      添加collapse条目
       addItem () {
@@ -953,9 +2087,12 @@
       &:last-child
         border-right none
 
-  .controlElForm, .configSetting
+    .controlElForm, .configSetting
     > div
       margin-bottom .3rem
+    .configSetting
+    > .el-input__inner, .el-textarea__inner
+      margin-top 4px !important
 
   .warnSpan
     background $font-danger
@@ -970,11 +2107,18 @@
   .lineRow
     padding-bottom .3rem
     border-bottom: 1px dashed rgba(102, 175, 233, .5)
+    padding-top .3rem
 
   .DivForLine
-    height: 0
+    height 0
     margin .3rem 0
     border-bottom 1px solid #e1e1e1
     opacity .3
+
+  .type
+    margin 0px 15px 3px 0 !important
+
+  .el-input__inner, .el-textarea__inner
+    margin-top 4px
 
 </style>

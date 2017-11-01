@@ -74,7 +74,7 @@
 <script type="text/ecmascript-6">
   import draggable from 'vuedraggable'
   import uuid from 'node-uuid'
-  import {calcLayoutClass} from '@/assets/js/common'
+  import { calcLayoutClass } from '@/assets/js/common'
   //  import CKeyApi from 'api/CKey'
 
   export default {
@@ -259,6 +259,13 @@
                 parent: 'form', // 父级对象
                 type: 'switch', // 类型
                 component: 'CSwitch',
+                config: '' // 控件配置
+              }, {
+                CNameCN: '标签页',
+                CNameEN: 'Tabs',
+                parent: 'form', // 父级对象
+                type: 'tab', // 类型
+                component: 'CTabs',
                 config: '' // 控件配置
               }
             ]

@@ -4,7 +4,116 @@
       <div class="title">
         {{config.CTitleCN}}
       </div>
-      <!--初始化组件-->
+      <div v-if="config.CAttribute.typeModel === 'select'">
+        <div v-if="config.CAttribute.isSelectRemote">
+          <el-select
+            v-model="config.CAttribute.defaultSelected"
+            :size="config.CAttribute.sizeModel"
+            :multiple="config.CAttribute.isMultiple"
+            :multiple-limit="config.CAttribute.ableSelectedMax"
+            :clearable="config.CAttribute.isSelectClearable"
+            :filterable="config.CAttribute.isSelectFilterable"
+            :allow-create="config.CAttribute.isSelectCreate"
+            remote
+            :remote-method="RemoteMethod"
+            :loading="loading"
+            :loading-text="config.CAttribute.loadingText"
+            :no-match-text="config.CAttribute.noMatchText"
+            :no-data-text="config.CAttribute.noDataText"
+            :placeholder="config.CAttribute.placeholder">
+            <el-option
+              v-for="item in options"
+              :key="item.label"
+              :value="item.label"
+              :label="item.showContent"
+              :disabled="item.isDisabled">
+              <div @click="SelectedChange(item.label)">{{item.showContent}}</div>
+            </el-option>
+          </el-select>
+        </div>
+        <div v-else>
+          <el-select
+            v-model="config.CAttribute.defaultSelected"
+            :size="config.CAttribute.sizeModel"
+            :multiple="config.CAttribute.isMultiple"
+            :multiple-limit="config.CAttribute.ableSelectedMax"
+            :clearable="config.CAttribute.isSelectClearable"
+            :filterable="config.CAttribute.isSelectFilterable"
+            :allow-create="config.CAttribute.isSelectCreate"
+            :no-match-text="config.CAttribute.noMatchText"
+            :no-data-text="config.CAttribute.noDataText"
+            :placeholder="config.CAttribute.placeholder">
+            <el-option
+              v-for="item in config.CAttribute.itemAttr"
+              :key="item.label"
+              :value="item.label"
+              :label="item.showContent"
+              :disabled="item.isDisabled">
+              <div @click="SelectedChange(item.label)">{{item.showContent}}</div>
+            </el-option>
+          </el-select>
+        </div>
+      </div>
+      <div v-else>
+        <div v-if="config.CAttribute.isSelectRemote">
+          <el-select
+            v-model="config.CAttribute.defaultSelected"
+            :size="config.CAttribute.sizeModel"
+            :multiple="config.CAttribute.isMultiple"
+            :multiple-limit="config.CAttribute.ableSelectedMax"
+            :clearable="config.CAttribute.isSelectClearable"
+            :filterable="config.CAttribute.isSelectFilterable"
+            :allow-create="config.CAttribute.isSelectCreate"
+            remote
+            :remote-method="RemoteMethodGroup"
+            :loading="loading"
+            :loading-text="config.CAttribute.loadingText"
+            :no-match-text="config.CAttribute.noMatchText"
+            :no-data-text="config.CAttribute.noDataText"
+            :placeholder="config.CAttribute.placeholder">
+            <el-option-group
+              v-for="group in optionsGroup"
+              :key="group.label"
+              :label="group.label">
+              <el-option
+                v-for="item in group.options"
+                :key="item.label"
+                :value="item.label"
+                :label="item.showContent"
+                :disabled="item.isDisabled">
+                <div @click="SelectedChange(item.label)">{{item.showContent}}</div>
+              </el-option>
+            </el-option-group>
+          </el-select>
+        </div>
+        <div v-else>
+          <el-select
+            v-model="config.CAttribute.defaultSelected"
+            :size="config.CAttribute.sizeModel"
+            :multiple="config.CAttribute.isMultiple"
+            :multiple-limit="config.CAttribute.ableSelectedMax"
+            :clearable="config.CAttribute.isSelectClearable"
+            :filterable="config.CAttribute.isSelectFilterable"
+            :allow-create="config.CAttribute.isSelectCreate"
+            :no-match-text="config.CAttribute.noMatchText"
+            :no-data-text="config.CAttribute.noDataText"
+            :placeholder="config.CAttribute.placeholder">
+            <el-option-group
+              v-for="group in config.CAttribute.itemAttrSelectGroup"
+              :key="group.label"
+              :label="group.label">
+              <el-option
+                v-for="item in group.options"
+                :key="item.label"
+                :value="item.label"
+                :label="item.showContent"
+                :disabled="item.isDisabled">
+                <div @click="SelectedChange(item.label)">{{item.showContent}}</div>
+              </el-option>
+            </el-option-group>
+          </el-select>
+        </div>
+      </div>
     </div>
     <div v-else>
       <el-form :label-position="ControlConfig.labelPositionModel" :label-width=labelWidthCalc>
@@ -86,7 +195,7 @@
                     :value="item.label"
                     :label="item.showContent"
                     :disabled="item.isDisabled">
-                    <div @click="SelectedChange(item.label)">{{item.showContent}}</div>
+                    <div @click="SelectedChangeGroup(group.label, item.label)">{{item.showContent}}</div>
                   </el-option>
                 </el-option-group>
               </el-select>
@@ -113,7 +222,7 @@
                     :value="item.label"
                     :label="item.showContent"
                     :disabled="item.isDisabled">
-                    <div @click="SelectedChange(item.label)">{{item.showContent}}</div>
+                    <div @click="SelectedChangeGroup(group.label, item.label)">{{item.showContent}}</div>
                   </el-option>
                 </el-option-group>
               </el-select>
@@ -154,39 +263,37 @@
       ControlID: {
         type: String,
         default: null
+      },
+      formOBJ: {
+        type: Object
+      },
+      formItem: {
+        type: Object
       }
     },
     methods: {
-      emitConfig () {
-        this.config = this.initConfig
-        if (this.ControlConfig) {
-          this.config = this.ControlConfig
-        }
-        if (this.ControlID && (!this.config.ControlID)) {
-          this.config.ControlID = this.ControlID
-        }
-        this.$emit(`getValue`, this.config)
-      },
       ControlClick () {
-        this.emitConfig()
+        this.formOBJ.mutations.selectObj(this.formOBJ, this.formItem)
+        this.$emit('changeTAB', this.formItem)
       },
       SelectedChange (label) {
-        if (this.config.CAttribute.typeModel === 'select') {
-          this.config.CAttribute.itemAttr.forEach((item, index) => {
-            if (label === item.label) {
-              this.config.CAttribute.currentSelected = index
-            }
-          })
-        } else {
-          this.config.CAttribute.itemAttrSelectGroup.forEach((item, indexGroup) => {
+        this.config.CAttribute.itemAttr.forEach((item, index) => {
+          if (label === item.label) {
+            this.config.CAttribute.currentSelected = index
+          }
+        })
+      },
+      SelectedChangeGroup (groupLabel, label) {
+        this.config.CAttribute.itemAttrSelectGroup.forEach((item, indexGroup) => {
+          if (item.label === groupLabel) {
             item.options.forEach((option, indexItem) => {
               if (label === option.label) {
                 this.config.CAttribute.currentSelectedGroup[0] = indexGroup
                 this.config.CAttribute.currentSelectedGroup[1] = indexItem
               }
             })
-          })
-        }
+          }
+        })
       },
       RemoteMethodGroup (query) {
         if (query !== '') {
@@ -214,7 +321,7 @@
             this.loading = false
             this.options = this.config.CAttribute.itemAttr.filter(item => {
               return item.showContent.toLowerCase()
-                .indexOf(query.toLowerCase()) > -1
+                  .indexOf(query.toLowerCase()) > -1
             })
             console.log('oo', this.options)
           }, 20)
@@ -268,7 +375,7 @@
           CLayout: [ // 布局
             { // flex 布局
               type: Number,
-              name: '自适应布局',
+              name: '自适应',
               default: 1,
               value: 'flexLayout',
               status: true,
@@ -276,7 +383,7 @@
             },
             { // 百分比布局
               type: Number,
-              name: '百分比布局',
+              name: '百分比',
               default: 100,
               value: 'percentLayout',
               status: false,
@@ -284,7 +391,7 @@
             },
             { // 像素布局
               type: Number,
-              name: '像素布局',
+              name: '像素',
               default: 100,
               value: 'pixelLayout',
               status: false,
@@ -292,7 +399,7 @@
             },
             { // 栅格布局
               type: Number,
-              name: '栅格布局',
+              name: '栅格',
               default: 12,
               value: 'columnLayout',
               status: false,

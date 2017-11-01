@@ -1,13 +1,11 @@
 <script>
-  import TabNav from './tab-nav';
+  import TabNav from './tab-nav'
 
   export default {
     name: 'ElTabsEx',
-
     components: {
       TabNav
     },
-
     props: {
       type: String,
       activeName: String,
@@ -16,65 +14,62 @@
       value: {},
       editable: Boolean
     },
-
-    data() {
+    data () {
       return {
         currentName: this.value || this.activeName,
         panes: []
-      };
+      }
     },
-
     watch: {
-      activeName(value) {
-        this.setCurrentName(value);
+      activeName (value) {
+        this.setCurrentName(value)
       },
-      value(value) {
-        this.setCurrentName(value);
+      value (value) {
+        this.setCurrentName(value)
       },
-      currentName(value) {
+      currentName (value) {
         if (this.$refs.nav) {
           this.$nextTick(_ => {
-            this.$refs.nav.scrollToActiveTab();
-          });
+            this.$refs.nav.scrollToActiveTab()
+          })
         }
       }
     },
-
     methods: {
-      handleTabClick(tab, tabName, event) {
-        if (tab.disabled) return;
-        this.setCurrentName(tabName);
-        this.$emit('tab-click', tab, event);
+      handleTabClick (tab, tabName, event) {
+        if (tab.disabled) return
+        this.setCurrentName(tabName)
+        this.$emit('tab-click', tab, event)
       },
-      handleTabRemove(pane, ev) {
-        if (pane.disabled) return;
-        ev.stopPropagation();
-        this.$emit('edit', pane.name, 'remove');
-        this.$emit('tab-remove', pane.name);
+      handleTabRemove (pane, ev) {
+        if (pane.disabled) return
+        ev.stopPropagation()
+        this.$emit('edit', pane.name, 'remove')
+        this.$emit('tab-remove', pane.name)
       },
-      handleTabAdd() {
-        this.$emit('edit', null, 'add');
-        this.$emit('tab-add');
+      handleTabAdd () {
+        this.$emit('edit', null, 'add')
+        this.$emit('tab-add')
       },
-      setCurrentName(value) {
-        this.currentName = value;
-        this.$emit('input', value);
+      setCurrentName (value) {
+        this.currentName = value
+        this.$emit('input', value)
       },
-      addPanes(item) {
+      addPanes (item) {
         const index = this.$slots.default.filter(item => {
-          return item.elm.nodeType === 1 && /\bel-tab-pane\b/.test(item.elm.className);
-        }).indexOf(item.$vnode);
-        this.panes.splice(index, 0, item);
+          return item.elm.nodeType === 1 && /\bel-tab-pane\b/.test(item.elm.className)
+        }).indexOf(item.$vnode)
+        this.panes.splice(index, 0, item)
       },
-      removePanes(item) {
-        const panes = this.panes;
-        const index = panes.indexOf(item);
+      removePanes (item) {
+        const panes = this.panes
+        const index = panes.indexOf(item)
         if (index > -1) {
-          panes.splice(index, 1);
+          panes.splice(index, 1)
         }
       }
     },
-    render(h) {
+    render (h) {
       let {
         type,
         handleTabClick,
@@ -84,7 +79,7 @@
         panes,
         editable,
         addable
-      } = this;
+      } = this
 
       const newButton = editable || addable
         ? `(
@@ -125,9 +120,9 @@
         </div>
       `)
     },
-    created() {
+    created () {
       if (!this.currentName) {
-        this.setCurrentName('0');
+        this.setCurrentName('0')
       }
     }
   }

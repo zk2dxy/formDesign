@@ -6,8 +6,8 @@
       </div>
       <el-progress
         :type="config.CAttribute.typeModel"
-        :percentage="config.CKey.default"
-        :status="config.progressStatus.progressStatusCurrent"
+        :percentage="config.CAttribute.value"
+        :status="config.CAttribute.progressStatus.progressStatusCurrent"
         :show-text="config.CAttribute.showText.showTextStatus"
         :text-inside="config.CAttribute.showText.textInsideStatus"
         :stroke-width="config.CAttribute.showText.strokeWidth"
@@ -19,8 +19,8 @@
         <el-form-item :label="ControlConfig.CTitleCN">
           <el-progress
             :type="ControlConfig.CAttribute.typeModel"
-            :percentage="ControlConfig.CKey.default.number"
-            :status="ControlConfig.progressStatus.progressStatusCurrent"
+            :percentage="ControlConfig.CAttribute.value"
+            :status="ControlConfig.CAttribute.progressStatus.progressStatusCurrent"
             :show-text="ControlConfig.CAttribute.showText.showTextStatus"
             :text-inside="ControlConfig.CAttribute.showText.textInsideStatus"
             :stroke-width="ControlConfig.CAttribute.showText.strokeWidth"
@@ -43,6 +43,12 @@
       ControlID: {
         type: String,
         default: null
+      },
+      formOBJ: {
+        type: Object
+      },
+      formItem: {
+        type: Object
       }
     },
     created () {
@@ -74,14 +80,14 @@
     deactivated () {
     },
     watch: {
-      'config.CKey.default': {
+      'config.CAttribute.value': {
         handler () {
-          if (this.config.CKey.default === '') {
-            this.config.CKey.default = 0
+          if (this.config.CAttribute.value === '') {
+            this.config.CAttribute.value = 0
           }
           var reg = new RegExp('^(\\d|[1-9]\\d|100)$')
-          if (!reg.test(this.config.CKey.default)) {
-            this.config.CKey.default = 0
+          if (!reg.test(this.config.CAttribute.value)) {
+            this.config.CAttribute.value = 0
             alert('请输入0-100的整数！')
           }
         },
@@ -129,29 +135,8 @@
     },
     methods: {
       ControlClick () {
-        this.emitConfig()
-      },
-      // 获得焦点事件
-      focusAction () {
-        this.emitConfig()
-      },
-      // 失去焦点事件
-      blurAction () {
-        this.emitConfig()
-      },
-      // 值变更事件
-      changeAction () {
-        this.emitConfig()
-      },
-      emitConfig () {
-        this.config = this.initConfig
-        if (this.ControlConfig) {
-          this.config = this.ControlConfig
-        }
-        if (this.ControlID && (!this.config.ControlID)) {
-          this.config.ControlID = this.ControlID
-        }
-        this.$emit(`getValue`, this.config)
+        this.formOBJ.mutations.selectObj(this.formOBJ, this.formItem)
+        this.$emit('changeTAB', this.formItem)
       },
       getChildrenLayoutValue () {
         this.config.currentLayout = null
@@ -187,7 +172,7 @@
           CLayout: [ // 布局
             { // flex 布局
               type: Number,
-              name: '自适应布局',
+              name: '自适应',
               default: 1,
               value: 'flexLayout',
               status: true,
@@ -195,7 +180,7 @@
             },
             { // 百分比布局
               type: Number,
-              name: '百分比布局',
+              name: '百分比',
               default: 100,
               value: 'percentLayout',
               status: false,
@@ -203,7 +188,7 @@
             },
             { // 像素布局
               type: Number,
-              name: '像素布局',
+              name: '像素',
               default: 100,
               value: 'pixelLayout',
               status: false,
@@ -211,7 +196,7 @@
             },
             { // 栅格布局
               type: Number,
-              name: '栅格布局',
+              name: '栅格',
               default: 12,
               value: 'columnLayout',
               status: false,
@@ -243,29 +228,25 @@
               ],  // 进度条显示文字是否内置在进度条内（只在 type=line 时可用）,默认false
               width: 60,  // 环形进度条画布宽度（只在 type=circle 时可用）
               strokeWidth: 6 // 线形宽度，单位 px
-            }
-          },
-          CKey: { // 控件值
-            default: 60, // 默认值
-            type: '', // 控件值类型
-            keyMethods: '' // 计算控件值方法
-          },
-          progressStatus: {
-            progressStatusCurrent: 'success', // 进度条当前状态
-            status: [
-              {
-                value: 'success',
-                name: '成功'
-              },
-              {
-                value: 'exception',
-                name: '异常'
-              },
-              {
-                value: '',
-                name: '默认'
-              }
-            ] // 进度条可选状态
+            },
+            progressStatus: {
+              progressStatusCurrent: 'success', // 进度条当前状态
+              status: [
+                {
+                  value: 'success',
+                  name: '成功'
+                },
+                {
+                  value: 'exception',
+                  name: '异常'
+                },
+                {
+                  value: '',
+                  name: '默认'
+                }
+              ] // 进度条可选状态
+            },
+            value: 60
           },
           methodDB: [{
             name: '提交', // 中文名称（Example）
@@ -284,6 +265,7 @@
   @import "~assets/css/stylus/mixin"
   .el-progress
     padding-top 2%
+
   .title
     padding 8px 0px
     color $font-primary

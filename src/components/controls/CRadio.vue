@@ -7,16 +7,14 @@
       <div v-if="config.CAttribute.typeModel==='radio'">
         <el-radio-group
           v-model="config.CKey.default">
-            <span class="radio"
-                  @click="SelectedChange(item.label)"
-                  v-for="(item, index) in config.CAttribute.itemAttr"
-                  :key="item.label">
-              <el-radio
-                :label="item.label"
-                :disabled="item.isDisabled">
-                {{item.showContent}}
-              </el-radio>
-            </span>
+            <el-radio
+              v-for="(item, index) in config.CAttribute.itemAttr"
+              :key="item.label"
+              :label="item.label"
+              :disabled="item.isDisabled">
+              <span @click="SelectedChange(item.label)"
+                    >{{item.showContent}}</span>
+            </el-radio>
         </el-radio-group>
       </div>
       <div v-else>
@@ -25,16 +23,15 @@
           :size="config.CAttribute.sizeModel"
           :text-color="config.CAttribute.textColor"
           :fill="config.CAttribute.fillColor">
-          <span class="radio"
+          <el-radio-button
+            v-for="(item, index) in config.CAttribute.itemAttr"
+            :key="item.label"
+            :label="item.label"
+            :disabled="item.isDisabled">
+              <span
                 @click="SelectedChange(item.label)"
-                v-for="(item, index) in config.CAttribute.itemAttr"
-                :key="item.label">
-            <el-radio-button
-              :label="item.label"
-              :disabled="item.isDisabled">
-              {{item.showContent}}
-            </el-radio-button>
-          </span>
+              >{{item.showContent}}</span>
+          </el-radio-button>
         </el-radio-group>
       </div>
     </div>
@@ -45,17 +42,14 @@
             v-if="ControlConfig.CAttribute.typeModel==='radio'"
             v-model="ControlConfig.CKey.default">
             <!--增加span修改禁用状态-->
-            <span class="radio"
-                  @click="SelectedChange(item.label)"
-                  v-for="(item, index) in ControlConfig.CAttribute.itemAttr"
-                  :key="item.label">
-              <el-radio
-                :label="item.label"
-                :disabled="item.isDisabled"
-                @click="SelectedChange(item.label)">
-                {{item.showContent}}
-              </el-radio>
-            </span>
+            <el-radio
+              v-for="(item, index) in ControlConfig.CAttribute.itemAttr"
+              :key="item.label"
+              :label="item.label"
+              :disabled="item.isDisabled">
+              <span @click="SelectedChange(item.label)"
+              >{{item.showContent}}</span>
+            </el-radio>
           </el-radio-group>
           <el-radio-group
             v-else
@@ -64,17 +58,14 @@
             :text-color="ControlConfig.CAttribute.textColor"
             :fill="ControlConfig.CAttribute.fillColor"
             @change="SelectedChange">
-            <span class="radio"
-                  @click="SelectedChange(item.label)"
-                  v-for="(item, index) in ControlConfig.CAttribute.itemAttr"
-                  :key="item.label">
-              <el-radio-button
-                :label="item.label"
-                :disabled="item.isDisabled"
-                @click="SelectedChange(item.label)">
-                {{item.showContent}}
-              </el-radio-button>
-            </span>
+            <el-radio-button
+              v-for="(item, index) in ControlConfig.CAttribute.itemAttr"
+              :key="item.label"
+              :label="item.label"
+              :disabled="item.isDisabled">
+                <span
+                  @click="SelectedChange(item.label)">{{item.showContent}}</span>
+            </el-radio-button>
           </el-radio-group>
         </el-form-item>
       </el-form>
@@ -91,6 +82,12 @@
       ControlID: {
         type: String,
         default: null
+      },
+      formOBJ: {
+        type: Object
+      },
+      formItem: {
+        type: Object
       }
     },
     created () {
@@ -114,18 +111,9 @@
       this.$emit('input', this.config)
     },
     methods: {
-      emitConfig () {
-        this.config = this.initConfig
-        if (this.ControlConfig) {
-          this.config = this.ControlConfig
-        }
-        if (this.ControlID && (!this.config.ControlID)) {
-          this.config.ControlID = this.ControlID
-        }
-        this.$emit(`getValue`, this.config)
-      },
       ControlClick () {
-        this.emitConfig()
+        this.formOBJ.mutations.selectObj(this.formOBJ, this.formItem)
+        this.$emit('changeTAB', this.formItem)
       },
       SelectedChange (label) {
         this.config.CAttribute.itemAttr.forEach((item, index) => {
@@ -176,7 +164,7 @@
           CLayout: [ // 布局
             { // flex 布局
               type: Number,
-              name: '自适应布局',
+              name: '自适应',
               default: 1,
               value: 'flexLayout',
               status: true,
@@ -184,7 +172,7 @@
             },
             { // 百分比布局
               type: Number,
-              name: '百分比布局',
+              name: '百分比',
               default: 100,
               value: 'percentLayout',
               status: false,
@@ -192,7 +180,7 @@
             },
             { // 像素布局
               type: Number,
-              name: '像素布局',
+              name: '像素',
               default: 100,
               value: 'pixelLayout',
               status: false,
@@ -200,7 +188,7 @@
             },
             { // 栅格布局
               type: Number,
-              name: '栅格布局',
+              name: '栅格',
               default: 12,
               value: 'columnLayout',
               status: false,

@@ -23,6 +23,7 @@ import CPopover from '@/components/controls/CPopover'
 import CProgress from '@/components/controls/CProgress'
 import CSlider from '@/components/controls/CSlider'
 import CSwitch from '@/components/controls/CSwitch'
+import CTabs from '@/components/controls/CTabs'
 
 const components = [
   CCard,
@@ -49,7 +50,8 @@ const components = [
   CSelect,
   CTag,
   CButton,
-  CBadge
+  CBadge,
+  CTabs
 ]
 export default {
   install () {

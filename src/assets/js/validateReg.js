@@ -25,7 +25,7 @@ const validateRules = [
   },
   {
     status: false,
-    name: '不能输入特殊字符',
+    name: '不能输入特殊字符(下划线除外)',
     property: 's',
     reg: '/^[\u4E00-\u9FA5\uf900-\ufa2d\\w\\.\\s]+$/'
   },
@@ -49,8 +49,14 @@ const validateRules = [
   },
   {
     status: false,
+    name: '电话号码',
+    property: 'telephone',
+    reg: '/\\d{3}-\\d{8}|\\d{4}-\\d{7}/'
+  },
+  {
+    status: false,
     name: '邮箱地址',
-    property: '',
+    property: 'email',
     reg: '/^\\w+([-+.\']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$/'
   },
   {
@@ -58,6 +64,96 @@ const validateRules = [
     name: '网址',
     property: 'url',
     reg: '/^(\\w+:\\/\\/)?\\w+(\\.\\w+)+.*$/'
+  },
+  {
+    status: false,
+    name: '身份证号',
+    property: 'identification',
+    reg: '/(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)/'
+  },
+  {
+    status: false,
+    name: '日期格式',
+    property: 'date',
+    reg: '/(^\\d{4}(\\-|\\.)\\d{1,2}(\\-|\\.)\\d{1,2})/'
+  },
+  {
+    status: false,
+    name: '浮点数',
+    property: 'float',
+    reg: '/(^-([1-9]\\d*\\.\\d*|0\\.\\d*[1-9]\\d*)$)|(^[1-9]\\d*\\.\\d*|0\\.\\d*[1-9]\\d*$ )/'
+  },
+  {
+    status: false,
+    name: '正数,负数和小数',
+    property: '+-123.123',
+    reg: '/^(\\-|\\+)?\\d+(\\.\\d+)?$/'
+  },
+  {
+    status: false,
+    name: 'IP地址',
+    property: 'IP',
+    reg: '/((?:(?:25[0-5]|2[0-4]\\d|[01]?\\d?\\d)\\.){3}(?:25[0-5]|2[0-4]\\d|[01]?\\d?\\d))/'
+  },
+  {
+    status: false,
+    name: '钱',
+    property: 'money',
+    reg: '/^([0-9]+|[0-9]{1,3}(,[0-9]{3})*)(.[0-9]{1,2})?$/'
+  },
+  {
+    status: false,
+    name: '只允许输入中文',
+    property: 'chinese',
+    reg: '/^[\u4e00-\u9fa5]*$/'
+  },
+  {
+    status: false,
+    name: '图片格式',
+    property: 'image',
+    reg: '/[\\w\\W](\\.gif|\\.jpeg|\\.png|\\.jpg|\\.bmp)/i'
+  },
+  {
+    status: false,
+    name: '视频格式',
+    property: 'video',
+    reg: '/[\\w\\W](\\.mp4|\\.rmvb|\\.flv|\\.mpeg|\\.avi)/i'
+  },
+  {
+    status: false,
+    name: '只允许输入中文,英文,数字',
+    property: '中文s1',
+    reg: '/^[\\u4E00-\\u9FA5A-Za-z0-9]+$/'
+  },
+  {
+    status: false,
+    name: '只允许输入大写字母',
+    property: 'ABC',
+    reg: '/^[A-Z]+$/'
+  },
+  {
+    status: false,
+    name: '只允许输入小写字母',
+    property: 'abc',
+    reg: '/^[a-z]+$/'
+  },
+  {
+    status: false,
+    name: '数字和英文字母',
+    property: '123abc',
+    reg: '/^[A-Za-z0-9]+$/'
+  },
+  {
+    status: false,
+    name: '数字,英文字母和下划线',
+    property: '123abc_',
+    reg: '/^\\w+$/'
+  },
+  {
+    status: false,
+    name: '首字母大写',
+    property: 'Aabc',
+    reg: '/^[A-Z]+\\S[a-zA-Z]*/'
   }
 ]
 

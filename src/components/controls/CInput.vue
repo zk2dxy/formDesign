@@ -1,12 +1,11 @@
 <template>
   <div class="CInput" @click="ControlClick()">
+    <slot></slot>
     <div v-if="config && (!ControlID)" @click.stop>
       <div class="title">
         {{config.CTitleCN}}
       </div>
       <extend-input
-        @focus="focusAction()"
-        @blur="blurAction()"
         :type="config.CAttribute.typeModel"
         :placeholder="config.CAttribute.placeholder"
         v-model="config.CKey.default"
@@ -23,8 +22,6 @@
       <el-form :label-position="ControlConfig.labelPositionModel" :label-width=labelWidthCalc>
         <el-form-item :label="ControlConfig.CTitleCN">
           <extend-input
-            @focus="focusAction()"
-            @blur="blurAction()"
             :type="ControlConfig.CAttribute.typeModel"
             :placeholder="ControlConfig.CAttribute.placeholder"
             v-model="ControlConfig.CKey.default"
@@ -52,16 +49,28 @@
       },
       ControlID: {
         type: String,
-        default: null
+        default () {
+          return null
+        }
+      },
+      formOBJ: {
+        type: Object
+      },
+      formItem: {
+        type: Object
       }
     },
     created () {
+      // console.info(FormStore)
       this.config = this.initConfig
       if (this.ControlConfig) {
         this.config = this.ControlConfig
       }
       if (this.ControlID && (!this.config.ControlID)) {
         this.config.ControlID = this.ControlID
+      }
+      if (this.formOBJ) {
+        // console.error(this.formOBJ)
       }
     },
     mounted () {
@@ -75,43 +84,27 @@
       this.getChildrenLayoutValue()
       this.$emit('input', this.config)
     },
-    updated () {},
+    updated () {
+    },
     /* keep-alive 组件激活时调用。 */
-    activated () {},
+    activated () {
+    },
     /* keep-alive 组件停用时调用。 */
-    deactivated () {},
+    deactivated () {
+    },
     watch: {
       'config.CKey.default' (val, old) {
         // console.log(val)
       }
     },
-    beforeDestroy () {},
-    destroyed () {},
+    beforeDestroy () {
+    },
+    destroyed () {
+    },
     methods: {
       ControlClick () {
-        this.emitConfig()
-      },
-      // 获得焦点事件
-      focusAction () {
-        this.emitConfig()
-      },
-      // 失去焦点事件
-      blurAction () {
-        this.emitConfig()
-      },
-      // 值变更事件
-      changeAction () {
-        this.emitConfig()
-      },
-      emitConfig () {
-        this.config = this.initConfig
-        if (this.ControlConfig) {
-          this.config = this.ControlConfig
-        }
-        if (this.ControlID && (!this.config.ControlID)) {
-          this.config.ControlID = this.ControlID
-        }
-        this.$emit(`getValue`, this.config)
+        this.formOBJ.mutations.selectObj(this.formOBJ, this.formItem)
+        this.$emit('changeTAB', this.formItem)
       },
       getChildrenLayoutValue () {
         this.config.currentLayout = null
@@ -138,6 +131,7 @@
     data () {
       return {
         initConfig: {
+          ControlProperties: '',
           ControlID: '', // 表单生成后的控件id
           CBelong: 'form',
           CTitleCN: '输入框', // 标题
@@ -155,7 +149,7 @@
           CLayout: [ // 布局
             { // flex 布局
               type: Number,
-              name: '自适应布局',
+              name: '自适应',
               default: 1,
               value: 'flexLayout',
               status: true,
@@ -163,7 +157,7 @@
             },
             { // 百分比布局
               type: Number,
-              name: '百分比布局',
+              name: '百分比',
               default: 100,
               value: 'percentLayout',
               status: false,
@@ -171,7 +165,7 @@
             },
             { // 像素布局
               type: Number,
-              name: '像素布局',
+              name: '像素',
               default: 100,
               value: 'pixelLayout',
               status: false,
@@ -179,7 +173,7 @@
             },
             { // 栅格布局
               type: Number,
-              name: '栅格布局',
+              name: '栅格',
               default: 12,
               value: 'columnLayout',
               status: false,
@@ -198,7 +192,7 @@
             }], // input 类型 text number......and so on
             typeModel: 'input',
             description: '', // 描述
-            placeholder: '请输入默认值或者为空', // 控件提示值
+            placeholder: '', // 控件提示值
             height: '', // 高度
             vertical: ['top', 'middle', 'bottom'] // 对齐方式
           },

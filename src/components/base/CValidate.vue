@@ -7,9 +7,15 @@
       :before-close="handleClose"
     >
       <div v-if="regArray != '' && regArray.length > 0">
-        <el-checkbox @change="chooseValidate(validate)" v-for="validate in regArray" :key="validate.property" :label="validate.property">
-          {{validate.name}}
-        </el-checkbox>
+        <el-checkbox-group v-model="checkList">
+          <el-checkbox @change="chooseValidate(validate)"
+                       v-for="validate in regArray"
+                       :key="validate.property"
+                       :label="validate.property"
+          >
+            {{validate.name}}
+          </el-checkbox>
+        </el-checkbox-group>
       </div>
       {{chooseRes}}
       <span slot="footer" class="dialog-footer">
@@ -17,21 +23,33 @@
         <el-button type="primary" @click="postValidate(true)">确 定</el-button>
       </span>
     </el-dialog>
+
   </div>
 </template>
 <script type="text/ecmascript-6">
   export default {
     name: `CValidate`,
+    props: {
+      getValidate: {
+        type: Object
+      }
+    },
     created () {
-      this.chooseRes = ''
+      this.chooseRes = this.getValidate.validateModel
       this.regArray = []
       this.regArray = this.VALIDATE
+      let validateModel = this.getValidate.validateModel
+      for (let i in validateModel) {
+        this.checkList.push(validateModel[i].property)
+        validateModel[i].status = true
+      }
     },
     data () {
       return {
         dialogVisible: true,
         chooseRes: '',
-        regArray: []
+        regArray: [],
+        checkList: []
       }
     },
     destroyed () {
@@ -44,10 +62,9 @@
     },
     methods: {
       handleClose () {
-        this.$emit('postValidate', this.chooseRes)
+        this.getValidate.chooseStatus = false
       },
       chooseValidate (item) {
-        console.error(item)
         item.status = !item.status
         let RES = []
         for (let key in this.regArray) {
@@ -55,7 +72,7 @@
             RES.push(this.regArray[key])
           }
         }
-        console.error(RES)
+//        console.error(RES)
         this.chooseRes = RES
       },
       postValidate (status) {
@@ -66,9 +83,13 @@
               type: 'warning'
             })
             return false
+          } else {
+            this.$emit('postValidate', this.chooseRes)
           }
+        } else {
+          this.dialogVisible = false
+          this.getValidate.chooseStatus = false
         }
-        this.$emit('postValidate', this.chooseRes)
       }
     }
   }

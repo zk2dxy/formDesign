@@ -4,6 +4,87 @@
       <div class="title">
         {{config.CTitleCN}}
       </div>
+      <div v-if="config.CAttribute.typeModel === 'time'">
+        <div v-if="config.CAttribute.timeFixed">
+          <div v-if="!config.CAttribute.isRangeSelect">
+            <el-time-select
+              v-model="config.CAttribute.timeDefault"
+              :picker-options="{
+                    start: config.CAttribute.timeStart,
+                    step: config.CAttribute.timeStep,
+                    end: config.CAttribute.timeEnd
+                  }"
+              :editable="false"
+              :clearable="config.CAttribute.isShowClearable"
+              :size="config.CAttribute.sizeModel"
+              :placeholder="config.CAttribute.placeholder"></el-time-select>
+          </div>
+          <div v-else>
+            <span @click="startFixTime">
+              <el-time-select
+                v-model="config.CAttribute.defaultRangeFixedTime[0]"
+                :picker-options="{
+                  start: config.CAttribute.timeStart,
+                  step: config.CAttribute.timeStep,
+                  end: config.CAttribute.timeEnd
+                }"
+                :editable="false"
+                :clearable="config.CAttribute.isShowClearable"
+                :size="config.CAttribute.sizeModel"
+                placeholder="开始时间"></el-time-select>
+            </span>
+            <span @click="endFixTime">
+              <el-time-select
+                v-model="config.CAttribute.defaultRangeFixedTime[1]"
+                :picker-options="{
+                  start: config.CAttribute.timeStartend,
+                  step: config.CAttribute.timeStepend,
+                  end: config.CAttribute.timeEndend
+                }"
+                :editable="false"
+                :clearable="config.CAttribute.isShowClearableend"
+                :size="config.CAttribute.sizeModelend"
+                placeholder="结束时间"></el-time-select>
+            </span>
+          </div>
+        </div>
+        <div v-else>
+          <el-time-picker
+            v-model="config.CAttribute.timeDefault"
+            :is-range="config.CAttribute.isRangeSelect"
+            :picker-options="{
+                selectableRange: config.CAttribute.timeSelectableRange
+               }"
+            :editable="config.CAttribute.timeEditable"
+            :clearable="config.CAttribute.isShowClearable"
+            :size="config.CAttribute.sizeModel"
+            :placeholder="config.CAttribute.placeholder"></el-time-picker>
+        </div>
+      </div>
+      <div v-if="config.CAttribute.typeModel === 'date' && isAlive">
+        <div v-if="config.CAttribute.isHasShortcut &&
+              (config.CAttribute.dateTypeModel === 'date' ||
+              config.CAttribute.dateTypeModel === 'daterange' ||
+              config.CAttribute.dateTypeModel === 'datetimerange')">
+          <el-date-picker
+            v-model="config.CAttribute.timeDefault"
+            :size="config.CAttribute.sizeModel"
+            :type="config.CAttribute.dateTypeModel"
+            :picker-options="config.CAttribute.datePickerShortcuts"
+            :range-separator="config.CAttribute.rangeSeparator"
+            :format="config.CAttribute.formatDate"
+            :placeholder="config.CAttribute.placeholder"></el-date-picker>
+        </div>
+        <div v-else>
+          <el-date-picker
+            v-model="ControlConfig.CAttribute.timeDefault"
+            :size="ControlConfig.CAttribute.sizeModel"
+            :type="ControlConfig.CAttribute.dateTypeModel"
+            :range-separator="ControlConfig.CAttribute.rangeSeparator"
+            :format="ControlConfig.CAttribute.formatDate"
+            :placeholder="ControlConfig.CAttribute.placeholder"></el-date-picker>
+        </div>
+      </div>
     </div>
     <div v-else>
       <el-form :label-position="ControlConfig.labelPositionModel" :label-width=labelWidthCalc>
@@ -104,6 +185,12 @@
       ControlID: {
         type: String,
         default: null
+      },
+      formOBJ: {
+        type: Object
+      },
+      formItem: {
+        type: Object
       }
     },
     created () {
@@ -135,17 +222,8 @@
     },
     methods: {
       ControlClick () {
-        this.emitConfig()
-      },
-      emitConfig () {
-        this.config = this.initConfig
-        if (this.ControlConfig) {
-          this.config = this.ControlConfig
-        }
-        if (this.ControlID && (!this.config.ControlID)) {
-          this.config.ControlID = this.ControlID
-        }
-        this.$emit(`getValue`, this.config)
+        this.formOBJ.mutations.selectObj(this.formOBJ, this.formItem)
+        this.$emit('changeTAB', this.formItem)
       },
       startFixTime () {
         this.config.CAttribute.rangeOfFixedEnd = false
@@ -254,7 +332,7 @@
           CLayout: [ // 布局
             { // flex 布局
               type: Number,
-              name: '自适应布局',
+              name: '自适应',
               default: 1,
               value: 'flexLayout',
               status: true,
@@ -262,7 +340,7 @@
             },
             { // 百分比布局
               type: Number,
-              name: '百分比布局',
+              name: '百分比',
               default: 100,
               value: 'percentLayout',
               status: false,
@@ -270,7 +348,7 @@
             },
             { // 像素布局
               type: Number,
-              name: '像素布局',
+              name: '像素',
               default: 100,
               value: 'pixelLayout',
               status: false,
@@ -278,7 +356,7 @@
             },
             { // 栅格布局
               type: Number,
-              name: '栅格布局',
+              name: '栅格',
               default: 12,
               value: 'columnLayout',
               status: false,
@@ -302,7 +380,7 @@
               name: '小'
             }, {
               value: 'mini',
-              name: 'mini'
+              name: '微型'
             }], // 输入尺寸
             sizeModel: 'small',
             sizeModelend: 'small',
@@ -346,26 +424,28 @@
             }], // 日期选择器类型
             dateTypeModel: 'date', // 日期选择器类型
             rangeSeparator: '-', // 选择范围时的分隔符
-            datePickerShortcuts: {shortcuts: [{
-              text: '今天',
-              onClick (picker) {
-                picker.$emit('pick', new Date())
-              }
-            }, {
-              text: '昨天',
-              onClick (picker) {
-                const date = new Date()
-                date.setTime(date.getTime() - 3600 * 1000 * 24)
-                picker.$emit('pick', date)
-              }
-            }, {
-              text: '一周前',
-              onClick (picker) {
-                const date = new Date()
-                date.setTime(date.getTime() - 3600 * 1000 * 24 * 7)
-                picker.$emit('pick', date)
-              }
-            }]},
+            datePickerShortcuts: {
+              shortcuts: [{
+                text: '今天',
+                onClick (picker) {
+                  picker.$emit('pick', new Date())
+                }
+              }, {
+                text: '昨天',
+                onClick (picker) {
+                  const date = new Date()
+                  date.setTime(date.getTime() - 3600 * 1000 * 24)
+                  picker.$emit('pick', date)
+                }
+              }, {
+                text: '一周前',
+                onClick (picker) {
+                  const date = new Date()
+                  date.setTime(date.getTime() - 3600 * 1000 * 24 * 7)
+                  picker.$emit('pick', date)
+                }
+              }]
+            },
             isShowClearable: true, // 是否显示清除按钮
             isShowClearableend: true, // 是否显示清除按钮
             placeholder: '请输入默认值或者为空' // 控件提示值

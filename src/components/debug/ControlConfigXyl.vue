@@ -142,6 +142,14 @@
               <el-input type="text" @change="changeConfig()" placeholder="总条目数"
                         v-model.number="config[index][indexIn]"></el-input>
             </div>
+            <div v-else-if="indexIn === 'pageAlign'">
+              <p>对齐方式</p>
+              <el-radio-group v-model="config[index][indexIn]">
+                <el-radio :key="radio.value" v-for="radio in config[index].pageAlignOption" :label="radio.value">
+                  {{radio.name}}
+                </el-radio>
+              </el-radio-group>
+            </div>
             <!--Cascader 级联-->
             <div v-else-if="indexIn === 'showAllLevels'">
               <p>是否显示完整路径</p>
@@ -292,7 +300,7 @@
           <div v-if="item.status">
             <div>
               <el-button @click="chooseIcon(item)" type="primary" size="small" icon="edit">添加图标</el-button>
-              <c-icon @postIcon="setIcon" v-if="item.chooseStatus"></c-icon>
+              <c-icon @postIcon="setIcon" :getIcon="config[index]" v-if="item.chooseStatus"></c-icon>
             </div>
           </div>
         </div>
@@ -314,7 +322,7 @@
           <div v-if="item.status">
             <div>
               <el-button @click="chooseValidate(item)" type="primary" size="small" icon="edit">选择验证规则</el-button>
-              <c-validate @postValidate="setValidate" v-if="item.chooseStatus"></c-validate>
+              <c-validate @postValidate="setValidate" :getValidate="config[index]" v-if="item.chooseStatus"></c-validate>
             </div>
           </div>
         </div>

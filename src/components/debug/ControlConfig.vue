@@ -84,6 +84,28 @@
               <!--<el-input @change="changeConfig()" v-model="config[index].collapseItem[itemIn].name"></el-input>-->
               <!--</div>-->
             </div>
+
+            <div v-else-if="indexIn === 'tabsStatus'"> <!--tabs标签页的状态属性-->
+              <p>可增加</p>
+              <el-radio-group v-model="config[index][indexIn].addable">
+                <el-radio :key="radio.value" v-for="radio in config[index][indexIn].addStatus" :label="radio.value">
+                  {{radio.name}}
+                </el-radio>
+              </el-radio-group>
+              <p>可关闭</p>
+              <el-radio-group v-model="config[index][indexIn].closable">
+                <el-radio :key="radio.value" v-for="radio in config[index][indexIn].closeStatus" :label="radio.value">
+                  {{radio.name}}
+                </el-radio>
+              </el-radio-group>
+              <p>可同时增加和关闭</p>
+              <el-radio-group v-model="config[index][indexIn].editable">
+                <el-radio :key="radio.value" v-for="radio in config[index][indexIn].editStatus" :label="radio.value">
+                  {{radio.name}}
+                </el-radio>
+              </el-radio-group>
+            </div> <!--tabs标签页的状态属性-->
+
             <!--Card卡片-->
             <div v-else-if="indexIn === 'cardCurrent'">
               <!--卡片标题-->
@@ -262,45 +284,21 @@
                         v-model="config[index][indexIn]"></el-input>
             </div>
             <div v-else-if="indexIn === 'placeholder'">
-              <p>控件提示语</p>
+              <p>控件提示</p>
               <el-input @change="changeConfig()" placeholder="控件描述(非必填)"
                         v-model="config[index][indexIn]"></el-input>
             </div>
             <div v-else-if="indexIn === 'prepend' && config.CAttribute.typeModel==='input'">
-              <p>输入框前置追加</p>
+              <p>前置追加</p>
               <el-input @change="changeConfig()" placeholder="输入框前置追加头(非必填)"
                         v-model="config[index][indexIn]"></el-input>
             </div>
             <div v-else-if="indexIn === 'append' && config.CAttribute.typeModel==='input'">
-              <p>输入框尾部增加</p>
+              <p>尾部增加</p>
               <el-input @change="changeConfig()" placeholder="输入框尾部增加(非必填)"
                         v-model="config[index][indexIn]"></el-input>
             </div>
 
-            <!--mtw-->
-            <div v-else-if="indexIn === 'closable'">
-              <!--{{item}}-->
-              <div>
-                <el-checkbox v-model="config[index][indexIn].closableStatus"></el-checkbox>
-                可关闭状态
-              </div>
-              <div v-if="config[index][indexIn].closableStatus">
-                <el-radio-group v-model="config[index][indexIn].transitionModel">
-                  <el-radio :key="radio.value" v-for="radio in config[index][indexIn].closeTransition"
-                            :label="radio.value">
-                    {{radio.name}}
-                  </el-radio>
-                </el-radio-group>
-              </div>
-            </div>
-            <div v-else-if="indexIn === 'hit'">
-              <p>是否描边</p>
-              <el-radio-group v-model="config[index][indexIn].hitStatus">
-                <el-radio :key="radio.value" v-for="radio in config[index][indexIn].hitable" :label="radio.value">
-                  {{radio.name}}
-                </el-radio>
-              </el-radio-group>
-            </div>
             <!--by pyy-->
             <!--radio,checkbox按钮样式尺寸-->
             <div
@@ -350,7 +348,7 @@
               <el-checkbox v-model="config[index].itemAttr[itemIn].isDisabled" label="禁用"></el-checkbox>
             </div>
             <div v-else-if="indexIn === 'showAllCheckbox' && config[index].typeModel !== 'button'">
-              <p>显示全选选项</p>
+              <p>全选选项</p>
               <el-checkbox v-model="config[index].showAllCheckbox" label="显示全选"></el-checkbox>
             </div>
             <div v-else-if="indexIn === 'ableSelectedMin'">
@@ -594,12 +592,6 @@
                 </el-radio>
               </el-radio-group>
             </div> <!--tag标签的基础属性-->
-            <div v-else-if="indexIn === 'colorTag'">
-              <div class="block">
-                <span class="demonstration">无默认值</span>
-                <el-color-picker v-model="config[index][indexIn]"></el-color-picker>
-              </div>
-            </div> <!--tag标签的基础属性-->
 
             <div v-else-if="indexIn === 'colorTag'">
               <div class="block">
@@ -699,7 +691,7 @@
               <p>控件标题</p>
               <el-input type="input" @change="changeConfig()" v-model="config[index][indexIn]"></el-input>
             </div> <!--Dialog对话框、Popover的title属性-->
-            <div v-else-if="indexIn === 'size'"> <!--Dialog对话框的size属性-->
+            <div v-else-if="indexIn === 'dialogSize'"> <!--Dialog对话框的size属性-->
               <p>控件大小</p>
               <el-radio-group v-model="config[index][indexIn].currentSize">
                 <el-radio :key="radio.name" v-for="radio in config[index][indexIn].sizeAble" :label="radio.name">
@@ -746,26 +738,7 @@
               <p>控件标题</p>
               <el-input type="input" @change="changeConfig()" v-model="config[index][indexIn]"></el-input>
             </div> <!--弹框MessageBox的title属性-->
-            <div v-else-if="indexIn === 'inputValue'">
-              <p>输入框的初始文本</p>
-              <el-input type="input" @change="changeConfig()" v-model="config[index][indexIn]"></el-input>
-            </div> <!--弹框MessageBox的inputValue属性-->
-            <div v-else-if="indexIn === 'inputPattern'">
-              <p>输入框的校验表达式</p>
-              <el-input type="input" @change="changeConfig()" v-model="config[index][indexIn]"></el-input>
-            </div> <!--弹框MessageBox的inputPattern属性-->
-            <div v-else-if="indexIn === 'inputErrorMessage'">
-              <p>校验未通过时的提示文本</p>
-              <el-input type="input" @change="changeConfig()" v-model="config[index][indexIn]"></el-input>
-            </div> <!--弹框MessageBox的inputPattern属性-->
-            <div v-else-if="indexIn === 'showInput'">
-              <p>是否显示输入框</p>
-              <el-radio-group v-model="config[index][indexIn].showInput">
-                <el-radio :key="radio.value" v-for="radio in config[index][indexIn].showInputable" :label="radio.value">
-                  {{radio.name}}
-                </el-radio>
-              </el-radio-group>
-            </div> <!--弹框MessageBox的showInput属性-->
+
             <div v-else-if="indexIn === 'confirmButtonText'">
               <p>确定按钮文字</p>
               <el-input type="input" @change="changeConfig()" v-model="config[index][indexIn]"></el-input>
