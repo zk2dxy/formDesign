@@ -49,6 +49,10 @@
     },
     created () {
       this.config = this.initConfig
+      let item = JSON.parse(localStorage.getItem('badge'))
+      if (item) {
+        this.config = item.config
+      }
       if (this.ControlConfig) {
         this.config = this.ControlConfig
       }
@@ -58,6 +62,10 @@
     },
     mounted () {
       this.config = this.initConfig
+      let item = JSON.parse(localStorage.getItem('badge'))
+      if (item) {
+        this.config = item.config
+      }
       if (this.ControlConfig) {
         this.config = this.ControlConfig
       }
@@ -76,11 +84,8 @@
     deactivated () {
     },
     watch: {
-      'config.CAttribute.typeModel': {
-        handler () {
-          this.config.CAttribute.badgeValue.defaultValue = ''
-        },
-        deep: true
+      'ControlConfig.CAttribute.typeModel' () {
+        this.config.CAttribute.badgeValue.defaultValue = ''
       }
     },
     beforeDestroy () {

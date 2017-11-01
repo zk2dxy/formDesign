@@ -6,7 +6,7 @@
       ]">
         表单属性
       </li>
-      <li @click="changeTab('controlSetting')" class="items" :class="[
+      <li @click="changeTab('controlSetting',true)" class="items" :class="[
         activeJudge === false ? 'active' : ''
       ]">
         控件属性
@@ -15,6 +15,27 @@
     <div class="controlAttribute">
       <!--表单设置 start-->
       <div v-if="activeJudge">
+        <!--选择字段-->
+        <el-form
+          v-if="selectControl && !tabStatus"
+          class="controlElForm"
+          label-position="right"
+          label-width="70px"
+        >
+          <el-form-item
+            v-if="properties"
+            class="lineRow"
+            label="选择字段"
+          >
+            <el-cascader
+              v-model="propertyArray"
+              style="display: block"
+              :options="properties.states"
+              :props="defaultProps"
+            ></el-cascader>
+          </el-form-item>
+        </el-form>
+        <!--设置标题-->
         <el-form class="controlElForm" label-position="right" label-width="70px">
           <el-form-item
             class="lineRow"
@@ -39,6 +60,27 @@
             </el-input>
           </el-form-item>
         </el-form>
+        <!--未指定的字段-->
+        <el-form class="controlElForm" label-position="top">
+          <el-form-item
+            v-if="properties.states"
+            label="未指定属性"
+            class="propertiesNoneParent"
+          >
+            <div class="propertiesDiv">
+              <el-tag
+                v-for="property in properties.states"
+                v-if="!property.disabled"
+                type="danger"
+                class="propertiesNone"
+                :key="property.edmpCode"
+              >
+                {{property.edmpName}}
+              </el-tag>
+            </div>
+          </el-form-item>
+        </el-form>
+
       </div><!--表单设置 ended-->
       <!--控件属性设置 start-->
       <div v-else-if="!activeJudge && config" class="configSetting">
@@ -1174,7 +1216,7 @@
                     </el-form-item>
                   </div>
                   <div v-if="!config[index].timeFixed">
-                      <el-form-item
+                    <el-form-item
                       class="lineRow"
                       label="可选择范围"
                     >
@@ -1189,22 +1231,22 @@
                     </el-form-item>
                   </div>
                 </el-form>
-                  <div>
-                    <el-form label-position="right" label-width="112px">
-                      <el-form-item
-                        class="lineRow"
-                        label="是否为范围选择"
-                      >
-                        <el-checkbox
-                          v-if="deleteArr.indexOf('isRangeSelect') === -1"
-                          v-model="config[index].isRangeSelect"></el-checkbox>
-                        <span v-else>
+                <div>
+                  <el-form label-position="right" label-width="112px">
+                    <el-form-item
+                      class="lineRow"
+                      label="是否为范围选择"
+                    >
+                      <el-checkbox
+                        v-if="deleteArr.indexOf('isRangeSelect') === -1"
+                        v-model="config[index].isRangeSelect"></el-checkbox>
+                      <span v-else>
                           <template v-if="config[index].isRangeSelect">是</template>
                           <template v-else>否</template>
                         </span>
-                      </el-form-item>
-                    </el-form>
-                  </div>
+                    </el-form-item>
+                  </el-form>
+                </div>
               </div>
               <div v-else-if="indexIn === 'typeModel' && itemIn === 'date'">
                 <el-form label-position="right" label-width="70px">
@@ -1520,37 +1562,37 @@
               <!--badge标记的属性  start-->
               <div v-else-if="indexIn === 'badgeValue'">
                 <el-form label-position="right" label-width="70px">
-                    <div v-if="config[index].typeModel === 'string' && !config[index].isDot.dotStatus">
-                      <el-form-item
-                        class="lineRow"
-                        label="字符串值"
-                      >
-                        <el-input type="input" @change="changeConfig()" placeholder="请输入"
-                                  v-if="deleteArr.indexOf('stringDefaultValue') === -1"
-                                  v-model="config[index][indexIn].defaultValue"></el-input>
-                        <span v-else>{{config[index][indexIn].defaultValue}}</span>
-                      </el-form-item>
-                    </div>
-                    <div v-if="config[index].typeModel === 'number' && !config[index].isDot.dotStatus">
-                      <el-form-item
-                        class="lineRow"
-                        label="数字值"
-                      >
-                        <el-input type="input" @change="changeConfig()" placeholder="请输入"
-                                  v-if="deleteArr.indexOf('numberDefaultValue') === -1"
-                                  v-model.number="config[index][indexIn].defaultValue"></el-input>
-                        <span v-else>{{config[index][indexIn].defaultValue}}</span>
-                      </el-form-item>
-                      <el-form-item
-                        class="lineRow"
-                        label="最大值"
-                      >
-                        <el-input type="input" @change="changeConfig()" placeholder="请输入最大值"
-                                  v-if="deleteArr.indexOf('max') === -1"
-                                  v-model.number="config[index][indexIn].max"></el-input>
-                        <span v-else>{{config[index][indexIn].max}}</span>
-                      </el-form-item>
-                    </div>
+                  <div v-if="config[index].typeModel === 'string' && !config[index].isDot.dotStatus">
+                    <el-form-item
+                      class="lineRow"
+                      label="字符串值"
+                    >
+                      <el-input type="input" @change="changeConfig()" placeholder="请输入"
+                                v-if="deleteArr.indexOf('stringDefaultValue') === -1"
+                                v-model="config[index][indexIn].defaultValue"></el-input>
+                      <span v-else>{{config[index][indexIn].defaultValue}}</span>
+                    </el-form-item>
+                  </div>
+                  <div v-if="config[index].typeModel === 'number' && !config[index].isDot.dotStatus">
+                    <el-form-item
+                      class="lineRow"
+                      label="数字值"
+                    >
+                      <el-input type="input" @change="changeConfig()" placeholder="请输入"
+                                v-if="deleteArr.indexOf('numberDefaultValue') === -1"
+                                v-model.number="config[index][indexIn].defaultValue"></el-input>
+                      <span v-else>{{config[index][indexIn].defaultValue}}</span>
+                    </el-form-item>
+                    <el-form-item
+                      class="lineRow"
+                      label="最大值"
+                    >
+                      <el-input type="input" @change="changeConfig()" placeholder="请输入最大值"
+                                v-if="deleteArr.indexOf('max') === -1"
+                                v-model.number="config[index][indexIn].max"></el-input>
+                      <span v-else>{{config[index][indexIn].max}}</span>
+                    </el-form-item>
+                  </div>
                 </el-form>
               </div>
               <div v-else-if="indexIn === 'isDot'">
@@ -1951,8 +1993,8 @@
                 class="lineRow"
                 label="控件验证"
               >
-              <el-checkbox
-                @change="validateStatusChange(item)" v-model="item.status"></el-checkbox>
+                <el-checkbox
+                  @change="validateStatusChange(item)" v-model="item.status"></el-checkbox>
               </el-form-item>
               <div v-if="item.status">
                 <el-form-item>
@@ -2033,24 +2075,24 @@
                   <span v-else>{{config.currentLayout.default}}</span>
                 </div>
               </el-form-item>
-                <!--xyl-->
+              <!--xyl-->
             </el-form>
           </div> <!--CLayout属性  ended-->
 
           <!--Demo start-->
           <!--<div v-else-if="index === ''">-->
-            <!--<el-form label-position="right" label-width="70px">-->
-              <!--<el-form-item-->
-                <!--class="lineRow"-->
-                <!--label=""-->
-              <!--&gt;-->
-                <!--<el-input-->
-                  <!--@change="changeConfig()"-->
-                  <!--v-model="config[index]"-->
-                  <!--placeholder=""-->
-                <!--&gt;</el-input>-->
-              <!--</el-form-item>-->
-            <!--</el-form>-->
+          <!--<el-form label-position="right" label-width="70px">-->
+          <!--<el-form-item-->
+          <!--class="lineRow"-->
+          <!--label=""-->
+          <!--&gt;-->
+          <!--<el-input-->
+          <!--@change="changeConfig()"-->
+          <!--v-model="config[index]"-->
+          <!--placeholder=""-->
+          <!--&gt;</el-input>-->
+          <!--</el-form-item>-->
+          <!--</el-form>-->
           <!--</div>&lt;!&ndash;Demo ended&ndash;&gt;-->
         </div>
       </div><!--控件属性设置 start-->
@@ -2064,27 +2106,40 @@
   import {layoutJudge} from '@/assets/js/common'
 
   export default {
-    name: 'PyyConfigTest',
-    props: ['config', 'fConfig'],
+    name: 'ControlConfig',
+    props: ['fConfig', 'selectControl', 'formOBJ', 'properties', 'tabStatus', 'Methods'],
     destroy () {
       console.info(`destroy`)
     },
     data () {
       return {
+        config: null,
+        propertyArray: [],
+        methodArray: [],
+        defaultProps: {
+          children: 'for_null', // 不显示子节点配置。如果为属性集。则绑定到属性集控件
+          label: 'edmpName',
+          value: 'edmpCode',
+          disabled: 'disabled'
+        },
+        methodProps: {
+          children: 'for_null', // 不显示子节点配置。如果为属性集。则绑定到属性集控件
+          label: 'edmmTypeName',
+          value: 'edmmName',
+          disabled: 'disabled'
+        },
         activeSetting: 'formSetting',
         startTime: '',
         stepTime: '',
         endTime: '',
         timeSelectableRange: new Date(),
         addSwitchValue: false, // 是否增加switch值
-        deleteArr: [], // 不可编辑选项
         currentIndex: 0, // 当前选中项在默认值的index(多选)
         selectedGroup: {
           label: '',
           options: {label: '', showContent: '', isDisabled: false}
         },
-        rules: {
-//          radio和checkbox label值校验
+        rules: { // radio和checkbox label值校验
           label: [
             {required: true, message: '请输入选项值'},
             {
@@ -2130,32 +2185,52 @@
         rulesAdd: {}
       }
     },
-    mounted () {
-      if (this.config) {
-        this.activeSetting = 'controlSetting'
-      }
-    },
-    computed: {
-      activeJudge () {
-        if (this.activeSetting === 'formSetting') {
-          return true
-        } else {
-          return false
-        }
-      }
-    },
-//    created () {
-//      if (this.config.CAttribute.rangeOfFixedEnd) {
-//        this.startTime = ''
-//        this.stepTime = ''
-//        this.endTime = ''
-//      } else {
-//        this.startTime = ''
-//        this.stepTime = ''
-//        this.endTime = ''
-//      }
-//    },
     watch: {
+      selectControl (val) {
+        if (val.config.ControlProperties === '') {
+          this.propertyArray = []
+        } else {
+          let tempArray = []
+          tempArray.push(val.config.ControlProperties)
+          this.propertyArray = tempArray
+        }
+        if (this.formOBJ.selected) {
+          this.config = this.formOBJ.selected.config
+        }
+        if (this.tabStatus && val.config.ControlProperties !== '') {
+          this.activeSetting = 'controlSetting'
+        } else if (!this.tabStatus && val.config.ControlProperties === '') {
+          this.activeSetting = 'formSetting'
+        }
+      },
+      propertyArray (val) {
+        if (this.selectControl !== null) {
+          this.selectControl.config.ControlProperties = val.toString()
+          for (let key in this.properties.states) {
+            if (this.properties.states[key].edmpCode === val.toString()) {
+              this.properties.states[key].controlId = this.selectControl.config.ControlID
+              this.properties.states[key].disabled = true
+            } else if (this.properties.states[key].controlId === this.selectControl.config.ControlID && this.properties.states[key].edmpCode !== val.toString()) {
+              this.properties.states[key].controlId = null
+              this.properties.states[key].disabled = false
+            }
+          }
+        }
+      },
+      methodArray (val) {
+        if (this.selectControl !== null) {
+          this.selectControl.config.methodDBModel = val.toString()
+          for (let key in this.Methods.states) {
+            if (this.Methods.states[key].edmmName === val.toString()) {
+              this.Methods.states[key].controlId = this.selectControl.config.ControlID
+              this.Methods.states[key].disabled = true
+            } else if (this.Methods.states[key].controlId === this.selectControl.config.ControlID && this.Methods.states[key].edmmName !== val.toString()) {
+              this.Methods.states[key].controlId = null
+              this.Methods.states[key].disabled = false
+            }
+          }
+        }
+      },
       config () {
         if (this.config) {
           this.deleteArr = []
@@ -2171,9 +2246,32 @@
         this.endTime = ''
       }
     },
+    mounted () {
+    },
+    computed: {
+      activeJudge () {
+        if (this.activeSetting === 'formSetting') {
+          return true
+        } else {
+          return false
+        }
+      }
+    },
     methods: {
-      changeTab (values) {
-        this.activeSetting = values
+      changeTab (values, status) {
+        if (!this.selectControl && !this.tabStatus) {
+          console.info('没选控件,你切个鬼啊')
+          return
+        }
+        if (status) {
+          if (!this.selectControl.config.ControlProperties && !this.tabStatus) {
+            console.info('没选值。你切个屁啊')
+          } else {
+            this.activeSetting = values
+          }
+        } else {
+          this.activeSetting = values
+        }
       },
       //      添加collapse条目
       addItem () {
@@ -2210,7 +2308,7 @@
         this.config.CAttribute.cardItemAttribute.cardItem[this.config.CAttribute.cardCurrent].imageUrl = this.cardImageUrl
       },
       validateLayout (layoutItem, layoutType) {
-        console.error(`validateLayout`)
+        // console.error(`validateLayout`)
         let returnValue = layoutJudge(layoutItem, layoutType)
         if (!returnValue) {
           return
@@ -2245,7 +2343,6 @@
         }
       },
       changeConfig () {
-        this.$emit('changeConfig', this.config)
       },
       changeFConfig () {
         this.$emit('changeFConfig', this.fConfig)
@@ -2489,12 +2586,9 @@
       &:last-child
         border-right none
 
-    .controlElForm, .configSetting
+  .controlElForm, .configSetting
     > div
       margin-bottom .3rem
-    .configSetting
-    >  .el-input__inner, .el-textarea__inner
-      margin-top 4px !important
 
   .warnSpan
     background $font-danger
@@ -2511,6 +2605,13 @@
     border-bottom: 1px dashed rgba(102, 175, 233, .5)
     padding-top .3rem
 
+  .propertiesNoneParent
+    .propertiesDiv
+      text-align center
+      .propertiesNone
+        margin 0 .3rem .4rem !important
+        display inline-block
+
   .DivForLine
     height 0
     margin .3rem 0
@@ -2522,10 +2623,4 @@
 
   .el-input__inner, .el-textarea__inner
     margin-top 4px
-
-  .showColor
-    margin-top 5px
-    width 20px
-    height 20px
-
 </style>

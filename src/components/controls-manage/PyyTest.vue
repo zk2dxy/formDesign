@@ -1,5 +1,5 @@
 <template>
-  <div class="formDesign" ref="formDesign">
+  <div class="formDesign" ref="formDesign" v-if="ControlList">
     <div class="leftControls" ref="leftControls">
       <ul class="typeBox" v-if="ControlList">
         <li
@@ -14,7 +14,7 @@
         <draggable
           v-if="item.children.length > 0"
           v-model="item.children"
-          :options="{group:{name:'controls',pull:'clone', put: false}, animation: 0, ghostClass: 'ghost-none', sort:false}"
+          :options="{group:{name:'controls',pull:'clone', put: false}, animation: 0, ghostClass: 'movingControl', sort:false}"
           :clone="formClone"
         >
           <div
@@ -22,16 +22,19 @@
             v-for="controlItem in item.children"
             class="singleControl"
             :key="controlItem.CNameCN">
-            <el-button icon="circle-check">
+            <el-button
+              class="moveButton"
+              icon="circle-check">
               {{controlItem.CNameCN}}
             </el-button>
             <component
-              class="opacity0 hidden"
+              class="opacity0 hidden moveControl"
               :ControlID='controlItem.id'
               v-model="controlItem.config"
               :is="controlItem.component"
             >
             </component>
+            <!--{{controlItem}}-->
           </div>
         </draggable>
       </div>
@@ -42,44 +45,51 @@
       </div>
       <div class="formContainer">
         <draggable
-          v-model="list"
+          v-model="formStorage.states"
           :options="{name:'list',animation: 100,group:{name:'controls'},ghostClass: 'item-block-drag'}"
           style="display:flex; padding-bottom:50px"
           :style="[
-          computedFormClass === true ?{'display' : 'flex'} : {'display' : 'block'}
-        ]"
+            computedFormClass === true ?{'display' : 'flex'} : {'display' : 'block'}
+          ]"
           :class="[
             computedFormClass ? '' : 'floatChildren'
           ]"
         >
           <component
-            v-if="list"
+            v-if="formStorage.states"
             class="item"
+            v-for="(controlItem, key) in formStorage.states"
             :key="controlItem.id"
-            v-for="controlItem in list"
             :ControlConfig="controlItem.config"
             :ControlID='controlItem.id'
             :is="controlItem.component"
-            v-model="controlItem.config"
-            @getValue="showAttribute($event,controlItem)"
             :children="controlItem.children"
             :childrenDefault="controlItem.childrenDefault"
+            :formOBJ="formStorage"
+            :formItem="controlItem"
+            :Methods="Methods"
+            @changeTAB="changeTabs"
             :style="[
-            controlItem.config.layoutModel === 'percentLayout'  && controlItem.config.currentLayout !== null ? {'width' : controlItem.config.currentLayout.default+`%`} : null,
-            controlItem.config.layoutModel === 'pixelLayout'  && controlItem.config.currentLayout !== null ? {'width' : controlItem.config.currentLayout.default+`px`} : null,
-            controlItem.config.layoutModel === 'flexLayout'  && controlItem.config.currentLayout !== null ? {'flex' : controlItem.config.currentLayout.default} : null
-          ]"
+              controlItem.config.layoutModel === 'percentLayout'  && controlItem.config.currentLayout !== null ? {'width' : controlItem.config.currentLayout.default+`%`} : null,
+              controlItem.config.layoutModel === 'pixelLayout'  && controlItem.config.currentLayout !== null ? {'width' : controlItem.config.currentLayout.default+`px`} : null,
+              controlItem.config.layoutModel === 'flexLayout'  && controlItem.config.currentLayout !== null ? {'flex' : controlItem.config.currentLayout.default} : null
+            ]"
           >
           </component>
         </draggable>
       </div>
+      {{formStorage.states}}
     </div>
     <div class="rightFormSettings" ref="rightFormSettings">
       <pyy-config-test
-        :config="Config.CConfig"
+        v-if="properties"
+        :properties="properties"
+        :selectControl="formStorage.selected"
+        :config="formStorage.selected"
         :fConfig="Config.FConfig"
-        @changeConfig="changeView"
-        @changeFConfig="changeViewForm"
+        :formOBJ="formStorage"
+        :tabStatus="tabStatus"
+        :Methods="Methods"
       ></pyy-config-test>
     </div>
   </div>
@@ -88,20 +98,50 @@
   import draggable from 'vuedraggable'
   import uuid from 'node-uuid'
   import {calcLayoutClass} from '@/assets/js/common'
+//  import FormSettings from '@/components/module/formDesign/FormSettingsBak.vue'
+  import * as properties from 'api/properties.json'
+  import FormStore from '@/store/formStore'
+  import Properties from '@/store/formProperties'
+  import Methods from '@/store/formMethods'
   import PyyConfigTest from './PyyConfigTest'
 
   export default {
-    name: `PyyTest`,
+    name: `formDesign`,
     components: {
       draggable,
       PyyConfigTest
     },
     created () {
-      this.loadAllControls()
+      this.loading = this.$loading({
+        text: '拼命加载中...'
+      })
     },
     mounted () {
-      // console.info(uuid)
-      // console.info(calcLayoutClass)
+      // 定时计划loading
+      this.timeInterval = setInterval(() => {
+        if (this.properties !== null) {
+          if (!this.formStorage) {
+            this.formStorage = new FormStore(this)
+          }
+          window.clearInterval(this.timeInterval)
+          this.loadAllControls()
+          this.loading.close()
+        }
+      }, 100)
+
+      // 模拟请求属性
+      setTimeout(() => {
+        if (properties.retCode === 1) {
+          if (!this.properties) {
+            this.properties = new Properties(this)
+            this.properties.mutations.setData(this.properties, properties.data.properties)
+            this.Methods = new Methods(this)
+            this.Methods.mutations.setData(this.Methods, properties.data.methods)
+          }
+        } else {
+          alert('表单设计属性集请求数据失败')
+        }
+      }, 1500)
     },
     updated () {
     },
@@ -115,23 +155,29 @@
     },
     destroyed () {
     },
-    watch: {},
+    watch: {
+      controlSelect (val) {
+        console.warn('controlSelect = >')
+        console.error(val)
+      }
+    },
     computed: {
       layoutClass () {
-        return calcLayoutClass(this.list)
+        return calcLayoutClass(this.formStorage.states)
       },
       computedFormClass () {
         let flex = true
-        if (this.list.length > 0) {
-          let flexClass = 'flexLayout'
-          for (let key in this.list) {
-            console.error(this.list[key].config)
-            flex = (this.list[key].config.currentLayout.value === flexClass) && flex
-            if (!flex) {
-              break
+        if (this.formStorage.states) {
+          if (this.formStorage.states.length > 0) {
+            let flexClass = 'flexLayout'
+            for (let key in this.formStorage.states) {
+              flex = (this.formStorage.states[key].config.currentLayout.value === flexClass) && flex
+              if (!flex) {
+                break
+              }
             }
+            return flex
           }
-          return flex
         } else {
           return flex
         }
@@ -302,20 +348,29 @@
           }
         }
       },
-      showAttribute (data, item) {
-        this.Config.CConfig = data
-      },
-      changeView (config) {
-      },
       changeViewForm (fConfig) {
         this.Config.FConfig = fConfig
+      },
+      changeTabs (config) {
+        if (config.type === 'layout' || config.type === 'button') {
+          this.tabStatus = true
+        } else {
+          this.tabStatus = false
+        }
       }
     },
     data () {
       return {
-        tabIndex: 'normal',
-        tabHeight: 2.35,
         list: [],
+        tabStatus: false, // 是否不需要选属性
+        controlSelect: null, // 是否选中了控件
+        timeInterval: null, // 获取属性集定时器
+        loading: null, // loading 表单设计器loading控件
+        tabIndex: 'normal', // 设置控件选择状态
+        tabHeight: 2.35,
+        formStorage: null, // 表单设计器数据
+        properties: null, // 单据一级属性数据集合
+        Methods: null, // 单据方法数据集合
         ControlList: null,
         Config: {
           FConfig: {
@@ -323,7 +378,8 @@
             description: '表单描述',
             classification: '',
             listViews: [],
-            flowBindResult: []
+            flowBindResult: [],
+            properties: null
           },
           CConfig: ''
         }
@@ -334,7 +390,7 @@
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   @import "~assets/css/stylus/mixin"
   .leftControls
-    width 18%
+    width 23%
     position absolute
     top 1%
     bottom 1%
@@ -342,12 +398,13 @@
     box-shadow inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 1px rgba(102, 175, 233, 1)
 
   .container
-    width 60%
+    width 50%
     position absolute
+    overflow auto
     top 1%
     bottom 1%
-    left 20%
-    right 20%
+    left 25%
+    right 25%
     box-shadow inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 1px rgba(102, 175, 233, 1)
     .formContainer
       padding 11px 15px
@@ -355,7 +412,7 @@
   .rightFormSettings
     position absolute
     overflow auto
-    width 18%
+    width 23%
     top 1%
     bottom 1%
     right 1%
@@ -407,6 +464,7 @@
     font-size $font-huge
     color $font-primary
     padding 11px 15px
+    border-bottom 1px dashed $font-primary
 
   .floatChildren
     clear both
@@ -419,4 +477,14 @@
     .item
       float left
       margin-bottom 10px
+
+  .formContainer
+    .movingControl
+      .moveButton
+        opacity 0 !important
+        display none !important
+      .moveControl
+        opacity 1 !important
+        display block !important
+
 </style>

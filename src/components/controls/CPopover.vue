@@ -60,6 +60,10 @@
     },
     created () {
       this.config = this.initConfig
+      let item = JSON.parse(localStorage.getItem('popover'))
+      if (item) {
+        this.config = item.config
+      }
       if (this.ControlConfig) {
         this.config = this.ControlConfig
       }
@@ -69,6 +73,10 @@
     },
     mounted () {
       this.config = this.initConfig
+      let item = JSON.parse(localStorage.getItem('popover'))
+      if (item) {
+        this.config = item.config
+      }
       if (this.ControlConfig) {
         this.config = this.ControlConfig
       }
