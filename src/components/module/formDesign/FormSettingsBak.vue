@@ -1807,13 +1807,6 @@
     },
     watch: {
       selectControl (val) {
-        if (val.config.ControlProperties === '') {
-          this.propertyArray = []
-        } else {
-          let tempArray = []
-          tempArray.push(val.config.ControlProperties)
-          this.propertyArray = tempArray
-        }
         if (this.formOBJ.selected) {
           this.config = this.formOBJ.selected.config
         }
@@ -1822,15 +1815,34 @@
         } else if (!this.tabStatus && val.config.ControlProperties === '') {
           this.activeSetting = 'formSetting'
         }
+        // 设置绑定属性值
+        if (val.config.ControlProperties === '') {
+          this.propertyArray = []
+        } else {
+          let tempArray = []
+          tempArray.push(val.config.ControlProperties)
+          this.propertyArray = tempArray
+        }
+        // 设置方法绑定值
+        if (val.config.methodDBModel === '') {
+          this.methodArray = []
+        } else {
+          let tempArray = []
+          tempArray.push(val.config.methodDBModel)
+          this.methodArray = tempArray
+        }
       },
       propertyArray (val) {
         if (this.selectControl !== null) {
           this.selectControl.config.ControlProperties = val.toString()
           for (let key in this.properties.states) {
             if (this.properties.states[key].edmpCode === val.toString()) {
-              this.properties.states[key].controlId = this.selectControl.config.ControlID
+              this.properties.states[key].controlId = this.selectControl.id
               this.properties.states[key].disabled = true
-            } else if (this.properties.states[key].controlId === this.selectControl.config.ControlID && this.properties.states[key].edmpCode !== val.toString()) {
+            }
+            if ((this.properties.states[key].controlId === this.selectControl.id) && (this.properties.states[key].edmpCode !== val.toString())) {
+              console.error(this.properties.states[key].controlId)
+              console.info(this.selectControl.id)
               this.properties.states[key].controlId = null
               this.properties.states[key].disabled = false
             }
@@ -1842,9 +1854,9 @@
           this.selectControl.config.methodDBModel = val.toString()
           for (let key in this.Methods.states) {
             if (this.Methods.states[key].edmmName === val.toString()) {
-              this.Methods.states[key].controlId = this.selectControl.config.ControlID
+              this.Methods.states[key].controlId = this.selectControl.id
               this.Methods.states[key].disabled = true
-            } else if (this.Methods.states[key].controlId === this.selectControl.config.ControlID && this.Methods.states[key].edmmName !== val.toString()) {
+            } else if (this.Methods.states[key].controlId === this.selectControl.id && this.Methods.states[key].edmmName !== val.toString()) {
               this.Methods.states[key].controlId = null
               this.Methods.states[key].disabled = false
             }

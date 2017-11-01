@@ -2314,7 +2314,7 @@
     },
     created () {
       this.initAttribute = this.L.cloneDeep(this.attribute)
-      this.initAttribute = this.attribute
+      // this.initAttribute = this.attribute
       let deleteArr = JSON.parse(localStorage.getItem('deleteAttribute'))
       if (deleteArr) {
         let key = this.config.CName

@@ -14,16 +14,6 @@ Properties.prototype.mutations = {
       values[key].controlId = null
     }
     obj.states = values
-  },
-  removeDisabled (obj, controlId) {
-    for (let key in obj.states) {
-      if (obj.states[key].controlId === controlId) {
-        obj.states[key].controlId = null
-        obj.states[key].disabled = false
-      } else {
-        continue
-      }
-    }
   }
 }
 
