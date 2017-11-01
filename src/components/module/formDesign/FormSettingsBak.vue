@@ -1744,7 +1744,7 @@
         },
         methodProps: {
           children: 'for_null', // 不显示子节点配置。如果为属性集。则绑定到属性集控件
-          label: 'edmmTypeName',
+          label: 'edmmName',
           value: 'edmmName',
           disabled: 'disabled'
         },
