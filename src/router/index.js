@@ -7,6 +7,8 @@ import Xyl from '@/components/Xuanyl'
 import Mtw from '@/components/Mtw'
 import Xx from '@/components/Xx'
 import Form from '@/components/Form'
+import ControlsManage from '@/components/controls-manage/ControlsManage'
+import PyyTest from '@/components/controls-manage/PyyTest'
 
 Vue.use(Router)
 
@@ -39,5 +41,13 @@ export default new Router({
     path: '/Xx',
     name: 'Xx',
     component: Xx
+  }, {
+    path: '/ControlsManage',
+    name: 'ControlsManage',
+    component: ControlsManage
+  }, {
+    path: '/PyyTest',
+    name: 'PyyTest',
+    component: PyyTest
   }]
 })
