@@ -78,7 +78,7 @@
           </component>
         </draggable>
       </div>
-      {{formStorage.states}}
+      <!--{{formStorage.states}}-->
     </div>
     <div class="rightFormSettings" ref="rightFormSettings">
       <form-settings
