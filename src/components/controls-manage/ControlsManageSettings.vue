@@ -105,7 +105,9 @@
               </el-form-item>
               <el-dialog
                 :visible.sync="config.CAttribute.addStatus"
-                :show-close="false">
+                :show-close="false"
+                :close-on-click-modal="false"
+                :close-on-press-escape="false">
                 <h4 slot="title">输入单选项属性：</h4>
                 <el-form
                   :model="config.CAttribute.itemAttr[config.CAttribute.itemAttr.length-1]"
@@ -2309,12 +2311,26 @@
             }
           ]
         },
-        rulesAdd: {}
+        rulesAdd: {
+          label: [
+            {required: true, message: '请输入选项值'},
+            {
+              validator: (rules, value, callback) => {
+                this.config.CAttribute.itemAttr.forEach((item, index) => {
+                  if (item.label === value && index !== this.config.CAttribute.itemAttr.length - 1) {
+                    this.config.CAttribute.itemAttr[this.config.CAttribute.itemAttr.length - 1].label = ''
+                    callback(new Error('选项值不可以重复'))
+                  }
+                })
+                callback()
+              }
+            }
+          ]
+        }
       }
     },
     created () {
       this.initAttribute = this.L.cloneDeep(this.attribute)
-      this.initAttribute = this.attribute
       let deleteArr = JSON.parse(localStorage.getItem('deleteAttribute'))
       if (deleteArr) {
         let key = this.config.CName
@@ -2632,6 +2648,24 @@
 </script>
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   @import "~assets/css/stylus/mixin"
+  @media screen and (max-width: 1200px)
+    .edit
+      position absolute
+      top 50%
+      right 150px
+    .editPlacement
+      position absolute
+      top 50%
+      right 100px
+  @media screen and (min-width: 1200px)
+    .edit
+      position absolute
+      top 50%
+      right 300px
+    .editPlacement
+      position absolute
+      top 50%
+      right 200px
   .ControlConfig
     p
       padding 0
@@ -2691,14 +2725,6 @@
     padding-bottom .3rem
     border-bottom 1px dashed rgba(102, 175, 233, .5)
     padding-top .3rem
-    .edit
-      position absolute
-      top 50%
-      right 320px
-    .editPlacement
-      position absolute
-      top 50%
-      right 200px
   .DivForLine
     height 0
     margin .3rem 0
@@ -2717,7 +2743,8 @@
     width 20%
 
   .el-input-width
-    display inline-block
+    display block
+    margin-top 15px
     width 100%
   .el-input__inner, .el-textarea__inner
     margin-top 4px

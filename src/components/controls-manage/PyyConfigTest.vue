@@ -176,7 +176,9 @@
               </el-form-item>
               <el-dialog
                 :visible.sync="config.CAttribute.addStatus"
-                :show-close="false">
+                :show-close="false"
+                :close-on-click-modal="false"
+                :close-on-press-escape="false">
                 <h4 slot="title">输入单选项属性：</h4>
                 <el-form
                   :model="config.CAttribute.itemAttr[config.CAttribute.itemAttr.length-1]"
@@ -184,17 +186,18 @@
                   v-if="item === 'CRadio'">
                   <el-form-item prop="label">
                     <el-input v-model="config.CAttribute.itemAttr[config.CAttribute.itemAttr.length-1].label"
-                              placeholder="选项值" class="input__inner"></el-input>
+                              placeholder="选项值" class="inputSetting"></el-input>
                   </el-form-item>
                 </el-form>
                 <div v-if="config.CAttribute.typeModel !== 'selectGroup'">
                   <el-input
                     v-model="config.CAttribute.itemAttr[config.CAttribute.itemAttr.length-1].label" placeholder="选项值"
-                    class="input__inner"
+                    class="inputSetting"
                     v-if="item !== 'CRadio'"
                   ></el-input>
                   <div class="DivForLine"></div>
                   <el-input
+                    class="inputSetting"
                     v-model="config.CAttribute.itemAttr[config.CAttribute.itemAttr.length-1].showContent"
                     placeholder="选项显示内容"
                   ></el-input>
@@ -2182,7 +2185,22 @@
             }
           ]
         },
-        rulesAdd: {}
+        rulesAdd: {
+          label: [
+            {required: true, message: '请输入选项值'},
+            {
+              validator: (rules, value, callback) => {
+                this.config.CAttribute.itemAttr.forEach((item, index) => {
+                  if (item.label === value && index !== this.config.CAttribute.itemAttr.length - 1) {
+                    this.config.CAttribute.itemAttr[this.config.CAttribute.itemAttr.length - 1].label = ''
+                    callback(new Error('选项值不可以重复'))
+                  }
+                })
+                callback()
+              }
+            }
+          ]
+        }
       }
     },
     watch: {
@@ -2235,8 +2253,9 @@
         if (this.config) {
           this.deleteArr = []
           let key = this.config.CName
-          if (JSON.parse(localStorage.getItem('deleteAttribute'))[key]) {
-            this.deleteArr = JSON.parse(localStorage.getItem('deleteAttribute'))[key]
+          let del = JSON.parse(localStorage.getItem('deleteAttribute'))[key]
+          if (del) {
+            this.deleteArr = del
           }
         }
       },
@@ -2623,4 +2642,7 @@
 
   .el-input__inner, .el-textarea__inner
     margin-top 4px
+  .inputSetting
+    display block
+    margin-top 15px
 </style>

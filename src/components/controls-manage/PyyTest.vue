@@ -185,10 +185,15 @@
     },
     methods: {
       formClone (originData) {
-        let newObj = this.L.cloneDeep(originData)
-        let _uuid = uuid.v4()
-        newObj.id = _uuid
-        return newObj
+        let updateData = JSON.parse(localStorage.getItem(originData.CNameEN))
+        if (updateData) {
+          return updateData
+        } else {
+          let newObj = this.L.cloneDeep(originData)
+          let _uuid = uuid.v4()
+          newObj.id = _uuid
+          return newObj
+        }
       },
       clickAction (key) {
         this.tabIndex = key // 改变tab索引

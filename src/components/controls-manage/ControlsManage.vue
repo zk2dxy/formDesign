@@ -10,30 +10,23 @@
           v-for="item in controls"
           :key="item.name"
           :label="item.name">
-          <el-scrollbar
-            tag="div"
-            class="list-items-scroll"
-            wrap-class="list-items-scroll-wrapper"
-            view-class="el-select-dropdown__list"
-          >
-            <div
-              class="heightPanel">
-              <template v-for="itemChildren in item.children">
-                <el-button
-                  class="controlsButton"
-                  icon="circle-check"
-                  @click="doSelectChange(itemChildren)">
-                  {{itemChildren.CNameCN}}
-                </el-button>
-                <component
-                  class="opacity0 hidden"
-                  :ControlID='itemChildren.id'
-                  v-model="itemChildren.config"
-                  :is="itemChildren.component"
-                ></component>
-              </template>
-            </div>
-          </el-scrollbar>
+          <div
+            class="heightPanel">
+            <template v-for="itemChildren in item.children">
+              <el-button
+                class="controlsButton"
+                icon="circle-check"
+                @click="doSelectChange(itemChildren)">
+                {{itemChildren.CNameCN}}
+              </el-button>
+              <component
+                class="opacity0 hidden"
+                :ControlID='itemChildren.id'
+                v-model="itemChildren.config"
+                :is="itemChildren.component"
+              ></component>
+            </template>
+          </div>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -271,10 +264,19 @@
         this.deleteAttribute[key].splice(index, 1)
       },
       doSelectChange (item) {
-        let newObj = this.L.cloneDeep(item)
-        let _uuid = uuid.v4()
-        newObj.id = _uuid
-        this.updatedComponent = newObj
+        let updateData = JSON.parse(localStorage.getItem(item.CNameEN))
+        if (updateData) {
+          this.updatedComponent = updateData
+        } else {
+          let newObj = this.L.cloneDeep(item)
+          let _uuid = uuid.v4()
+          newObj.id = _uuid
+          this.updatedComponent = newObj
+        }
+//        let newObj = this.L.cloneDeep(item)
+//        let _uuid = uuid.v4()
+//        newObj.id = _uuid
+//        this.updatedComponent = newObj
       },
       doSave (key) {
         if (window.localStorage) {
@@ -313,9 +315,9 @@
         text-align left
         margin-bottom 10px
   .controlsPreview
-    position absolute
+    position relative
     left 26%
-    bottom 0
+    bottom 220px
     height 20%
     width 74%
     .title
