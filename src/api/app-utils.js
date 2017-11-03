@@ -13,6 +13,14 @@ const AppUtils = {
       type: 'warning'
     })
   },
+  showError: function (msg, duration) {
+    let durationOpt = duration || 0
+    Message({
+      message: msg,
+      type: 'error',
+      duration: durationOpt
+    })
+  },
   showNWarning: function (msg, options = {}) {
     let duration = options.duration || 0
     Notification({

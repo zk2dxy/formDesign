@@ -2,60 +2,34 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import _ from 'lodash'
 
-// import HelloWorld from '@/components/HelloWorld'
-// import Pyy from '@/components/Pangyy'
-// import Xyl from '@/components/Xuanyl'
-// import Mtw from '@/components/Mtw'
-// import Xx from '@/components/Xx'
-// import Form from '@/components/Form'
-// import ControlsManage from '@/components/controls-manage/ControlsManage'
-// import PyyTest from '@/components/controls-manage/PyyTest'
+// 扩展工具类
+import AppUtils from 'api/app-utils'
 
-// import DebugModule from '@/router/DebugModule'
-import PageModule from '@/router/PageModule'
+// 路由模块
+import Root from '@/router/module/Root'
+import DebugModule from '@/router/module/DebugModule'
+import PageModule from '@/router/module/PageModule'
 
 Vue.use(Router)
 
-const rootRouter = [{
-  path: '/',
-  name: 'HelloWorld',
-  component: () => import('@/components/HelloWorld')
-}]
+// 根目录
+const rootRouter = []
 
-// let router = _.concat(rootRouter, DebugModule, PageModule)
-let router = _.concat(rootRouter, PageModule)
+// 合并所有路由
+let router = _.concat(rootRouter, Root, DebugModule, PageModule)
 
-// export default new Router({
-//   routes: [{
-//     path: '/',
-//     redirect: '/HelloWorld'
-//   }, {
-//     path: '/Pyy',
-//     name: 'Pyy',
-//     component: Pyy
-//   }, {
-//     path: '/Xyl',
-//     name: 'Xyl',
-//     component: Xyl
-//   }, {
-//     path: '/Mtw',
-//     name: 'Mtw',
-//     component: Mtw
-//   }, {
-//     path: '/Xx',
-//     name: 'Xx',
-//     component: Xx
-//   }, {
-//     path: '/ControlsManage',
-//     name: 'ControlsManage',
-//     component: ControlsManage
-//   }, {
-//     path: '/PyyTest',
-//     name: 'PyyTest',
-//     component: PyyTest
-//   }]
-// })
-
-export default new Router({
-  router: router
+const Routers = new Router({
+  routes: router
 })
+
+// 遍历 router 的有效性
+Routers.beforeEach((to, from, next) => {
+  if (to.matched.length > 0) {
+    next()
+  } else {
+    AppUtils.showError('错误的路径', 1000)
+    Routers.replace('/')
+  }
+})
+
+export default Routers
