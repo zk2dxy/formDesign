@@ -1,6 +1,6 @@
 <template>
   <div class="HelloWorld">
-    <!--module content-->
+    <pre>{{DATA}}</pre>
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -8,8 +8,16 @@
 
   export default {
     name: `Xx`,
+    data () {
+      return {
+        DATA: null
+      }
+    },
     created () {
-      console.log(formDATA)
+      this.DATA = formDATA
+      setTimeout(() => {
+        console.info(this.DATA)
+      }, 20)
     }
   }
 </script>

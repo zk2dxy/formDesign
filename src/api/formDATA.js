@@ -1,4 +1,4 @@
-[{
+const FormData = [{
   'CNameCN': '按钮',
   'CNameEN': 'button',
   'parent': 'form',
@@ -555,3 +555,6 @@
   'childrenDefault': [[]],
   'id': '2413be84-a913-4950-8b43-38a446e1d876'
 }]
+
+export default FormData
+
