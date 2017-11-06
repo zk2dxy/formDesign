@@ -17,7 +17,7 @@
 
 <style lang="stylus" rel="stylesheet/stylus" scoped>
   @import "~assets/css/stylus/mixin"
-  .formDesign
+  #formDesign
     position absolute
     left 0
     right 0

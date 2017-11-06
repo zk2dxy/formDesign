@@ -266,11 +266,6 @@
               type: Number,
               default: 1,
               status: false
-            },
-            columnLayout: { // 栅格布局
-              type: Number,
-              default: 12,
-              status: false
             }
           },
           CAttribute: {
