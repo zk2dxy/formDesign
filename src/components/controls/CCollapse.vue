@@ -149,7 +149,7 @@
             {value: 'top', name: '居上对齐'}
           ],
           labelWidth: 80,
-          layoutModel: 'flexLayout',
+          layoutModel: 'percentLayout',
           currentLayout: null,
           CLayout: [ // 布局
             { // flex 布局
@@ -157,7 +157,7 @@
               name: '自适应',
               default: 1,
               value: 'flexLayout',
-              status: true,
+              status: false,
               max: 10
             },
             { // 百分比布局
@@ -165,7 +165,7 @@
               name: '百分比',
               default: 100,
               value: 'percentLayout',
-              status: false,
+              status: true,
               max: 100
             },
             { // 像素布局

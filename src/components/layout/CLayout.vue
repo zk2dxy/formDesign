@@ -173,7 +173,7 @@
           CTitleCN: '布局控件', // 标题
           CTitleEN: 'layout Control', // 英文标题
           CName: 'CLayout', // 控件名称
-          layoutModel: 'flexLayout',
+          layoutModel: 'percentLayout',
           currentLayout: null,
           CLayout: [ // 布局
             { // flex 布局
@@ -181,7 +181,7 @@
               name: '自适应布局',
               default: 1,
               value: 'flexLayout',
-              status: true,
+              status: false,
               max: 10
             },
             { // 百分比布局
@@ -189,7 +189,7 @@
               name: '百分比布局',
               default: 100,
               value: 'percentLayout',
-              status: false,
+              status: true,
               max: 100
             },
             { // 像素布局
@@ -199,14 +199,6 @@
               value: 'pixelLayout',
               status: false,
               max: null
-            },
-            { // 栅格布局
-              type: Number,
-              name: '栅格布局',
-              default: 12,
-              value: 'columnLayout',
-              status: false,
-              max: 12
             }
           ],
           CAttribute: {

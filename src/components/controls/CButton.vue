@@ -121,7 +121,7 @@
           CTitleCN: '按钮', // 标题
           CTitleEN: 'button', // 英文标题
           CName: 'CButton', // 控件名称
-          layoutModel: 'flexLayout',
+          layoutModel: 'percentLayout',
           currentLayout: null,
           methodDB: null,
           methodDBModel: null,
@@ -131,7 +131,7 @@
               name: '自适应',
               default: 1,
               value: 'flexLayout',
-              status: true,
+              status: false,
               max: 10
             },
             { // 百分比布局
@@ -139,7 +139,7 @@
               name: '百分比',
               default: 100,
               value: 'percentLayout',
-              status: false,
+              status: true,
               max: 100
             },
             { // 像素布局
