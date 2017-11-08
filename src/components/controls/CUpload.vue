@@ -247,6 +247,7 @@
     data () {
       return {
         initConfig: {
+          ControlProperties: '',
           ControlID: '', // 表单生成后的控件id
           CBelong: 'form',
           CTitleEN: 'upload Control', // 英文标题

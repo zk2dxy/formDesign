@@ -136,6 +136,7 @@
     data () {
       return {
         initConfig: {
+          ControlProperties: '',
           ControlID: '', // 表单生成后的控件id
           CBelong: 'others',
           CTitleCN: 'step步骤条', // 标题

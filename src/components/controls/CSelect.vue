@@ -366,6 +366,7 @@
         options: [],
         optionsGroup: [],
         initConfig: {
+          ControlProperties: '',
           ControlID: '', // 表单生成后的控件id
           CBelong: 'form',
           CTitleCN: '选择器', // 标题

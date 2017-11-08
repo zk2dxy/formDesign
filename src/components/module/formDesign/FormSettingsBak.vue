@@ -1701,15 +1701,6 @@
                     :maxlength=3
                   ></el-input>
                 </div>
-                <div v-else-if="config.layoutModel==='columnLayout' && config.currentLayout">
-                  {{config.currentLayout.name}}：
-                  <el-input
-                    @change="validateLayout(config.currentLayout,config.layoutModel)"
-                    v-model="config.currentLayout.default"
-                    :placeholder="config.currentLayout.name"
-                    :maxlength=3
-                  ></el-input>
-                </div>
               </el-form-item>
               <!--xyl-->
             </el-form>
@@ -1722,7 +1713,7 @@
     </div>
   </div>
 </template>
-<script type="text/ecmascript-6">
+<script>
   import {layoutJudge} from '@/assets/js/common'
 
   export default {

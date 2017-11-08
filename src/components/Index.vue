@@ -106,8 +106,8 @@
               >
               </component>
             </draggable>
+            {{formStorage.states}}
           </div>
-          <!--{{formStorage.states}}-->
         </div>
         <div class="rightFormSettings" ref="rightFormSettings">
           <form-settings
@@ -394,6 +394,7 @@
     },
     data () {
       return {
+        // activeS: 'formSetting',
         fixedStatus: false,
         list: [],
         tabStatus: false, // 是否不需要选属性

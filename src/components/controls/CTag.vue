@@ -115,6 +115,7 @@
       return {
         color1: null,
         initConfig: {
+          ControlProperties: '',
           ControlID: '', // 表单生成后的控件id
           CBelong: 'form',
           CTitleCN: '标签', // 标题

@@ -214,6 +214,7 @@
     data () {
       return {
         initConfig: {
+          ControlProperties: '',
           ControlID: '', // 表单生成后的控件id
           CBelong: 'others',
           CTitleCN: '分页控件',

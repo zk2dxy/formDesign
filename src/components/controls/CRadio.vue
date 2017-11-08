@@ -7,14 +7,14 @@
       <div v-if="config.CAttribute.typeModel==='radio'">
         <el-radio-group
           v-model="config.CKey.default">
-            <el-radio
-              v-for="(item, index) in config.CAttribute.itemAttr"
-              :key="item.label"
-              :label="item.label"
-              :disabled="item.isDisabled">
+          <el-radio
+            v-for="(item, index) in config.CAttribute.itemAttr"
+            :key="item.label"
+            :label="item.label"
+            :disabled="item.isDisabled">
               <span @click="SelectedChange(item.label)"
-                    >{{item.showContent}}</span>
-            </el-radio>
+              >{{item.showContent}}</span>
+          </el-radio>
         </el-radio-group>
       </div>
       <div v-else>
@@ -36,35 +36,34 @@
       </div>
     </div>
     <div v-else>
-      <el-form :label-position="ControlConfig.labelPositionModel" :label-width=labelWidthCalc>
-        <el-form-item :label="ControlConfig.CTitleCN">
+      <el-form :label-position="formItem.config.labelPositionModel" :label-width=labelWidthCalc>
+        <el-form-item :label="formItem.config.CTitleCN">
           <el-radio-group
-            v-if="ControlConfig.CAttribute.typeModel==='radio'"
-            v-model="ControlConfig.CKey.default">
+            v-if="formItem.config.CAttribute.typeModel==='radio'"
+            v-model="formItem.config.CKey.default">
             <!--增加span修改禁用状态-->
             <el-radio
-              v-for="(item, index) in ControlConfig.CAttribute.itemAttr"
+              v-for="(item, index) in formItem.config.CAttribute.itemAttr"
               :key="item.label"
               :label="item.label"
-              :disabled="item.isDisabled">
-              <span @click="SelectedChange(item.label)"
-              >{{item.showContent}}</span>
+              :disabled="item.isDisabled"
+            >
+              <span @click="SelectedChange(item.label)">{{item.showContent}}</span>
             </el-radio>
           </el-radio-group>
           <el-radio-group
             v-else
-            v-model="ControlConfig.CKey.default"
-            :size="ControlConfig.CAttribute.sizeModel"
-            :text-color="ControlConfig.CAttribute.textColor"
-            :fill="ControlConfig.CAttribute.fillColor"
+            v-model="formItem.config.CKey.default"
+            :size="formItem.config.CAttribute.sizeModel"
+            :text-color="formItem.config.CAttribute.textColor"
+            :fill="formItem.config.CAttribute.fillColor"
             @change="SelectedChange">
             <el-radio-button
-              v-for="(item, index) in ControlConfig.CAttribute.itemAttr"
+              v-for="(item, index) in formItem.config.CAttribute.itemAttr"
               :key="item.label"
               :label="item.label"
               :disabled="item.isDisabled">
-                <span
-                  @click="SelectedChange(item.label)">{{item.showContent}}</span>
+              <span @click="SelectedChange(item.label)">{{item.showContent}}</span>
             </el-radio-button>
           </el-radio-group>
         </el-form-item>
@@ -92,41 +91,23 @@
     },
     created () {
       this.config = this.initConfig
-      let item = JSON.parse(localStorage.getItem('radio'))
-      if (item) {
-        this.config = item.config
-      }
-      if (this.ControlConfig) {
-        this.config = this.ControlConfig
-      }
-      if (this.ControlID && (!this.config.ControlID)) {
-        this.config.ControlID = this.ControlID
-      }
     },
     mounted () {
       this.config = this.initConfig
-      let item = JSON.parse(localStorage.getItem('radio'))
-      if (item) {
-        this.config = item.config
-      }
-      if (this.ControlConfig) {
-        this.config = this.ControlConfig
-      }
-      if (this.ControlID && (!this.config.ControlID)) {
-        this.config.ControlID = this.ControlID
-      }
       this.getChildrenLayoutValue()
       this.$emit('input', this.config)
     },
+    watch: {},
     methods: {
       ControlClick () {
         this.formOBJ.mutations.selectObj(this.formOBJ, this.formItem)
         this.$emit('changeTAB', this.formItem)
       },
       SelectedChange (label) {
-        this.config.CAttribute.itemAttr.forEach((item, index) => {
+        this.formItem.config.CAttribute.itemAttr.forEach((item, index) => {
           if (label === item.label) {
-            this.config.CAttribute.currentSelected = index
+            this.formItem.config.CAttribute.currentSelected = index
+            // this.formItem.config.CKey.default = label
           }
         })
       },
@@ -155,6 +136,7 @@
     data () {
       return {
         initConfig: {
+          ControlProperties: '',
           ControlID: '', // 表单生成后的控件id
           CBelong: 'form',
           CTitleCN: '单选框', // 标题

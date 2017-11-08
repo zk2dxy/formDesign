@@ -137,6 +137,7 @@
     data () {
       return {
         initConfig: {
+          ControlProperties: '',
           ControlID: '', // 表单生成后的控件id
           CBelong: 'others',
           CTitleCN: '折叠面板', // 标题

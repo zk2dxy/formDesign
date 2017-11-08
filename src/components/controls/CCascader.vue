@@ -132,6 +132,7 @@
     data () {
       return {
         initConfig: {
+          ControlProperties: '',
           ControlID: '', // 表单生成后的控件id
           CBelong: 'others',
           CTitleCN: '级联选择器', // 标题

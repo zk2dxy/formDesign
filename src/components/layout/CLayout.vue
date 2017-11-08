@@ -12,7 +12,7 @@
       v-for="(item,key) in children"
     >
       <draggable
-        v-if="children&&childrenDefault"
+        v-if="children && childrenDefault"
         class="dragBLOCK"
         v-model="children[key]"
         :options="{name:'list',animation: 100,group:{name:'controls'},ghostClass: 'item-block-drag'}"

@@ -61,7 +61,6 @@
       }
     },
     created () {
-      // console.info(FormStore)
       this.config = this.initConfig
       let item = JSON.parse(localStorage.getItem('input'))
       if (item) {
@@ -72,9 +71,6 @@
       }
       if (this.ControlID && (!this.config.ControlID)) {
         this.config.ControlID = this.ControlID
-      }
-      if (this.formOBJ) {
-        // console.error(this.formOBJ)
       }
     },
     mounted () {

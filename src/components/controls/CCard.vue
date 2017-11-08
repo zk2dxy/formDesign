@@ -200,6 +200,7 @@
     data () {
       return {
         initConfig: {
+          ControlProperties: '',
           ControlID: '', // 表单生成后的控件id
           CBelong: 'others',
           CTitleCN: 'Card卡片', // 标题

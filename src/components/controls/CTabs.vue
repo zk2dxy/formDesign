@@ -175,6 +175,7 @@
         tabIndex: 0,
         Selection: '', // 选中项
         initConfig: {
+          ControlProperties: '',
           ControlID: '', // 表单生成后的控件id
           CBelong: 'form',
           CTitleCN: '标签页', // 标题
