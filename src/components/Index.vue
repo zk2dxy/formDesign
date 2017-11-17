@@ -109,6 +109,7 @@
               </component>
             </draggable>
             <!--{{formStorage.states}}-->
+            <!--{{properties}}-->
           </div>
         </div>
         <div class="rightFormSettings" ref="rightFormSettings">
@@ -132,7 +133,7 @@
   import uuid from 'node-uuid'
   import {calcLayoutClass} from '@/assets/js/common'
   import FormSettings from '@/components/module/formDesign/FormSettingsBak.vue'
-  import * as properties from 'api/properties.json'
+  import * as properties from 'api/properties.json' // 如果开启axios请求数据，注释这段代码
   import FormStore from '@/store/formStore'
   import Properties from '@/store/formProperties'
   import Methods from '@/store/formMethods'
@@ -155,6 +156,7 @@
           if (!this.formStorage) {
             this.formStorage = new FormStore(this)
           }
+          // 如果开启axios请求数据，注释这段代码
           window.clearInterval(this.timeInterval)
           this.loadAllControls()
           this.loading.close()
@@ -163,6 +165,7 @@
 
       // 模拟请求属性
       setTimeout(() => {
+        // 如果开启axios请求数据，注释这段代码
         if (properties.retCode === 1) {
           if (!this.properties) {
             this.properties = new Properties(this)
@@ -175,6 +178,25 @@
         }
       }, 1500)
 
+      // 获取单据属性集 axios = > this.API
+      // 如果开启axios请求数据，开启这段代码
+      /*
+      this.API.getFormProperties({}, resData => {
+        if (!this.properties) {
+          this.properties = new Properties(this)
+          this.properties.mutations.setData(this.properties, resData.data.properties)
+          this.Methods = new Methods(this)
+          this.Methods.mutations.setData(this.Methods, resData.data.methods)
+        }
+      }, resData => {
+        this.$alert('表单设计属性集请求数据失败', '错误提示', {
+          confirmButtonText: '关闭',
+          callback: action => {
+            console.error(action, resData)
+          }
+        })
+      })
+      */
       document.body.ondrop = function (event) {
         event.preventDefault()
         event.stopPropagation()
