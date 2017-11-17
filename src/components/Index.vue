@@ -42,18 +42,20 @@
           <div v-if="index === tabIndex" class="controls" v-for="(item, index) in ControlList.form.controls">
             <draggable
               v-if="item.children.length > 0"
+              class="spDiv"
               v-model="item.children"
-              :options="{group:{name:'controls',pull:'clone', put: false}, animation: 0, ghostClass: 'movingControl', sort:false}"
               :clone="formClone"
+              :options="{group:{name:'controls',pull:'clone', put: false}, animation: 0, ghostClass: 'movingControl', sort:false}"
             >
               <div
                 v-if="item.children"
                 v-for="controlItem in item.children"
                 class="singleControl"
                 :key="controlItem.CNameCN">
+                <div class="spIn"></div>
                 <el-button
                   class="moveButton"
-                  icon="circle-check">
+                  icon="el-icon-success">
                   {{controlItem.CNameCN}}
                 </el-button>
                 <component
@@ -106,7 +108,7 @@
               >
               </component>
             </draggable>
-            {{formStorage.states}}
+            <!--{{formStorage.states}}-->
           </div>
         </div>
         <div class="rightFormSettings" ref="rightFormSettings">
@@ -172,6 +174,11 @@
           alert('表单设计属性集请求数据失败')
         }
       }, 1500)
+
+      document.body.ondrop = function (event) {
+        event.preventDefault()
+        event.stopPropagation()
+      }
     },
     updated () {
     },
@@ -511,7 +518,8 @@
     top 1%
     bottom 1%
     left 1%
-    box-shadow inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 1px rgba(102, 175, 233, 1)
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6)
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6)
 
   .container
     width 50%
@@ -521,7 +529,8 @@
     bottom 1%
     left 25%
     right 25%
-    box-shadow inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 1px rgba(102, 175, 233, 1)
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6)
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6)
     .formContainer
       padding 11px 15px
 
@@ -532,7 +541,8 @@
     top 1%
     bottom 1%
     right 1%
-    box-shadow inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 1px rgba(102, 175, 233, 1)
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6)
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6)
 
   .controls
     padding: 0 .4rem
@@ -602,4 +612,16 @@
       .moveControl
         opacity 1 !important
         display block !important
+
+  /* Resolve the draggable bug for firefox */
+  .spDiv
+    > .singleControl
+      position relative
+      > .spIn
+        position absolute
+        left 0
+        right 0
+        top 0
+        bottom 0
+
 </style>

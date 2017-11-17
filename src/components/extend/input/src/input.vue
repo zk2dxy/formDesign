@@ -208,9 +208,15 @@
 
   i
     &.inner_right
+      position absolute
       right 0
       left inherit
     &.inner_left
+      position absolute
       right inherit
       left 0
+
+  .el-input__icon
+    width 35px
+    line-height 36px
 </style>

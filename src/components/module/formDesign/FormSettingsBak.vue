@@ -29,9 +29,9 @@
           >
             <el-cascader
               v-model="propertyArray"
-              style="display: block"
               :options="properties.states"
               :props="defaultProps"
+              style="line-height: 40px"
             ></el-cascader>
           </el-form-item>
         </el-form>
@@ -68,15 +68,16 @@
             class="propertiesNoneParent"
           >
             <div class="propertiesDiv">
-              <el-tag
+              <span
                 v-for="property in properties.states"
                 v-if="!property.disabled"
                 type="danger"
                 class="propertiesNone"
                 :key="property.edmpCode"
+                style="line-heiht:0"
               >
                 {{property.edmpName}}
-              </el-tag>
+              </span>
             </div>
           </el-form-item>
         </el-form>
@@ -2220,6 +2221,13 @@
       .propertiesNone
         margin 0 .3rem .4rem !important
         display inline-block
+        border 1px solid $font-danger
+        -webkit-border-radius: 3px
+        -moz-border-radius: 3px
+        border-radius: 3px
+        padding 1px 5px
+        color $font-danger
+        background-color rgba(255, 73, 73, .1)
 
   .DivForLine
     height 0
@@ -2232,4 +2240,8 @@
 
   .el-input__inner, .el-textarea__inner
     margin-top 4px
+
+  .el-tag
+    line-height inherit
+
 </style>
